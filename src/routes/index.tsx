@@ -1,24 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    title: "Como conectar VPS ao GitHub | Mu Online Setup",
+    meta: [
+      {
+        name: "description",
+        content: "Guia prático de como conectar seu site de Mu Online hospedado em VPS ao GitHub para automação de alterações.",
+      },
+      { property: "og:title", content: "Como conectar VPS ao GitHub | Mu Online Setup" },
+      { property: "og:description", content: "Guia prático de como conectar seu site de Mu Online hospedado em VPS ao GitHub para automação de alterações." },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center">
+      <h1 className="mb-6 text-4xl font-bold tracking-tight lg:text-5xl">
+        como faço?
+      </h1>
+      <p className="max-w-[600px] text-lg text-muted-foreground">
+        Tenho um site de um jogo Mu online, ta ativo junto com o servidor na vps, como faço para conectar pelo github os dois e fazer alterações no website por aqui?
+      </p>
     </div>
   );
 }
+
