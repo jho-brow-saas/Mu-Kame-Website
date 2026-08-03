@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
 import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as PersonagensIndexRouteImport } from './routes/personagens/index'
 import { Route as RankingsIndexRouteImport } from './routes/rankings/index'
 import { Route as SuporteIndexRouteImport } from './routes/suporte/index'
@@ -30,6 +31,11 @@ const CadastroIndexRoute = CadastroIndexRouteImport.update({
 const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
   id: '/downloads/',
   path: '/downloads/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PersonagensIndexRoute = PersonagensIndexRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/login/': typeof LoginIndexRoute
   '/personagens/': typeof PersonagensIndexRoute
   '/rankings/': typeof RankingsIndexRoute
   '/suporte/': typeof SuporteIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroIndexRoute
   '/downloads': typeof DownloadsIndexRoute
+  '/login': typeof LoginIndexRoute
   '/personagens': typeof PersonagensIndexRoute
   '/rankings': typeof RankingsIndexRoute
   '/suporte': typeof SuporteIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/login/': typeof LoginIndexRoute
   '/personagens/': typeof PersonagensIndexRoute
   '/rankings/': typeof RankingsIndexRoute
   '/suporte/': typeof SuporteIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro/'
     | '/downloads/'
+    | '/login/'
     | '/personagens/'
     | '/rankings/'
     | '/suporte/'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/downloads'
+    | '/login'
     | '/personagens'
     | '/rankings'
     | '/suporte'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro/'
     | '/downloads/'
+    | '/login/'
     | '/personagens/'
     | '/rankings/'
     | '/suporte/'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroIndexRoute: typeof CadastroIndexRoute
   DownloadsIndexRoute: typeof DownloadsIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
   PersonagensIndexRoute: typeof PersonagensIndexRoute
   RankingsIndexRoute: typeof RankingsIndexRoute
   SuporteIndexRoute: typeof SuporteIndexRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/downloads'
       fullPath: '/downloads/'
       preLoaderRoute: typeof DownloadsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/personagens/': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroIndexRoute: CadastroIndexRoute,
   DownloadsIndexRoute: DownloadsIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
   PersonagensIndexRoute: PersonagensIndexRoute,
   RankingsIndexRoute: RankingsIndexRoute,
   SuporteIndexRoute: SuporteIndexRoute,

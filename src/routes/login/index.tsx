@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { Lock, User, ShieldCheck } from "lucide-react";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/login/")({
   head: () => ({
     title: "Login | MU Kame - Acesse sua conta",
     meta: [
