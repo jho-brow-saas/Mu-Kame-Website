@@ -76,22 +76,36 @@ export function ActionAnchor({
 }
 
 /** Link textual com colchetes, no estilo dos portais de guild de 2003. */
+export const bracketClasses =
+  "group inline-flex items-center gap-1 font-mono text-[0.78rem] uppercase tracking-[0.14em] text-gold transition-colors hover:text-gold-soft";
+
+export function BracketMarks({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <span aria-hidden="true" className="text-bronze transition-colors group-hover:text-gold">
+        [
+      </span>
+      {children}
+      <span aria-hidden="true" className="text-bronze transition-colors group-hover:text-gold">
+        ]
+      </span>
+    </>
+  );
+}
+
 export function BracketLink({
   className,
   children,
-  ...props
-}: ComponentProps<typeof Link> & { children: ReactNode }) {
+  to,
+}: {
+  className?: string;
+  children: ReactNode;
+  to: string;
+}) {
   return (
-    <Link
-      className={cn(
-        "group inline-flex items-center gap-1 font-mono text-[0.78rem] uppercase tracking-[0.14em] text-gold transition-colors hover:text-gold-soft",
-        className,
-      )}
-      {...props}
-    >
-      <span className="text-bronze transition-colors group-hover:text-gold">[</span>
-      {children}
-      <span className="text-bronze transition-colors group-hover:text-gold">]</span>
+    <Link to={to} className={cn(bracketClasses, className)}>
+      <BracketMarks>{children}</BracketMarks>
     </Link>
   );
 }
+
