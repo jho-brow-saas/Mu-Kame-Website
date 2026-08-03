@@ -25,6 +25,8 @@ import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminContasRouteImport } from './routes/admin.contas'
+import { Route as AdminPersonagensRouteImport } from './routes/admin.personagens'
+import { Route as AdminVipRouteImport } from './routes/admin.vip'
 import { Route as ContaIndexRouteImport } from './routes/conta.index'
 import { Route as ContaChamadosRouteImport } from './routes/conta.chamados'
 import { Route as ContaDownloadsRouteImport } from './routes/conta.downloads'
@@ -127,6 +129,16 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminContasRoute = AdminContasRouteImport.update({
   id: '/contas',
   path: '/contas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPersonagensRoute = AdminPersonagensRouteImport.update({
+  id: '/personagens',
+  path: '/personagens',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVipRoute = AdminVipRouteImport.update({
+  id: '/vip',
+  path: '/vip',
   getParentRoute: () => AdminRoute,
 } as any)
 const ContaIndexRoute = ContaIndexRouteImport.update({
@@ -261,6 +273,8 @@ export interface FileRoutesByFullPath {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -298,6 +312,8 @@ export interface FileRoutesByTo {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -340,6 +356,8 @@ export interface FileRoutesById {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -383,6 +401,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/personagens'
+    | '/admin/vip'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -420,6 +440,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/personagens'
+    | '/admin/vip'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -461,6 +483,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/personagens'
+    | '/admin/vip'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -616,6 +640,20 @@ declare module '@tanstack/react-router' {
       path: '/contas'
       fullPath: '/admin/contas'
       preLoaderRoute: typeof AdminContasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/personagens': {
+      id: '/admin/personagens'
+      path: '/personagens'
+      fullPath: '/admin/personagens'
+      preLoaderRoute: typeof AdminPersonagensRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/vip': {
+      id: '/admin/vip'
+      path: '/vip'
+      fullPath: '/admin/vip'
+      preLoaderRoute: typeof AdminVipRouteImport
       parentRoute: typeof AdminRoute
     }
     '/conta/': {
@@ -784,11 +822,15 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminContasRoute: typeof AdminContasRoute
+  AdminPersonagensRoute: typeof AdminPersonagensRoute
+  AdminVipRoute: typeof AdminVipRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminContasRoute: AdminContasRoute,
+  AdminPersonagensRoute: AdminPersonagensRoute,
+  AdminVipRoute: AdminVipRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
