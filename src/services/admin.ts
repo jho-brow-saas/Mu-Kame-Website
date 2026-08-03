@@ -6,7 +6,7 @@ import type { AdminCharacterRow } from "@/types/character";
 
 export type AdminDashboard = {
   accounts: number;
-  characters: number
+  characters: number;
   online: number;
   pendingTickets: number;
   blockedAccounts: number;
