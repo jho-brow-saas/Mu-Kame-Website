@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
+import { Route as RankingsBloodCastleRouteImport } from './routes/rankings.blood-castle'
 import { Route as RankingsGuildsRouteImport } from './routes/rankings.guilds'
 import { Route as RankingsKillsRouteImport } from './routes/rankings.kills'
 import { Route as RankingsLevelRouteImport } from './routes/rankings.level'
@@ -35,6 +36,11 @@ const RankingsRoute = RankingsRouteImport.update({
 const RankingsIndexRoute = RankingsIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsBloodCastleRoute = RankingsBloodCastleRouteImport.update({
+  id: '/blood-castle',
+  path: '/blood-castle',
   getParentRoute: () => RankingsRoute,
 } as any)
 const RankingsGuildsRoute = RankingsGuildsRouteImport.update({
@@ -86,6 +92,7 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/rankings'
+    | '/rankings/blood-castle'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/rankings/blood-castle'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/rankings'
+    | '/rankings/blood-castle'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -195,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/rankings/'
       preLoaderRoute: typeof RankingsIndexRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/blood-castle': {
+      id: '/rankings/blood-castle'
+      path: '/blood-castle'
+      fullPath: '/rankings/blood-castle'
+      preLoaderRoute: typeof RankingsBloodCastleRouteImport
       parentRoute: typeof RankingsRoute
     }
     '/rankings/guilds': {
@@ -264,6 +283,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface RankingsRouteChildren {
+  RankingsBloodCastleRoute: typeof RankingsBloodCastleRoute
   RankingsGuildsRoute: typeof RankingsGuildsRoute
   RankingsKillsRoute: typeof RankingsKillsRoute
   RankingsLevelRoute: typeof RankingsLevelRoute
@@ -277,6 +297,7 @@ interface RankingsRouteChildren {
 }
 
 const RankingsRouteChildren: RankingsRouteChildren = {
+  RankingsBloodCastleRoute: RankingsBloodCastleRoute,
   RankingsGuildsRoute: RankingsGuildsRoute,
   RankingsKillsRoute: RankingsKillsRoute,
   RankingsLevelRoute: RankingsLevelRoute,
