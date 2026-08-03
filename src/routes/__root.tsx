@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "MU Kame | Servidor Oficial" },
+      { name: "description", content: "Bem-vindo ao MU Kame, o servidor oficial de MU Online com a emoção das melhores lan houses dos anos 2000." },
+      { name: "author", content: "MU Kame" },
+      { property: "og:title", content: "MU Kame | Servidor Oficial" },
+      { property: "og:description", content: "Bem-vindo ao MU Kame, o servidor oficial de MU Online com a emoção das melhores lan houses dos anos 2000." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -102,11 +101,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen bg-stone-950 text-stone-100 antialiased font-sans">
         {children}
         <Scripts />
       </body>
@@ -119,7 +118,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
