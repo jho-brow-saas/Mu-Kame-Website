@@ -41,7 +41,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "https://novo.mukame.online/" }],
+    links: [
+      { rel: "canonical", href: "https://novo.mukame.online/" },
+      { rel: "preload", as: "image", href: heroImage, fetchpriority: "high" },
+    ],
+
   }),
   component: HomePage,
 });
