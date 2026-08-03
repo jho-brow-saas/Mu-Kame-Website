@@ -1,26 +1,56 @@
-# Plano de Implementação - Verificação de Conexão GitHub e Atualização de Texto
+# Plano de Implementação - Novo Website Oficial MU Kame
 
-O usuário solicitou uma análise da conexão com o GitHub e a alteração do texto principal da página inicial para: "Faça uma analise e verifique se o github está conectado corretamente para iniciarmos o projeto".
+O usuário solicitou a criação do website oficial para o "MU Kame", com uma estética inspirada na era de ouro do MU Online (anos 2000) mas com uma roupagem moderna e profissional. O desenvolvimento será focado apenas no frontend com dados demonstrativos, mantendo a integração atual com o GitHub.
 
-## Análise Técnica
-1. **Conexão GitHub**: O ambiente Lovable já está conectado a um repositório git interno (`git.private.lovable-gcp.code.storage`). A sincronização com o GitHub externo depende da configuração do conector no painel do Lovable, mas o ambiente de desenvolvimento está operando corretamente com controle de versão.
-2. **Interface**: O arquivo `src/routes/index.tsx` contém o texto atual "execute o /clear para limpar o historico" dentro de um `h1`.
+## Visão Geral do Design (Mega-skill: frontend-mega)
+- **Estética**: "Dark Fantasy" Medieval com toques sutis de anime dos anos 2000.
+- **Paleta de Cores**: Tons profundos (preto, cinza grafite) com destaques em dourado, rubi ou ciano (remetendo a itens excelentes/joias).
+- **Tipografia**: Fontes fortes e legíveis, possivelmente uma mistura de serifadas clássicas para títulos e sans-serif modernas para conteúdo.
+- **Elementos**: Texturas de metal, pedra e brilhos sutis ("glow" de itens +13).
 
-## Alterações Propostas
+## Arquitetura de Rotas (Mega-skill: architecture-mega)
+- `/` - Landing Page (Início)
+- `/cadastro` - Formulário de criação de conta
+- `/login` - Acesso à conta
+- `/downloads` - Links para o cliente do jogo
+- `/rankings` - Tabelas de classificação (Reset, PK, Guilds)
+- `/personagens` - Wiki/Informações de classes
+- `/vip` - Vantagens e planos
+- `/suporte` - Central de ajuda
 
-### 1. Frontend (`frontend-mega`)
-- Atualizar o `h1` em `src/routes/index.tsx` com a nova frase solicitada.
-- Adicionar um componente de "Status de Conexão" para dar feedback visual sobre o estado do Git/GitHub.
-
-### 2. SEO (`seo-growth-mega`)
-- Ajustar os metadados no `head()` da rota para refletir o novo estado de "Análise de Projeto".
-
-### 3. Orquestração (`orchestrator-mega`)
-- Garantir que a mensagem seja clara e que o ambiente esteja pronto para as próximas etapas do projeto Mu Online.
+## Componentes a Desenvolver
+- **Navbar & Footer**: Navegação responsiva com estética medieval.
+- **Hero Section**: CTA principal (Jogar/Download), status do servidor (Online/Offline) e contador de jogadores.
+- **Sidebar (Desktop)**: Rankings rápidos, notícias e widgets de redes sociais.
+- **Grid de Notícias**: Layout de cards para eventos e atualizações.
+- **Tabelas de Ranking**: Estilizadas e responsivas.
 
 ## Plano de Ação
-1. Modificar `src/routes/index.tsx` para substituir o texto do `h1`.
-2. Adicionar uma pequena seção de status informando que o ambiente Git está ativo e pronto.
-3. Atualizar títulos e descrições de SEO.
 
-Confirmar se deseja que eu inclua um verificador de status real (usando server functions para checar o git) ou apenas a alteração visual do texto.
+### Fase 1: Fundação e Layout Base
+1. Configurar o `src/routes/__root.tsx` com o layout global (Navbar, Sidebar, Footer).
+2. Criar os tokens de design (cores e fontes) no `src/styles.css` usando variáveis do Tailwind v4.
+
+### Fase 2: Roteamento
+1. Criar os arquivos de rota para todas as páginas solicitadas.
+2. Implementar o `head()` em cada rota com SEO otimizado.
+
+### Fase 3: Landing Page (Home)
+1. Desenvolver a Hero Section com o status do servidor em tempo real (simulado).
+2. Implementar seções de Notícias e Rankings demonstrativos.
+
+### Fase 4: Páginas de Conteúdo
+1. Criar o formulário de Cadastro/Login com validação Zod.
+2. Desenvolver a página de Downloads com guias de instalação.
+3. Criar as páginas de VIP, Personagens e Suporte com conteúdo estático de alta qualidade.
+
+### Fase 5: Polimento e Responsividade
+1. Garantir que o layout "Mobile-first" esteja impecável.
+2. Adicionar animações sutis (Framer Motion ou CSS Transitions) para a sensação "Premium".
+
+## Verificação Técnica
+- Validar se todos os links internos estão funcionando.
+- Garantir que não há referências a marcas protegidas (Webzen, etc).
+- Testar a performance (LCP e CLS).
+
+Confirmar se a direção visual de "Dark Fantasy Medieval + 2000s Anime" está correta para iniciarmos a codificação.
