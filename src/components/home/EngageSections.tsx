@@ -65,9 +65,13 @@ export function NewsSection() {
                 <TagBadge tone="muted">{item.category}</TagBadge>
                 <h3 className="card-title text-ivory">{item.subject}</h3>
                 <p className="line-clamp-3 text-sm text-mist">{item.content}</p>
-                <ActionLink to="/noticias/$slug" params={{ slug: item.slug }} variant="ghost" className="mt-auto">
+                <Link
+                  to="/noticias/$slug"
+                  params={{ slug: item.slug }}
+                  className={cn(ghostClasses, "mt-auto")}
+                >
                   Ler comunicado
-                </ActionLink>
+                </Link>
               </li>
             ))}
           </ul>
