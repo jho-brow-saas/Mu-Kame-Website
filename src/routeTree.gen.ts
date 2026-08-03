@@ -17,6 +17,7 @@ import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
 import { Route as RankingsBloodCastleRouteImport } from './routes/rankings.blood-castle'
 import { Route as RankingsChaosCastleRouteImport } from './routes/rankings.chaos-castle'
@@ -71,6 +72,11 @@ const RankingsRoute = RankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
   getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NoticiasRoute,
 } as any)
 const RankingsIndexRoute = RankingsIndexRouteImport.update({
   id: '/',
@@ -150,7 +156,7 @@ export interface FileRoutesByFullPath {
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -174,7 +181,6 @@ export interface FileRoutesByTo {
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
-  '/noticias': typeof NoticiasRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
   '/rankings/classes': typeof RankingsClassesRoute
@@ -188,6 +194,7 @@ export interface FileRoutesByTo {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
 }
 export interface FileRoutesById {
@@ -198,7 +205,7 @@ export interface FileRoutesById {
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -213,6 +220,7 @@ export interface FileRoutesById {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -239,6 +247,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/noticias/'
     | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -248,7 +257,6 @@ export interface FileRouteTypes {
     | '/downloads'
     | '/eventos'
     | '/login'
-    | '/noticias'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
     | '/rankings/classes'
@@ -262,6 +270,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/noticias'
     | '/rankings'
   id:
     | '__root__'
@@ -286,6 +295,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/noticias/'
     | '/rankings/'
   fileRoutesById: FileRoutesById
 }
@@ -296,7 +306,7 @@ export interface RootRouteChildren {
   DownloadsRoute: typeof DownloadsRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
-  NoticiasRoute: typeof NoticiasRoute
+  NoticiasRoute: typeof NoticiasRouteWithChildren
   RankingsRoute: typeof RankingsRouteWithChildren
 }
 
@@ -357,6 +367,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/rankings'
       preLoaderRoute: typeof RankingsRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof NoticiasRoute
     }
     '/rankings/': {
       id: '/rankings/'
@@ -459,6 +476,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface NoticiasRouteChildren {
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
+}
+
+const NoticiasRouteChildren: NoticiasRouteChildren = {
+  NoticiasIndexRoute: NoticiasIndexRoute,
+}
+
+const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
+  NoticiasRouteChildren,
+)
+
 interface RankingsRouteChildren {
   RankingsBloodCastleRoute: typeof RankingsBloodCastleRoute
   RankingsChaosCastleRoute: typeof RankingsChaosCastleRoute
@@ -504,7 +533,7 @@ const rootRouteChildren: RootRouteChildren = {
   DownloadsRoute: DownloadsRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
-  NoticiasRoute: NoticiasRoute,
+  NoticiasRoute: NoticiasRouteWithChildren,
   RankingsRoute: RankingsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
