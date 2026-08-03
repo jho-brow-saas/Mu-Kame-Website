@@ -36,50 +36,76 @@ export function Header() {
   }, [menuOpen]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled ? "border-b border-white/10 bg-[color:var(--void)]/92 backdrop-blur-xl" : "bg-transparent",
-      )}
-    >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="MU Kame — página inicial">
-          <Logo />
-        </Link>
-
-        <nav aria-label="Navegação principal" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
-            {navItems.map((item) => (
-              <li key={item.to}>
-                <Link
-                  to={item.to}
-                  activeOptions={{ exact: item.to === "/" }}
-                  className="inline-flex min-h-[44px] items-center rounded-lg px-3 text-sm font-medium text-mist transition-colors hover:text-ivory data-[status=active]:text-jade"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="hidden items-center gap-3 lg:flex">
-          <ActionLink to="/login" variant="ghost" className="px-4 py-2">
-            Entrar
-          </ActionLink>
-          <ActionAnchor href={serverConfig.pcDownloadUrl} className="px-5 py-2">
-            Jogar agora
-          </ActionAnchor>
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Barra técnica superior — leitura de servidor em mono, como um launcher de 2003 */}
+      <div className="hidden border-b border-gold/20 bg-obsidian/95 lg:block">
+        <div className="mx-auto flex h-8 max-w-7xl items-center justify-between gap-6 px-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ash sm:px-6 lg:px-8">
+          <span className="flex items-center gap-2">
+            <span aria-hidden="true" className="size-1.5 rotate-45 bg-gold" />
+            Season {serverConfig.season} · {serverConfig.mode} · ML {serverConfig.masterLevel}
+          </span>
+          <span className="text-bronze">
+            Lançamento {serverConfig.launchLabel}
+            <span className="caret-blink ml-1 text-gold">_</span>
+          </span>
         </div>
+      </div>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen(true)}
-          aria-label="Abrir menu"
-          className="flex size-11 items-center justify-center rounded-xl border border-white/10 text-ivory lg:hidden"
-        >
-          <Menu className="size-5" aria-hidden="true" />
-        </button>
+      <div
+        className={cn(
+          "relative transition-colors duration-300",
+          scrolled ? "metal-sheet border-b border-gold/30" : "bg-obsidian/80 backdrop-blur-md",
+        )}
+      >
+        <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
+        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+          <Link to="/" aria-label="MU Kame — página inicial">
+            <Logo />
+          </Link>
+
+          <nav aria-label="Navegação principal" className="hidden lg:block">
+            <ul className="flex items-stretch">
+              {navItems.map((item) => (
+                <li key={item.to} className="border-l border-white/5 last:border-r">
+                  <Link
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/" }}
+                    className={cn(
+                      "group relative inline-flex min-h-[44px] items-center px-4 font-ui text-[0.82rem] font-600 uppercase tracking-[0.14em] text-parchment/80 transition-colors",
+                      "hover:bg-bronze-dark/40 hover:text-gold-soft",
+                      "data-[status=active]:bg-bronze-dark/60 data-[status=active]:text-gold",
+                    )}
+                  >
+                    {item.label}
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-2 bottom-0 h-[2px] scale-x-0 bg-gold transition-transform duration-200 group-hover:scale-x-100 group-data-[status=active]:scale-x-100"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="hidden items-center gap-2 lg:flex">
+            <ActionLink to="/login" variant="ghost" className="min-h-[40px] px-4 py-2">
+              Entrar
+            </ActionLink>
+            <ActionAnchor href={serverConfig.pcDownloadUrl} className="min-h-[40px] px-5 py-2">
+              Jogar agora
+            </ActionAnchor>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Abrir menu"
+            className="btn-cut metal-sheet flex size-11 items-center justify-center border border-gold/40 text-gold-soft lg:hidden"
+          >
+            <Menu className="size-5" aria-hidden="true" />
+          </button>
+        </div>
+        <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-gold/45 to-transparent" />
       </div>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
@@ -90,47 +116,48 @@ export function Header() {
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <div
-      className={cn(
-        "fixed inset-0 z-50 lg:hidden",
-        open ? "pointer-events-auto" : "pointer-events-none",
-      )}
+      className={cn("fixed inset-0 z-50 lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}
       aria-hidden={!open}
     >
       <div
         onClick={onClose}
         className={cn(
-          "absolute inset-0 bg-[color:var(--void)]/80 backdrop-blur-sm transition-opacity duration-300",
+          "absolute inset-0 bg-obsidian/90 transition-opacity duration-300",
           open ? "opacity-100" : "opacity-0",
         )}
       />
       <aside
         className={cn(
-          "absolute inset-y-0 right-0 flex w-[86%] max-w-sm flex-col gap-6 border-l border-white/10 bg-[color:var(--realm)] p-6 transition-transform duration-300",
+          "stone-sheet absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col gap-6 border-l-2 border-gold/40 p-6 transition-transform duration-300",
           open ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between">
+        <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
+        <div className="relative flex items-center justify-between">
           <Logo compact />
           <button
             type="button"
             onClick={onClose}
             aria-label="Fechar menu"
-            className="flex size-11 items-center justify-center rounded-xl border border-white/10 text-ivory"
+            className="btn-cut metal-sheet flex size-11 items-center justify-center border border-gold/40 text-gold-soft"
           >
             <X className="size-5" aria-hidden="true" />
           </button>
         </div>
 
-        <nav aria-label="Navegação mobile">
-          <ul className="flex flex-col gap-1">
-            {navItems.map((item) => (
-              <li key={item.to}>
+        <nav aria-label="Navegação mobile" className="relative">
+          <ul className="flex flex-col">
+            {navItems.map((item, index) => (
+              <li key={item.to} className="border-b border-white/5">
                 <Link
                   to={item.to}
                   onClick={onClose}
                   activeOptions={{ exact: item.to === "/" }}
-                  className="flex min-h-[52px] items-center rounded-xl px-4 font-display text-base tracking-wide text-mist transition-colors hover:bg-white/5 hover:text-ivory data-[status=active]:bg-jade/10 data-[status=active]:text-jade"
+                  className="flex min-h-[54px] items-center gap-3 px-2 font-ui text-[0.95rem] font-600 uppercase tracking-[0.14em] text-parchment/85 transition-colors hover:text-gold-soft data-[status=active]:text-gold"
                 >
+                  <span aria-hidden="true" className="data-text text-[0.7rem] text-bronze">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                   {item.label}
                 </Link>
               </li>
@@ -138,7 +165,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
           </ul>
         </nav>
 
-        <div className="mt-auto flex flex-col gap-3">
+        <div className="relative mt-auto flex flex-col gap-3">
           <ActionLink to="/login" variant="secondary" onClick={onClose}>
             Entrar
           </ActionLink>
