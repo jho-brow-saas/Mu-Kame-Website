@@ -3,25 +3,36 @@ import { Link } from "@tanstack/react-router";
 import type { ComponentProps, ReactNode } from "react";
 
 const base =
-  "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold tracking-wide transition-all duration-300 focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-60";
+  "btn-cut relative inline-flex min-h-[46px] items-center justify-center gap-2 px-6 py-3 font-ui text-[0.82rem] font-700 uppercase tracking-[0.16em] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-55";
 
 export const primaryClasses = cn(
   base,
-  "bg-jade text-[color:var(--primary-foreground)] shadow-[0_0_24px_rgb(45_214_163_/_22%)] hover:bg-jade-glow hover:shadow-[0_0_32px_rgb(119_242_207_/_28%)]",
+  "bronze-sheet border border-gold/55 text-bone shadow-[inset_0_1px_0_rgb(255_255_255_/_14%),0_10px_20px_-14px_#000]",
+  "hover:border-gold hover:text-gold-soft hover:shadow-[inset_0_1px_0_rgb(255_255_255_/_20%),0_0_0_1px_rgb(199_154_69_/_35%)]",
+  "active:translate-y-px",
 );
 
 export const secondaryClasses = cn(
   base,
-  "border border-gold/40 bg-transparent text-gold-soft hover:border-gold hover:bg-gold/10",
+  "metal-sheet border border-bronze/60 text-parchment hover:border-gold/70 hover:text-gold-soft active:translate-y-px",
 );
 
-export const ghostClasses = cn(base, "border border-white/10 text-mist hover:border-white/25 hover:text-ivory");
+export const ghostClasses = cn(
+  base,
+  "border border-stone/50 bg-obsidian/40 text-ash hover:border-gold/50 hover:text-bone active:translate-y-px",
+);
 
-type Variant = "primary" | "secondary" | "ghost";
+export const dangerClasses = cn(
+  base,
+  "border border-crimson/60 bg-wine/40 text-bone hover:border-crimson hover:bg-wine/60",
+);
+
+type Variant = "primary" | "secondary" | "ghost" | "danger";
 
 function variantClass(variant: Variant) {
   if (variant === "primary") return primaryClasses;
   if (variant === "secondary") return secondaryClasses;
+  if (variant === "danger") return dangerClasses;
   return ghostClasses;
 }
 
@@ -61,5 +72,26 @@ export function ActionAnchor({
     <a className={cn(variantClass(variant), className)} {...props}>
       {children}
     </a>
+  );
+}
+
+/** Link textual com colchetes, no estilo dos portais de guild de 2003. */
+export function BracketLink({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof Link> & { children: ReactNode }) {
+  return (
+    <Link
+      className={cn(
+        "group inline-flex items-center gap-1 font-mono text-[0.78rem] uppercase tracking-[0.14em] text-gold transition-colors hover:text-gold-soft",
+        className,
+      )}
+      {...props}
+    >
+      <span className="text-bronze transition-colors group-hover:text-gold">[</span>
+      {children}
+      <span className="text-bronze transition-colors group-hover:text-gold">]</span>
+    </Link>
   );
 }
