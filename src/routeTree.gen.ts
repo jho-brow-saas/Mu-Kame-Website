@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,38 @@ const RankingsRoute = RankingsRouteImport.update({
   path: '/rankings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RankingsIndexRoute = RankingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RankingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/rankings': typeof RankingsRoute
+  '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/rankings': typeof RankingsRoute
+  '/rankings': typeof RankingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/rankings': typeof RankingsRoute
+  '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rankings'
+  fullPaths: '/' | '/rankings' | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/rankings'
-  id: '__root__' | '/' | '/rankings'
+  id: '__root__' | '/' | '/rankings' | '/rankings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  RankingsRoute: typeof RankingsRoute
+  RankingsRoute: typeof RankingsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +73,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rankings/': {
+      id: '/rankings/'
+      path: '/'
+      fullPath: '/rankings/'
+      preLoaderRoute: typeof RankingsIndexRouteImport
+      parentRoute: typeof RankingsRoute
+    }
   }
 }
 
+interface RankingsRouteChildren {
+  RankingsIndexRoute: typeof RankingsIndexRoute
+}
+
+const RankingsRouteChildren: RankingsRouteChildren = {
+  RankingsIndexRoute: RankingsIndexRoute,
+}
+
+const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
+  RankingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  RankingsRoute: RankingsRoute,
+  RankingsRoute: RankingsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
