@@ -24,8 +24,10 @@ import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminChamadosRouteImport } from './routes/admin.chamados'
 import { Route as AdminContasRouteImport } from './routes/admin.contas'
 import { Route as AdminMoedasRouteImport } from './routes/admin.moedas'
+import { Route as AdminNoticiasRouteImport } from './routes/admin.noticias'
 import { Route as AdminOnlineRouteImport } from './routes/admin.online'
 import { Route as AdminPersonagensRouteImport } from './routes/admin.personagens'
 import { Route as AdminVipRouteImport } from './routes/admin.vip'
@@ -128,6 +130,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminChamadosRoute = AdminChamadosRouteImport.update({
+  id: '/chamados',
+  path: '/chamados',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminContasRoute = AdminContasRouteImport.update({
   id: '/contas',
   path: '/contas',
@@ -136,6 +143,11 @@ const AdminContasRoute = AdminContasRouteImport.update({
 const AdminMoedasRoute = AdminMoedasRouteImport.update({
   id: '/moedas',
   path: '/moedas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNoticiasRoute = AdminNoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminOnlineRoute = AdminOnlineRouteImport.update({
@@ -284,8 +296,10 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
@@ -325,8 +339,10 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
@@ -371,8 +387,10 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
@@ -418,8 +436,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/chamados'
     | '/admin/contas'
     | '/admin/moedas'
+    | '/admin/noticias'
     | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
@@ -459,8 +479,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/chamados'
     | '/admin/contas'
     | '/admin/moedas'
+    | '/admin/noticias'
     | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
@@ -504,8 +526,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/chamados'
     | '/admin/contas'
     | '/admin/moedas'
+    | '/admin/noticias'
     | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
@@ -659,6 +683,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/chamados': {
+      id: '/admin/chamados'
+      path: '/chamados'
+      fullPath: '/admin/chamados'
+      preLoaderRoute: typeof AdminChamadosRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/contas': {
       id: '/admin/contas'
       path: '/contas'
@@ -671,6 +702,13 @@ declare module '@tanstack/react-router' {
       path: '/moedas'
       fullPath: '/admin/moedas'
       preLoaderRoute: typeof AdminMoedasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/noticias': {
+      id: '/admin/noticias'
+      path: '/noticias'
+      fullPath: '/admin/noticias'
+      preLoaderRoute: typeof AdminNoticiasRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/online': {
@@ -859,8 +897,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminChamadosRoute: typeof AdminChamadosRoute
   AdminContasRoute: typeof AdminContasRoute
   AdminMoedasRoute: typeof AdminMoedasRoute
+  AdminNoticiasRoute: typeof AdminNoticiasRoute
   AdminOnlineRoute: typeof AdminOnlineRoute
   AdminPersonagensRoute: typeof AdminPersonagensRoute
   AdminVipRoute: typeof AdminVipRoute
@@ -868,8 +908,10 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminChamadosRoute: AdminChamadosRoute,
   AdminContasRoute: AdminContasRoute,
   AdminMoedasRoute: AdminMoedasRoute,
+  AdminNoticiasRoute: AdminNoticiasRoute,
   AdminOnlineRoute: AdminOnlineRoute,
   AdminPersonagensRoute: AdminPersonagensRoute,
   AdminVipRoute: AdminVipRoute,
