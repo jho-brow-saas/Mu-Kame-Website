@@ -16,6 +16,7 @@ import { Route as RankingsKillsRouteImport } from './routes/rankings.kills'
 import { Route as RankingsLevelRouteImport } from './routes/rankings.level'
 import { Route as RankingsMasterLevelRouteImport } from './routes/rankings.master-level'
 import { Route as RankingsMasterResetRouteImport } from './routes/rankings.master-reset'
+import { Route as RankingsMensalRouteImport } from './routes/rankings.mensal'
 import { Route as RankingsPkRouteImport } from './routes/rankings.pk'
 import { Route as RankingsResetRouteImport } from './routes/rankings.reset'
 import { Route as RankingsSemanalRouteImport } from './routes/rankings.semanal'
@@ -55,6 +56,11 @@ const RankingsMasterResetRoute = RankingsMasterResetRouteImport.update({
   path: '/master-reset',
   getParentRoute: () => RankingsRoute,
 } as any)
+const RankingsMensalRoute = RankingsMensalRouteImport.update({
+  id: '/mensal',
+  path: '/mensal',
+  getParentRoute: () => RankingsRoute,
+} as any)
 const RankingsPkRoute = RankingsPkRouteImport.update({
   id: '/pk',
   path: '/pk',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-level': typeof RankingsMasterLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-level': typeof RankingsMasterLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-level': typeof RankingsMasterLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/rankings/level'
     | '/rankings/master-level'
     | '/rankings/master-reset'
+    | '/rankings/mensal'
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/rankings/level'
     | '/rankings/master-level'
     | '/rankings/master-reset'
+    | '/rankings/mensal'
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/rankings/level'
     | '/rankings/master-level'
     | '/rankings/master-reset'
+    | '/rankings/mensal'
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
@@ -201,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingsMasterResetRouteImport
       parentRoute: typeof RankingsRoute
     }
+    '/rankings/mensal': {
+      id: '/rankings/mensal'
+      path: '/mensal'
+      fullPath: '/rankings/mensal'
+      preLoaderRoute: typeof RankingsMensalRouteImport
+      parentRoute: typeof RankingsRoute
+    }
     '/rankings/pk': {
       id: '/rankings/pk'
       path: '/pk'
@@ -230,6 +249,7 @@ interface RankingsRouteChildren {
   RankingsLevelRoute: typeof RankingsLevelRoute
   RankingsMasterLevelRoute: typeof RankingsMasterLevelRoute
   RankingsMasterResetRoute: typeof RankingsMasterResetRoute
+  RankingsMensalRoute: typeof RankingsMensalRoute
   RankingsPkRoute: typeof RankingsPkRoute
   RankingsResetRoute: typeof RankingsResetRoute
   RankingsSemanalRoute: typeof RankingsSemanalRoute
@@ -241,6 +261,7 @@ const RankingsRouteChildren: RankingsRouteChildren = {
   RankingsLevelRoute: RankingsLevelRoute,
   RankingsMasterLevelRoute: RankingsMasterLevelRoute,
   RankingsMasterResetRoute: RankingsMasterResetRoute,
+  RankingsMensalRoute: RankingsMensalRoute,
   RankingsPkRoute: RankingsPkRoute,
   RankingsResetRoute: RankingsResetRoute,
   RankingsSemanalRoute: RankingsSemanalRoute,
