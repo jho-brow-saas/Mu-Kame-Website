@@ -10,128 +10,33 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
-import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as PersonagensIndexRouteImport } from './routes/personagens/index'
-import { Route as RankingsIndexRouteImport } from './routes/rankings/index'
-import { Route as SuporteIndexRouteImport } from './routes/suporte/index'
-import { Route as VipIndexRouteImport } from './routes/vip/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CadastroIndexRoute = CadastroIndexRouteImport.update({
-  id: '/cadastro/',
-  path: '/cadastro/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
-  id: '/downloads/',
-  path: '/downloads/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PersonagensIndexRoute = PersonagensIndexRouteImport.update({
-  id: '/personagens/',
-  path: '/personagens/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RankingsIndexRoute = RankingsIndexRouteImport.update({
-  id: '/rankings/',
-  path: '/rankings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SuporteIndexRoute = SuporteIndexRouteImport.update({
-  id: '/suporte/',
-  path: '/suporte/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VipIndexRoute = VipIndexRouteImport.update({
-  id: '/vip/',
-  path: '/vip/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cadastro/': typeof CadastroIndexRoute
-  '/downloads/': typeof DownloadsIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/personagens/': typeof PersonagensIndexRoute
-  '/rankings/': typeof RankingsIndexRoute
-  '/suporte/': typeof SuporteIndexRoute
-  '/vip/': typeof VipIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cadastro': typeof CadastroIndexRoute
-  '/downloads': typeof DownloadsIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/personagens': typeof PersonagensIndexRoute
-  '/rankings': typeof RankingsIndexRoute
-  '/suporte': typeof SuporteIndexRoute
-  '/vip': typeof VipIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/cadastro/': typeof CadastroIndexRoute
-  '/downloads/': typeof DownloadsIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/personagens/': typeof PersonagensIndexRoute
-  '/rankings/': typeof RankingsIndexRoute
-  '/suporte/': typeof SuporteIndexRoute
-  '/vip/': typeof VipIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/cadastro/'
-    | '/downloads/'
-    | '/login/'
-    | '/personagens/'
-    | '/rankings/'
-    | '/suporte/'
-    | '/vip/'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/cadastro'
-    | '/downloads'
-    | '/login'
-    | '/personagens'
-    | '/rankings'
-    | '/suporte'
-    | '/vip'
-  id:
-    | '__root__'
-    | '/'
-    | '/cadastro/'
-    | '/downloads/'
-    | '/login/'
-    | '/personagens/'
-    | '/rankings/'
-    | '/suporte/'
-    | '/vip/'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CadastroIndexRoute: typeof CadastroIndexRoute
-  DownloadsIndexRoute: typeof DownloadsIndexRoute
-  LoginIndexRoute: typeof LoginIndexRoute
-  PersonagensIndexRoute: typeof PersonagensIndexRoute
-  RankingsIndexRoute: typeof RankingsIndexRoute
-  SuporteIndexRoute: typeof SuporteIndexRoute
-  VipIndexRoute: typeof VipIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,67 +48,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cadastro/': {
-      id: '/cadastro/'
-      path: '/cadastro'
-      fullPath: '/cadastro/'
-      preLoaderRoute: typeof CadastroIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/downloads/': {
-      id: '/downloads/'
-      path: '/downloads'
-      fullPath: '/downloads/'
-      preLoaderRoute: typeof DownloadsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/': {
-      id: '/login/'
-      path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/personagens/': {
-      id: '/personagens/'
-      path: '/personagens'
-      fullPath: '/personagens/'
-      preLoaderRoute: typeof PersonagensIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rankings/': {
-      id: '/rankings/'
-      path: '/rankings'
-      fullPath: '/rankings/'
-      preLoaderRoute: typeof RankingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/suporte/': {
-      id: '/suporte/'
-      path: '/suporte'
-      fullPath: '/suporte/'
-      preLoaderRoute: typeof SuporteIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/vip/': {
-      id: '/vip/'
-      path: '/vip'
-      fullPath: '/vip/'
-      preLoaderRoute: typeof VipIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CadastroIndexRoute: CadastroIndexRoute,
-  DownloadsIndexRoute: DownloadsIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
-  PersonagensIndexRoute: PersonagensIndexRoute,
-  RankingsIndexRoute: RankingsIndexRoute,
-  SuporteIndexRoute: SuporteIndexRoute,
-  VipIndexRoute: VipIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
