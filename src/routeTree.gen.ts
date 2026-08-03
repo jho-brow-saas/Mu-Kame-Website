@@ -23,6 +23,9 @@ import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
+import { Route as ContaIndexRouteImport } from './routes/conta.index'
+import { Route as ContaEvolucaoRouteImport } from './routes/conta.evolucao'
+import { Route as ContaPersonagensRouteImport } from './routes/conta.personagens'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
@@ -109,6 +112,21 @@ const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ContaIndexRoute = ContaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaEvolucaoRoute = ContaEvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaPersonagensRoute = ContaPersonagensRouteImport.update({
+  id: '/personagens',
+  path: '/personagens',
+  getParentRoute: () => ContaRoute,
 } as any)
 const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   id: '/',
@@ -197,7 +215,7 @@ export interface FileRoutesByFullPath {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
-  '/conta': typeof ContaRoute
+  '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -206,6 +224,8 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -220,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
@@ -229,13 +250,14 @@ export interface FileRoutesByTo {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
-  '/conta': typeof ContaRoute
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -250,6 +272,7 @@ export interface FileRoutesByTo {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/conta': typeof ContaIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
 }
@@ -260,7 +283,7 @@ export interface FileRoutesById {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
-  '/conta': typeof ContaRoute
+  '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -269,6 +292,8 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -283,6 +308,7 @@ export interface FileRoutesById {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
@@ -303,6 +329,8 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/evolucao'
+    | '/conta/personagens'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -317,6 +345,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/conta/'
     | '/noticias/'
     | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
@@ -326,13 +355,14 @@ export interface FileRouteTypes {
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
-    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/evolucao'
+    | '/conta/personagens'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -347,6 +377,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/conta'
     | '/noticias'
     | '/rankings'
   id:
@@ -365,6 +396,8 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/evolucao'
+    | '/conta/personagens'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -379,6 +412,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/conta/'
     | '/noticias/'
     | '/rankings/'
   fileRoutesById: FileRoutesById
@@ -389,7 +423,7 @@ export interface RootRouteChildren {
   AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   CastleSiegeRoute: typeof CastleSiegeRoute
-  ContaRoute: typeof ContaRoute
+  ContaRoute: typeof ContaRouteWithChildren
   DownloadsRoute: typeof DownloadsRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
@@ -499,6 +533,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/vip'
       preLoaderRoute: typeof VipRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/conta/': {
+      id: '/conta/'
+      path: '/'
+      fullPath: '/conta/'
+      preLoaderRoute: typeof ContaIndexRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/evolucao': {
+      id: '/conta/evolucao'
+      path: '/evolucao'
+      fullPath: '/conta/evolucao'
+      preLoaderRoute: typeof ContaEvolucaoRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/personagens': {
+      id: '/conta/personagens'
+      path: '/personagens'
+      fullPath: '/conta/personagens'
+      preLoaderRoute: typeof ContaPersonagensRouteImport
+      parentRoute: typeof ContaRoute
     }
     '/noticias/': {
       id: '/noticias/'
@@ -615,6 +670,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ContaRouteChildren {
+  ContaEvolucaoRoute: typeof ContaEvolucaoRoute
+  ContaPersonagensRoute: typeof ContaPersonagensRoute
+  ContaIndexRoute: typeof ContaIndexRoute
+}
+
+const ContaRouteChildren: ContaRouteChildren = {
+  ContaEvolucaoRoute: ContaEvolucaoRoute,
+  ContaPersonagensRoute: ContaPersonagensRoute,
+  ContaIndexRoute: ContaIndexRoute,
+}
+
+const ContaRouteWithChildren = ContaRoute._addFileChildren(ContaRouteChildren)
+
 interface NoticiasRouteChildren {
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
@@ -673,7 +742,7 @@ const rootRouteChildren: RootRouteChildren = {
   AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   CastleSiegeRoute: CastleSiegeRoute,
-  ContaRoute: ContaRoute,
+  ContaRoute: ContaRouteWithChildren,
   DownloadsRoute: DownloadsRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
