@@ -14,6 +14,7 @@ import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
 import { Route as RankingsBloodCastleRouteImport } from './routes/rankings.blood-castle'
 import { Route as RankingsChaosCastleRouteImport } from './routes/rankings.chaos-castle'
+import { Route as RankingsClassesRouteImport } from './routes/rankings.classes'
 import { Route as RankingsDevilSquareRouteImport } from './routes/rankings.devil-square'
 import { Route as RankingsGuildsRouteImport } from './routes/rankings.guilds'
 import { Route as RankingsKillsRouteImport } from './routes/rankings.kills'
@@ -48,6 +49,11 @@ const RankingsBloodCastleRoute = RankingsBloodCastleRouteImport.update({
 const RankingsChaosCastleRoute = RankingsChaosCastleRouteImport.update({
   id: '/chaos-castle',
   path: '/chaos-castle',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsClassesRoute = RankingsClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
   getParentRoute: () => RankingsRoute,
 } as any)
 const RankingsDevilSquareRoute = RankingsDevilSquareRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
   '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
   '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
   '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/rankings'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
+    | '/rankings/classes'
     | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
+    | '/rankings/classes'
     | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/rankings'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
+    | '/rankings/classes'
     | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
@@ -245,6 +257,13 @@ declare module '@tanstack/react-router' {
       path: '/chaos-castle'
       fullPath: '/rankings/chaos-castle'
       preLoaderRoute: typeof RankingsChaosCastleRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/classes': {
+      id: '/rankings/classes'
+      path: '/classes'
+      fullPath: '/rankings/classes'
+      preLoaderRoute: typeof RankingsClassesRouteImport
       parentRoute: typeof RankingsRoute
     }
     '/rankings/devil-square': {
@@ -323,6 +342,7 @@ declare module '@tanstack/react-router' {
 interface RankingsRouteChildren {
   RankingsBloodCastleRoute: typeof RankingsBloodCastleRoute
   RankingsChaosCastleRoute: typeof RankingsChaosCastleRoute
+  RankingsClassesRoute: typeof RankingsClassesRoute
   RankingsDevilSquareRoute: typeof RankingsDevilSquareRoute
   RankingsGuildsRoute: typeof RankingsGuildsRoute
   RankingsKillsRoute: typeof RankingsKillsRoute
@@ -339,6 +359,7 @@ interface RankingsRouteChildren {
 const RankingsRouteChildren: RankingsRouteChildren = {
   RankingsBloodCastleRoute: RankingsBloodCastleRoute,
   RankingsChaosCastleRoute: RankingsChaosCastleRoute,
+  RankingsClassesRoute: RankingsClassesRoute,
   RankingsDevilSquareRoute: RankingsDevilSquareRoute,
   RankingsGuildsRoute: RankingsGuildsRoute,
   RankingsKillsRoute: RankingsKillsRoute,
