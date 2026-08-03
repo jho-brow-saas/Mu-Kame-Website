@@ -78,12 +78,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "MU Kame | Servidor Oficial" },
-      { name: "description", content: "Bem-vindo ao MU Kame, o servidor oficial de MU Online com a emoção das melhores lan houses dos anos 2000." },
+      { name: "description", content: "O website oficial do MU Kame. Servidor de MU Online inspirado na era de ouro das lan houses. Jogue agora, suba nos rankings e torne-se o mestre kame." },
       { name: "author", content: "MU Kame" },
       { property: "og:title", content: "MU Kame | Servidor Oficial" },
-      { property: "og:description", content: "Bem-vindo ao MU Kame, o servidor oficial de MU Online com a emoção das melhores lan houses dos anos 2000." },
+      { property: "og:description", content: "O website oficial do MU Kame. Servidor de MU Online inspirado na era de ouro das lan houses. Jogue agora, suba nos rankings e torne-se o mestre kame." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "MU Kame | Servidor Oficial" },
+      { name: "twitter:description", content: "O website oficial do MU Kame. Servidor de MU Online inspirado na era de ouro das lan houses. Jogue agora, suba nos rankings e torne-se o mestre kame." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bfb91319-6743-4ca4-b19b-e8b4ad16243a/id-preview-383ec317--00ddf391-00e2-4e98-98d4-318eb4868405.lovable.app-1785724927010.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bfb91319-6743-4ca4-b19b-e8b4ad16243a/id-preview-383ec317--00ddf391-00e2-4e98-98d4-318eb4868405.lovable.app-1785724927010.png" },
     ],
     links: [
       {
