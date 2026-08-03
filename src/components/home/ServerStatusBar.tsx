@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { serverConfig } from "@/config/server";
 import { api, DEMO_MODE, type ServerStatus } from "@/services/api";
-import { Gauge, Monitor, Sparkles, Users, Layers, Award } from "lucide-react";
 
 const statusLabel: Record<ServerStatus["status"], string> = {
   online: "Online",
@@ -9,6 +8,7 @@ const statusLabel: Record<ServerStatus["status"], string> = {
   preparing: "Em preparação",
 };
 
+/** Faixa de leitura técnica: dados do servidor em mono, no espírito de um painel de LAN house. */
 export function ServerStatusBar() {
   const [status, setStatus] = useState<ServerStatus | null>(null);
 
@@ -28,31 +28,29 @@ export function ServerStatusBar() {
   }, []);
 
   const items = [
-    { label: "Status do servidor", value: status ? statusLabel[status.status] : "Em preparação", icon: Gauge },
-    { label: "Jogadores online", value: String(status?.playersOnline ?? 0), icon: Users },
-    { label: "Season", value: serverConfig.season, icon: Sparkles },
-    { label: "Estilo", value: serverConfig.mode, icon: Layers },
-    { label: "Master Level", value: String(serverConfig.masterLevel), icon: Award },
-    { label: "Plataforma", value: serverConfig.platform, icon: Monitor },
+    { label: "Servidor", value: status ? statusLabel[status.status] : "Em preparação" },
+    { label: "Online", value: String(status?.playersOnline ?? 0) },
+    { label: "Season", value: serverConfig.season },
+    { label: "Estilo", value: serverConfig.mode },
+    { label: "Master Lv.", value: String(serverConfig.masterLevel) },
+    { label: "Plataforma", value: serverConfig.platform },
   ];
 
   return (
-    <section className="border-y border-white/8 bg-[color:var(--realm)]/50">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+    <section className="metal-sheet relative isolate overflow-hidden edge-rule-bottom" aria-label="Status do servidor">
+      <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
+      <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+        <ul className="grid grid-cols-2 divide-gold/15 sm:grid-cols-3 lg:grid-cols-6 lg:divide-x">
           {items.map((item) => (
-            <li key={item.label} className="flex flex-col gap-1">
-              <span className="flex items-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-graylight">
-                <item.icon className="size-3.5 text-jade" aria-hidden="true" />
-                {item.label}
-              </span>
-              <span className="font-display text-lg text-ivory">{item.value}</span>
+            <li key={item.label} className="flex flex-col gap-0.5 px-0 py-2 lg:px-4">
+              <span className="label-text text-ash">{item.label}</span>
+              <span className="data-text text-base text-gold-soft">{item.value}</span>
             </li>
           ))}
         </ul>
         {DEMO_MODE ? (
-          <p className="mt-6 text-xs text-graylight">
-            Dados em tempo real após a integração com o servidor.
+          <p className="mt-3 border-t border-gold/15 pt-3 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ash">
+            &gt; dados em tempo real após a integração com o servidor
           </p>
         ) : null}
       </div>

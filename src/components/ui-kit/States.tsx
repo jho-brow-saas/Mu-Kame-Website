@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { AlertTriangle, Loader2, Sparkles } from "lucide-react";
+import { AlertTriangle, Hourglass, ScrollText } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function EmptyState({
@@ -14,22 +14,40 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("surface-card flex flex-col items-center gap-3 px-6 py-12 text-center", className)}>
-      <span className="flex size-12 items-center justify-center rounded-full border border-jade/25 bg-jade/10">
-        <Sparkles className="size-5 text-jade" aria-hidden="true" />
+    <div
+      className={cn(
+        "plate plate-cut inner-rule relative flex flex-col items-center gap-3 px-6 py-12 text-center",
+        className,
+      )}
+    >
+      <span aria-hidden="true" className="rune-grid absolute inset-0 opacity-50" />
+      <span
+        aria-hidden="true"
+        className="bronze-sheet relative flex size-12 items-center justify-center border border-gold/40"
+        style={{ clipPath: "polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%)" }}
+      >
+        <ScrollText className="size-5 text-gold-soft" aria-hidden="true" />
       </span>
-      <h3 className="card-title text-ivory">{title}</h3>
-      {description ? <p className="max-w-md text-sm leading-relaxed text-mist">{description}</p> : null}
-      {action}
+      <h3 className="card-title relative uppercase text-bone">{title}</h3>
+      {description ? (
+        <p className="relative max-w-md text-sm leading-relaxed text-parchment/80">{description}</p>
+      ) : null}
+      {action ? <div className="relative">{action}</div> : null}
     </div>
   );
 }
 
 export function LoadingState({ label = "Carregando informações…" }: { label?: string }) {
   return (
-    <div className="surface-card flex items-center justify-center gap-3 px-6 py-12 text-sm text-mist" role="status">
-      <Loader2 className="size-4 animate-spin text-jade" aria-hidden="true" />
+    <div
+      className="plate plate-cut-soft flex items-center justify-center gap-3 px-6 py-12 font-mono text-sm text-parchment"
+      role="status"
+    >
+      <Hourglass className="size-4 animate-spin text-gold" aria-hidden="true" />
       {label}
+      <span className="caret-blink text-gold" aria-hidden="true">
+        _
+      </span>
     </div>
   );
 }
@@ -44,14 +62,14 @@ export function ErrorState({
   onRetry?: () => void;
 }) {
   return (
-    <div className="surface-card flex flex-col items-center gap-3 border-danger/25 px-6 py-12 text-center">
-      <AlertTriangle className="size-6 text-danger" aria-hidden="true" />
-      <h3 className="card-title text-ivory">{title}</h3>
-      <p className="max-w-md text-sm text-mist">{description}</p>
+    <div className="plate plate-cut-soft flex flex-col items-center gap-3 border-crimson/50 bg-wine/20 px-6 py-12 text-center">
+      <AlertTriangle className="size-6 text-crimson" aria-hidden="true" />
+      <h3 className="card-title uppercase text-bone">{title}</h3>
+      <p className="max-w-md text-sm text-parchment/85">{description}</p>
       {onRetry ? (
         <button
           onClick={onRetry}
-          className="min-h-[44px] rounded-xl border border-white/15 px-5 text-sm font-semibold text-ivory hover:border-jade/50"
+          className="btn-cut metal-sheet min-h-[44px] border border-gold/40 px-5 font-ui text-[0.8rem] font-700 uppercase tracking-[0.16em] text-bone hover:border-gold"
         >
           Tentar novamente
         </button>

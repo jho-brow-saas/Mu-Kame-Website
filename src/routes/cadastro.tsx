@@ -97,7 +97,7 @@ function CadastroPage() {
   }
 
   const fieldClass =
-    "min-h-[44px] w-full rounded-xl border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory placeholder:text-graylight";
+    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold";
 
   return (
     <SiteLayout>
@@ -154,7 +154,7 @@ function CadastroPage() {
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-lg text-mist"
+                className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-mist"
               >
                 {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
               </button>
@@ -166,7 +166,7 @@ function CadastroPage() {
               {[0, 1, 2, 3].map((index) => (
                 <span
                   key={index}
-                  className={cn("h-1 flex-1 rounded-full", index < strength ? "bg-jade" : "bg-white/10")}
+                  className={cn("h-1 flex-1", index < strength ? "bg-gold" : "bg-white/10")}
                 />
               ))}
             </div>
@@ -195,10 +195,10 @@ function CadastroPage() {
                 type="checkbox"
                 checked={values.acceptRules}
                 onChange={(e) => setValues((v) => ({ ...v, acceptRules: e.target.checked }))}
-                className="mt-1 size-4 accent-[color:var(--jade)]"
+                className="mt-1 size-4 accent-[color:var(--gold)]"
               />
               <span>
-                Li e aceito as <Link to="/regras" className="text-jade hover:text-jade-glow">regras do servidor</Link>.
+                Li e aceito as <Link to="/regras" className="text-gold hover:text-gold-soft">regras do servidor</Link>.
               </span>
             </label>
             {errors.acceptRules ? <p className="text-xs text-danger">{errors.acceptRules}</p> : null}
@@ -218,7 +218,7 @@ function CadastroPage() {
           ) : null}
 
           <p className="text-sm text-mist">
-            Já tem conta? <Link to="/login" className="text-jade hover:text-jade-glow">Entrar</Link>
+            Já tem conta? <Link to="/login" className="text-gold hover:text-gold-soft">Entrar</Link>
           </p>
         </form>
       </section>

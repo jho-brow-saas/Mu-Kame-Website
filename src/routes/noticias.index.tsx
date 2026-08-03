@@ -67,7 +67,7 @@ function NoticiasPage() {
                 <Link
                   to="/noticias/$slug"
                   params={{ slug: item.slug }}
-                  className="mt-auto text-sm font-semibold text-jade hover:text-jade-glow"
+                  className="mt-auto text-sm font-semibold text-gold hover:text-gold-soft"
                 >
                   Ler comunicado
                 </Link>

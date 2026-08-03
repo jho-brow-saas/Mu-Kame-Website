@@ -44,14 +44,14 @@ function RankingsLayout() {
         title="Rankings do MU Kame"
         description="Todos os rankings serão alimentados diretamente pelo servidor após o lançamento em 01 de setembro de 2026."
       />
-      <nav aria-label="Categorias de ranking" className="border-b border-white/8 bg-[color:var(--realm)]/40">
+      <nav aria-label="Categorias de ranking" className="metal-sheet edge-rule-bottom">
         <ul className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-4 sm:px-6 lg:px-8">
           {rankingTabs.map((tab) => (
             <li key={tab.to}>
               <Link
                 to={tab.to}
                 activeOptions={{ exact: "exact" in tab }}
-                className="inline-flex min-h-[44px] shrink-0 items-center rounded-xl border border-white/10 px-4 text-sm text-mist transition-colors hover:text-ivory data-[status=active]:border-jade/40 data-[status=active]:bg-jade/10 data-[status=active]:text-jade"
+                className="inline-flex min-h-[44px] shrink-0 items-center border border-white/10 px-4 text-sm text-mist transition-colors hover:text-ivory data-[status=active]:border-gold/40 data-[status=active]:bg-gold/10 data-[status=active]:text-gold"
               >
                 {tab.label}
               </Link>

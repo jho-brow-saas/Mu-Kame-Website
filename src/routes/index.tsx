@@ -2,8 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Hero } from "@/components/home/Hero";
 import { ServerStatusBar } from "@/components/home/ServerStatusBar";
-import { AboutSection, QuickInfoSection, RatesSection, DifferentialsSection } from "@/components/home/InfoSections";
-import { RankingPreviewSection, EventsSection, CastleSiegePreview } from "@/components/home/CompeteSections";
+import {
+  AboutSection,
+  QuickInfoSection,
+  RatesSection,
+  DifferentialsSection,
+  RealmMapStrip,
+} from "@/components/home/InfoSections";
+import {
+  RankingPreviewSection,
+  EventsSection,
+  CastleSiegePreview,
+  GuildCallSection,
+} from "@/components/home/CompeteSections";
 import {
   VipSection,
   NewsSection,
@@ -41,10 +52,12 @@ function HomePage() {
       <AboutSection />
       <QuickInfoSection />
       <RatesSection />
+      <RealmMapStrip />
       <DifferentialsSection />
       <RankingPreviewSection />
       <EventsSection />
       <CastleSiegePreview />
+      <GuildCallSection />
       <VipSection />
       <NewsSection />
       <DownloadsSection />

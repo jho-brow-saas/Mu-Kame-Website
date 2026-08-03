@@ -3,6 +3,7 @@ import { api, type RankingEntry } from "@/services/api";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States";
 import { characterClasses } from "@/lib/classes";
 import { SectionHeading } from "@/components/ui-kit/SectionHeading";
+import { PlateHeader } from "@/components/ui-kit/Cards";
 
 export type RankingViewProps = {
   kind: string;
@@ -10,6 +11,9 @@ export type RankingViewProps = {
   description: string;
   valueLabel: string;
 };
+
+const fieldClasses =
+  "min-h-[46px] border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.85rem] text-bone placeholder:text-ash focus-visible:border-gold";
 
 export function RankingView({ kind, title, description, valueLabel }: RankingViewProps) {
   const [state, setState] = useState<"loading" | "error" | "ready">("loading");
@@ -49,7 +53,7 @@ export function RankingView({ kind, title, description, valueLabel }: RankingVie
 
       <div className="mb-6 grid gap-3 sm:grid-cols-[1fr_auto]">
         <div className="flex flex-col gap-1">
-          <label htmlFor="ranking-search" className="text-xs font-semibold uppercase tracking-[0.2em] text-graylight">
+          <label htmlFor="ranking-search" className="label-text text-ash">
             Buscar personagem
           </label>
           <input
@@ -57,18 +61,18 @@ export function RankingView({ kind, title, description, valueLabel }: RankingVie
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Nome do personagem"
-            className="min-h-[44px] rounded-xl border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory placeholder:text-graylight"
+            className={fieldClasses}
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="ranking-class" className="text-xs font-semibold uppercase tracking-[0.2em] text-graylight">
+          <label htmlFor="ranking-class" className="label-text text-ash">
             Classe
           </label>
           <select
             id="ranking-class"
             value={classFilter}
             onChange={(event) => setClassFilter(event.target.value)}
-            className="min-h-[44px] rounded-xl border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory"
+            className={fieldClasses}
           >
             <option value="all">Todas as classes</option>
             {characterClasses.flatMap((klass) =>
@@ -93,38 +97,56 @@ export function RankingView({ kind, title, description, valueLabel }: RankingVie
 
       {state === "ready" && filtered.length > 0 ? (
         <>
-          <div className="surface-card hidden overflow-hidden md:block">
+          <div className="plate plate-cut-slot hidden overflow-hidden md:block">
+            <PlateHeader right={`${filtered.length} registros`}>{title}</PlateHeader>
             <table className="w-full text-left text-sm">
               <caption className="sr-only">{title}</caption>
               <thead>
-                <tr className="border-b border-white/8 text-[0.65rem] uppercase tracking-[0.2em] text-graylight">
-                  <th scope="col" className="px-5 py-4">#</th>
-                  <th scope="col" className="px-5 py-4">Personagem</th>
-                  <th scope="col" className="px-5 py-4">Guild</th>
-                  <th scope="col" className="px-5 py-4">Classe</th>
-                  <th scope="col" className="px-5 py-4">{valueLabel}</th>
+                <tr className="border-b border-gold/20 bg-obsidian/50">
+                  <th scope="col" className="label-text px-4 py-3 text-ash">#</th>
+                  <th scope="col" className="label-text px-4 py-3 text-ash">Personagem</th>
+                  <th scope="col" className="label-text px-4 py-3 text-ash">Guild</th>
+                  <th scope="col" className="label-text px-4 py-3 text-ash">Classe</th>
+                  <th scope="col" className="label-text px-4 py-3 text-ash">{valueLabel}</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((entry) => (
-                  <tr key={`${entry.position}-${entry.name}`} className="border-b border-white/5 last:border-0">
-                    <td className="px-5 py-4 font-display text-gold-soft">{entry.position}</td>
-                    <th scope="row" className="px-5 py-4 font-normal text-ivory">{entry.name}</th>
-                    <td className="px-5 py-4 text-mist">{entry.guild ?? "—"}</td>
-                    <td className="px-5 py-4 text-mist">{entry.className}</td>
-                    <td className="px-5 py-4 text-jade">{entry.value.toLocaleString("pt-BR")}</td>
+                  <tr
+                    key={`${entry.position}-${entry.name}`}
+                    className="border-b border-white/5 last:border-0 hover:bg-bronze-dark/30"
+                  >
+                    <td className="data-text px-4 py-3 text-gold">{String(entry.position).padStart(2, "0")}</td>
+                    <th
+                      scope="row"
+                      className="px-4 py-3 font-ui text-[0.95rem] font-600 uppercase tracking-[0.06em] text-bone"
+                    >
+                      {entry.name}
+                    </th>
+                    <td className="px-4 py-3 text-parchment/80">{entry.guild ?? "—"}</td>
+                    <td className="px-4 py-3 text-parchment/80">{entry.className}</td>
+                    <td className="data-text px-4 py-3 text-gold-soft">{entry.value.toLocaleString("pt-BR")}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <ul className="flex flex-col gap-3 md:hidden">
+          <ul className="flex flex-col gap-2 md:hidden">
             {filtered.map((entry) => (
-              <li key={`${entry.position}-${entry.name}`} className="surface-card flex flex-col gap-1 p-4">
-                <span className="font-display text-gold-soft">#{entry.position} — {entry.name}</span>
-                <span className="text-xs text-mist">{entry.className} • {entry.guild ?? "Sem guild"}</span>
-                <span className="text-sm text-jade">
+              <li key={`${entry.position}-${entry.name}`} className="plate plate-cut-soft flex flex-col gap-1 p-4">
+                <span className="flex items-center gap-2">
+                  <span className="data-text text-[0.75rem] text-gold">
+                    {String(entry.position).padStart(2, "0")}
+                  </span>
+                  <span className="font-ui text-[0.95rem] font-600 uppercase tracking-[0.06em] text-bone">
+                    {entry.name}
+                  </span>
+                </span>
+                <span className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-ash">
+                  {entry.className} · {entry.guild ?? "sem guild"}
+                </span>
+                <span className="data-text text-sm text-gold-soft">
                   {valueLabel}: {entry.value.toLocaleString("pt-BR")}
                 </span>
               </li>

@@ -16,7 +16,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-display text-6xl text-jade">404</h1>
+        <h1 className="font-display text-6xl text-gold">404</h1>
         <h2 className="mt-4 font-display text-xl text-ivory">Página não encontrada</h2>
         <p className="mt-2 text-sm text-mist">
           O caminho que você tentou acessar não existe ou foi movido.
@@ -24,7 +24,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-jade px-5 text-sm font-semibold text-[color:var(--primary-foreground)]"
+            className="inline-flex min-h-[44px] items-center justify-center bg-gold px-5 text-sm font-semibold text-[color:var(--primary-foreground)]"
           >
             Voltar ao início
           </Link>
@@ -54,13 +54,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-jade px-5 text-sm font-semibold text-[color:var(--primary-foreground)]"
+            className="inline-flex min-h-[44px] items-center justify-center bg-gold px-5 text-sm font-semibold text-[color:var(--primary-foreground)]"
           >
             Tentar novamente
           </button>
           <a
             href="/"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-white/15 px-5 text-sm font-semibold text-ivory"
+            className="inline-flex min-h-[44px] items-center justify-center border border-white/15 px-5 text-sm font-semibold text-ivory"
           >
             Início
           </a>
@@ -93,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Sora:wght@300;400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],

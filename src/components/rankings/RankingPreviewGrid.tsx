@@ -18,7 +18,7 @@ export function RankingPreviewGrid() {
           <li key={card.to}>
             <Link
               to={card.to}
-              className="surface-card flex min-h-[104px] flex-col justify-between p-5 transition-transform duration-300 hover:-translate-y-1 hover:border-jade/25"
+              className="surface-card flex min-h-[104px] flex-col justify-between p-5 transition-transform duration-300 hover:-translate-y-1 hover:border-gold/25"
             >
               <span className="card-title font-display text-ivory">{card.label}</span>
               <span className="text-xs text-graylight">Ranking em preparação</span>

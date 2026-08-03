@@ -33,7 +33,7 @@ function DownloadsPage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <ul className="grid gap-5 md:grid-cols-3">
           <li className="surface-card flex flex-col gap-4 p-6">
-            <Monitor className="size-5 text-jade" aria-hidden="true" />
+            <Monitor className="size-5 text-gold" aria-hidden="true" />
             <h2 className="card-title text-ivory">Cliente completo (Windows)</h2>
             <p className="text-sm text-mist">Instalação completa do MU Kame para PC, pronta para o lançamento.</p>
             <ActionAnchor href={serverConfig.pcDownloadUrl} className="mt-auto">
