@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CastleSiegeRouteImport } from './routes/castle-siege'
+import { Route as ContaRouteImport } from './routes/conta'
 import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
@@ -21,6 +23,25 @@ import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAuditoriaRouteImport } from './routes/admin.auditoria'
+import { Route as AdminChamadosRouteImport } from './routes/admin.chamados'
+import { Route as AdminContasRouteImport } from './routes/admin.contas'
+import { Route as AdminConteudoRouteImport } from './routes/admin.conteudo'
+import { Route as AdminDiagnosticoRouteImport } from './routes/admin.diagnostico'
+import { Route as AdminDownloadsRouteImport } from './routes/admin.downloads'
+import { Route as AdminMoedasRouteImport } from './routes/admin.moedas'
+import { Route as AdminNoticiasRouteImport } from './routes/admin.noticias'
+import { Route as AdminOnlineRouteImport } from './routes/admin.online'
+import { Route as AdminPersonagensRouteImport } from './routes/admin.personagens'
+import { Route as AdminVipRouteImport } from './routes/admin.vip'
+import { Route as ContaIndexRouteImport } from './routes/conta.index'
+import { Route as ContaChamadosRouteImport } from './routes/conta.chamados'
+import { Route as ContaDownloadsRouteImport } from './routes/conta.downloads'
+import { Route as ContaEvolucaoRouteImport } from './routes/conta.evolucao'
+import { Route as ContaPersonagensRouteImport } from './routes/conta.personagens'
+import { Route as ContaSegurancaRouteImport } from './routes/conta.seguranca'
+import { Route as ContaVipMoedasRouteImport } from './routes/conta.vip-moedas'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
@@ -43,6 +64,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreaDoJogadorRoute = AreaDoJogadorRouteImport.update({
   id: '/area-do-jogador',
   path: '/area-do-jogador',
@@ -56,6 +82,11 @@ const CadastroRoute = CadastroRouteImport.update({
 const CastleSiegeRoute = CastleSiegeRouteImport.update({
   id: '/castle-siege',
   path: '/castle-siege',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContaRoute = ContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadsRoute = DownloadsRouteImport.update({
@@ -97,6 +128,101 @@ const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAuditoriaRoute = AdminAuditoriaRouteImport.update({
+  id: '/auditoria',
+  path: '/auditoria',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminChamadosRoute = AdminChamadosRouteImport.update({
+  id: '/chamados',
+  path: '/chamados',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContasRoute = AdminContasRouteImport.update({
+  id: '/contas',
+  path: '/contas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminConteudoRoute = AdminConteudoRouteImport.update({
+  id: '/conteudo',
+  path: '/conteudo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDiagnosticoRoute = AdminDiagnosticoRouteImport.update({
+  id: '/diagnostico',
+  path: '/diagnostico',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDownloadsRoute = AdminDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMoedasRoute = AdminMoedasRouteImport.update({
+  id: '/moedas',
+  path: '/moedas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNoticiasRoute = AdminNoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOnlineRoute = AdminOnlineRouteImport.update({
+  id: '/online',
+  path: '/online',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPersonagensRoute = AdminPersonagensRouteImport.update({
+  id: '/personagens',
+  path: '/personagens',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVipRoute = AdminVipRouteImport.update({
+  id: '/vip',
+  path: '/vip',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ContaIndexRoute = ContaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaChamadosRoute = ContaChamadosRouteImport.update({
+  id: '/chamados',
+  path: '/chamados',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaDownloadsRoute = ContaDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaEvolucaoRoute = ContaEvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaPersonagensRoute = ContaPersonagensRouteImport.update({
+  id: '/personagens',
+  path: '/personagens',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaSegurancaRoute = ContaSegurancaRouteImport.update({
+  id: '/seguranca',
+  path: '/seguranca',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaVipMoedasRoute = ContaVipMoedasRouteImport.update({
+  id: '/vip-moedas',
+  path: '/vip-moedas',
+  getParentRoute: () => ContaRoute,
 } as any)
 const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   id: '/',
@@ -181,9 +307,11 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -192,6 +320,23 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
+  '/admin/chamados': typeof AdminChamadosRoute
+  '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
+  '/admin/online': typeof AdminOnlineRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -206,6 +351,8 @@ export interface FileRoutesByFullPath {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin/': typeof AdminIndexRoute
+  '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
@@ -220,6 +367,23 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
+  '/admin/chamados': typeof AdminChamadosRoute
+  '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
+  '/admin/online': typeof AdminOnlineRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -234,15 +398,19 @@ export interface FileRoutesByTo {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin': typeof AdminIndexRoute
+  '/conta': typeof ContaIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -251,6 +419,23 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
+  '/admin/chamados': typeof AdminChamadosRoute
+  '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/noticias': typeof AdminNoticiasRoute
+  '/admin/online': typeof AdminOnlineRoute
+  '/admin/personagens': typeof AdminPersonagensRoute
+  '/admin/vip': typeof AdminVipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
+  '/conta/evolucao': typeof ContaEvolucaoRoute
+  '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -265,6 +450,8 @@ export interface FileRoutesById {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin/': typeof AdminIndexRoute
+  '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
@@ -272,9 +459,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
@@ -283,6 +472,23 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
+    | '/admin/chamados'
+    | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/diagnostico'
+    | '/admin/downloads'
+    | '/admin/moedas'
+    | '/admin/noticias'
+    | '/admin/online'
+    | '/admin/personagens'
+    | '/admin/vip'
+    | '/conta/chamados'
+    | '/conta/downloads'
+    | '/conta/evolucao'
+    | '/conta/personagens'
+    | '/conta/seguranca'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -297,6 +503,8 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin/'
+    | '/conta/'
     | '/noticias/'
     | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
@@ -311,6 +519,23 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
+    | '/admin/chamados'
+    | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/diagnostico'
+    | '/admin/downloads'
+    | '/admin/moedas'
+    | '/admin/noticias'
+    | '/admin/online'
+    | '/admin/personagens'
+    | '/admin/vip'
+    | '/conta/chamados'
+    | '/conta/downloads'
+    | '/conta/evolucao'
+    | '/conta/personagens'
+    | '/conta/seguranca'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -325,14 +550,18 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin'
+    | '/conta'
     | '/noticias'
     | '/rankings'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
@@ -341,6 +570,23 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
+    | '/admin/chamados'
+    | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/diagnostico'
+    | '/admin/downloads'
+    | '/admin/moedas'
+    | '/admin/noticias'
+    | '/admin/online'
+    | '/admin/personagens'
+    | '/admin/vip'
+    | '/conta/chamados'
+    | '/conta/downloads'
+    | '/conta/evolucao'
+    | '/conta/personagens'
+    | '/conta/seguranca'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -355,15 +601,19 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin/'
+    | '/conta/'
     | '/noticias/'
     | '/rankings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   CastleSiegeRoute: typeof CastleSiegeRoute
+  ContaRoute: typeof ContaRouteWithChildren
   DownloadsRoute: typeof DownloadsRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
@@ -381,6 +631,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/area-do-jogador': {
@@ -402,6 +659,13 @@ declare module '@tanstack/react-router' {
       path: '/castle-siege'
       fullPath: '/castle-siege'
       preLoaderRoute: typeof CastleSiegeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conta': {
+      id: '/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof ContaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/downloads': {
@@ -459,6 +723,139 @@ declare module '@tanstack/react-router' {
       fullPath: '/vip'
       preLoaderRoute: typeof VipRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/auditoria': {
+      id: '/admin/auditoria'
+      path: '/auditoria'
+      fullPath: '/admin/auditoria'
+      preLoaderRoute: typeof AdminAuditoriaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/chamados': {
+      id: '/admin/chamados'
+      path: '/chamados'
+      fullPath: '/admin/chamados'
+      preLoaderRoute: typeof AdminChamadosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/contas': {
+      id: '/admin/contas'
+      path: '/contas'
+      fullPath: '/admin/contas'
+      preLoaderRoute: typeof AdminContasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/conteudo': {
+      id: '/admin/conteudo'
+      path: '/conteudo'
+      fullPath: '/admin/conteudo'
+      preLoaderRoute: typeof AdminConteudoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/diagnostico': {
+      id: '/admin/diagnostico'
+      path: '/diagnostico'
+      fullPath: '/admin/diagnostico'
+      preLoaderRoute: typeof AdminDiagnosticoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/downloads': {
+      id: '/admin/downloads'
+      path: '/downloads'
+      fullPath: '/admin/downloads'
+      preLoaderRoute: typeof AdminDownloadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/moedas': {
+      id: '/admin/moedas'
+      path: '/moedas'
+      fullPath: '/admin/moedas'
+      preLoaderRoute: typeof AdminMoedasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/noticias': {
+      id: '/admin/noticias'
+      path: '/noticias'
+      fullPath: '/admin/noticias'
+      preLoaderRoute: typeof AdminNoticiasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/online': {
+      id: '/admin/online'
+      path: '/online'
+      fullPath: '/admin/online'
+      preLoaderRoute: typeof AdminOnlineRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/personagens': {
+      id: '/admin/personagens'
+      path: '/personagens'
+      fullPath: '/admin/personagens'
+      preLoaderRoute: typeof AdminPersonagensRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/vip': {
+      id: '/admin/vip'
+      path: '/vip'
+      fullPath: '/admin/vip'
+      preLoaderRoute: typeof AdminVipRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/conta/': {
+      id: '/conta/'
+      path: '/'
+      fullPath: '/conta/'
+      preLoaderRoute: typeof ContaIndexRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/chamados': {
+      id: '/conta/chamados'
+      path: '/chamados'
+      fullPath: '/conta/chamados'
+      preLoaderRoute: typeof ContaChamadosRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/downloads': {
+      id: '/conta/downloads'
+      path: '/downloads'
+      fullPath: '/conta/downloads'
+      preLoaderRoute: typeof ContaDownloadsRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/evolucao': {
+      id: '/conta/evolucao'
+      path: '/evolucao'
+      fullPath: '/conta/evolucao'
+      preLoaderRoute: typeof ContaEvolucaoRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/personagens': {
+      id: '/conta/personagens'
+      path: '/personagens'
+      fullPath: '/conta/personagens'
+      preLoaderRoute: typeof ContaPersonagensRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/seguranca': {
+      id: '/conta/seguranca'
+      path: '/seguranca'
+      fullPath: '/conta/seguranca'
+      preLoaderRoute: typeof ContaSegurancaRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/vip-moedas': {
+      id: '/conta/vip-moedas'
+      path: '/vip-moedas'
+      fullPath: '/conta/vip-moedas'
+      preLoaderRoute: typeof ContaVipMoedasRouteImport
+      parentRoute: typeof ContaRoute
     }
     '/noticias/': {
       id: '/noticias/'
@@ -575,6 +972,60 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminAuditoriaRoute: typeof AdminAuditoriaRoute
+  AdminChamadosRoute: typeof AdminChamadosRoute
+  AdminContasRoute: typeof AdminContasRoute
+  AdminConteudoRoute: typeof AdminConteudoRoute
+  AdminDiagnosticoRoute: typeof AdminDiagnosticoRoute
+  AdminDownloadsRoute: typeof AdminDownloadsRoute
+  AdminMoedasRoute: typeof AdminMoedasRoute
+  AdminNoticiasRoute: typeof AdminNoticiasRoute
+  AdminOnlineRoute: typeof AdminOnlineRoute
+  AdminPersonagensRoute: typeof AdminPersonagensRoute
+  AdminVipRoute: typeof AdminVipRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuditoriaRoute: AdminAuditoriaRoute,
+  AdminChamadosRoute: AdminChamadosRoute,
+  AdminContasRoute: AdminContasRoute,
+  AdminConteudoRoute: AdminConteudoRoute,
+  AdminDiagnosticoRoute: AdminDiagnosticoRoute,
+  AdminDownloadsRoute: AdminDownloadsRoute,
+  AdminMoedasRoute: AdminMoedasRoute,
+  AdminNoticiasRoute: AdminNoticiasRoute,
+  AdminOnlineRoute: AdminOnlineRoute,
+  AdminPersonagensRoute: AdminPersonagensRoute,
+  AdminVipRoute: AdminVipRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface ContaRouteChildren {
+  ContaChamadosRoute: typeof ContaChamadosRoute
+  ContaDownloadsRoute: typeof ContaDownloadsRoute
+  ContaEvolucaoRoute: typeof ContaEvolucaoRoute
+  ContaPersonagensRoute: typeof ContaPersonagensRoute
+  ContaSegurancaRoute: typeof ContaSegurancaRoute
+  ContaVipMoedasRoute: typeof ContaVipMoedasRoute
+  ContaIndexRoute: typeof ContaIndexRoute
+}
+
+const ContaRouteChildren: ContaRouteChildren = {
+  ContaChamadosRoute: ContaChamadosRoute,
+  ContaDownloadsRoute: ContaDownloadsRoute,
+  ContaEvolucaoRoute: ContaEvolucaoRoute,
+  ContaPersonagensRoute: ContaPersonagensRoute,
+  ContaSegurancaRoute: ContaSegurancaRoute,
+  ContaVipMoedasRoute: ContaVipMoedasRoute,
+  ContaIndexRoute: ContaIndexRoute,
+}
+
+const ContaRouteWithChildren = ContaRoute._addFileChildren(ContaRouteChildren)
+
 interface NoticiasRouteChildren {
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
@@ -629,9 +1080,11 @@ const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   CastleSiegeRoute: CastleSiegeRoute,
+  ContaRoute: ContaRouteWithChildren,
   DownloadsRoute: DownloadsRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,

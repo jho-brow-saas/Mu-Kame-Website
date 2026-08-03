@@ -18,6 +18,7 @@ const columns = [
     links: [
       { to: "/cadastro", label: "Criar conta" },
       { to: "/login", label: "Entrar" },
+      { to: "/conta", label: "Central do Aventureiro" },
       { to: "/area-do-jogador", label: "Área do jogador" },
       { to: "/vip", label: "Planos VIP" },
     ],
