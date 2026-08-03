@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
@@ -48,6 +49,11 @@ const CadastroRoute = CadastroRouteImport.update({
 const DownloadsRoute = DownloadsRouteImport.update({
   id: '/downloads',
   path: '/downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventosRoute = EventosRouteImport.update({
+  id: '/eventos',
+  path: '/eventos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/area-do-jogador'
     | '/cadastro'
     | '/downloads'
+    | '/eventos'
     | '/login'
     | '/rankings'
     | '/rankings/blood-castle'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/area-do-jogador'
     | '/cadastro'
     | '/downloads'
+    | '/eventos'
     | '/login'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/area-do-jogador'
     | '/cadastro'
     | '/downloads'
+    | '/eventos'
     | '/login'
     | '/rankings'
     | '/rankings/blood-castle'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   DownloadsRoute: typeof DownloadsRoute
+  EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
   RankingsRoute: typeof RankingsRouteWithChildren
 }
@@ -302,6 +315,13 @@ declare module '@tanstack/react-router' {
       path: '/downloads'
       fullPath: '/downloads'
       preLoaderRoute: typeof DownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eventos': {
+      id: '/eventos'
+      path: '/eventos'
+      fullPath: '/eventos'
+      preLoaderRoute: typeof EventosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -462,6 +482,7 @@ const rootRouteChildren: RootRouteChildren = {
   AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   DownloadsRoute: DownloadsRoute,
+  EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
   RankingsRoute: RankingsRouteWithChildren,
 }
