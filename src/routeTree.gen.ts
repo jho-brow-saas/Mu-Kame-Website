@@ -24,9 +24,11 @@ import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ContaIndexRouteImport } from './routes/conta.index'
+import { Route as ContaChamadosRouteImport } from './routes/conta.chamados'
 import { Route as ContaDownloadsRouteImport } from './routes/conta.downloads'
 import { Route as ContaEvolucaoRouteImport } from './routes/conta.evolucao'
 import { Route as ContaPersonagensRouteImport } from './routes/conta.personagens'
+import { Route as ContaSegurancaRouteImport } from './routes/conta.seguranca'
 import { Route as ContaVipMoedasRouteImport } from './routes/conta.vip-moedas'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
@@ -120,6 +122,11 @@ const ContaIndexRoute = ContaIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ContaRoute,
 } as any)
+const ContaChamadosRoute = ContaChamadosRouteImport.update({
+  id: '/chamados',
+  path: '/chamados',
+  getParentRoute: () => ContaRoute,
+} as any)
 const ContaDownloadsRoute = ContaDownloadsRouteImport.update({
   id: '/downloads',
   path: '/downloads',
@@ -133,6 +140,11 @@ const ContaEvolucaoRoute = ContaEvolucaoRouteImport.update({
 const ContaPersonagensRoute = ContaPersonagensRouteImport.update({
   id: '/personagens',
   path: '/personagens',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaSegurancaRoute = ContaSegurancaRouteImport.update({
+  id: '/seguranca',
+  path: '/seguranca',
   getParentRoute: () => ContaRoute,
 } as any)
 const ContaVipMoedasRoute = ContaVipMoedasRouteImport.update({
@@ -236,9 +248,11 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
   '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -270,9 +284,11 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
   '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -308,9 +324,11 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/seguranca': typeof ContaSegurancaRoute
   '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -347,9 +365,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/seguranca'
     | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -381,9 +401,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/seguranca'
     | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -418,9 +440,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/seguranca'
     | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -565,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContaIndexRouteImport
       parentRoute: typeof ContaRoute
     }
+    '/conta/chamados': {
+      id: '/conta/chamados'
+      path: '/chamados'
+      fullPath: '/conta/chamados'
+      preLoaderRoute: typeof ContaChamadosRouteImport
+      parentRoute: typeof ContaRoute
+    }
     '/conta/downloads': {
       id: '/conta/downloads'
       path: '/downloads'
@@ -584,6 +615,13 @@ declare module '@tanstack/react-router' {
       path: '/personagens'
       fullPath: '/conta/personagens'
       preLoaderRoute: typeof ContaPersonagensRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/seguranca': {
+      id: '/conta/seguranca'
+      path: '/seguranca'
+      fullPath: '/conta/seguranca'
+      preLoaderRoute: typeof ContaSegurancaRouteImport
       parentRoute: typeof ContaRoute
     }
     '/conta/vip-moedas': {
@@ -709,17 +747,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface ContaRouteChildren {
+  ContaChamadosRoute: typeof ContaChamadosRoute
   ContaDownloadsRoute: typeof ContaDownloadsRoute
   ContaEvolucaoRoute: typeof ContaEvolucaoRoute
   ContaPersonagensRoute: typeof ContaPersonagensRoute
+  ContaSegurancaRoute: typeof ContaSegurancaRoute
   ContaVipMoedasRoute: typeof ContaVipMoedasRoute
   ContaIndexRoute: typeof ContaIndexRoute
 }
 
 const ContaRouteChildren: ContaRouteChildren = {
+  ContaChamadosRoute: ContaChamadosRoute,
   ContaDownloadsRoute: ContaDownloadsRoute,
   ContaEvolucaoRoute: ContaEvolucaoRoute,
   ContaPersonagensRoute: ContaPersonagensRoute,
+  ContaSegurancaRoute: ContaSegurancaRoute,
   ContaVipMoedasRoute: ContaVipMoedasRoute,
   ContaIndexRoute: ContaIndexRoute,
 }
