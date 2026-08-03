@@ -20,7 +20,7 @@ function Index() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center">
       <h1 className="mb-6 text-4xl font-bold tracking-tight lg:text-5xl">
-        /clear
+        execute o /clear para limpar o historico
       </h1>
     </div>
   );
