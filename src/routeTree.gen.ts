@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
 import { Route as RankingsBloodCastleRouteImport } from './routes/rankings.blood-castle'
+import { Route as RankingsDevilSquareRouteImport } from './routes/rankings.devil-square'
 import { Route as RankingsGuildsRouteImport } from './routes/rankings.guilds'
 import { Route as RankingsKillsRouteImport } from './routes/rankings.kills'
 import { Route as RankingsLevelRouteImport } from './routes/rankings.level'
@@ -41,6 +42,11 @@ const RankingsIndexRoute = RankingsIndexRouteImport.update({
 const RankingsBloodCastleRoute = RankingsBloodCastleRouteImport.update({
   id: '/blood-castle',
   path: '/blood-castle',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsDevilSquareRoute = RankingsDevilSquareRouteImport.update({
+  id: '/devil-square',
+  path: '/devil-square',
   getParentRoute: () => RankingsRoute,
 } as any)
 const RankingsGuildsRoute = RankingsGuildsRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
   '/rankings/guilds': typeof RankingsGuildsRoute
   '/rankings/kills': typeof RankingsKillsRoute
   '/rankings/level': typeof RankingsLevelRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/rankings'
     | '/rankings/blood-castle'
+    | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/rankings/blood-castle'
+    | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/'
     | '/rankings'
     | '/rankings/blood-castle'
+    | '/rankings/devil-square'
     | '/rankings/guilds'
     | '/rankings/kills'
     | '/rankings/level'
@@ -214,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/blood-castle'
       fullPath: '/rankings/blood-castle'
       preLoaderRoute: typeof RankingsBloodCastleRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/devil-square': {
+      id: '/rankings/devil-square'
+      path: '/devil-square'
+      fullPath: '/rankings/devil-square'
+      preLoaderRoute: typeof RankingsDevilSquareRouteImport
       parentRoute: typeof RankingsRoute
     }
     '/rankings/guilds': {
@@ -284,6 +303,7 @@ declare module '@tanstack/react-router' {
 
 interface RankingsRouteChildren {
   RankingsBloodCastleRoute: typeof RankingsBloodCastleRoute
+  RankingsDevilSquareRoute: typeof RankingsDevilSquareRoute
   RankingsGuildsRoute: typeof RankingsGuildsRoute
   RankingsKillsRoute: typeof RankingsKillsRoute
   RankingsLevelRoute: typeof RankingsLevelRoute
@@ -298,6 +318,7 @@ interface RankingsRouteChildren {
 
 const RankingsRouteChildren: RankingsRouteChildren = {
   RankingsBloodCastleRoute: RankingsBloodCastleRoute,
+  RankingsDevilSquareRoute: RankingsDevilSquareRoute,
   RankingsGuildsRoute: RankingsGuildsRoute,
   RankingsKillsRoute: RankingsKillsRoute,
   RankingsLevelRoute: RankingsLevelRoute,
