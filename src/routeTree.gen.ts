@@ -26,6 +26,8 @@ import { Route as VipRouteImport } from './routes/vip'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminChamadosRouteImport } from './routes/admin.chamados'
 import { Route as AdminContasRouteImport } from './routes/admin.contas'
+import { Route as AdminConteudoRouteImport } from './routes/admin.conteudo'
+import { Route as AdminDownloadsRouteImport } from './routes/admin.downloads'
 import { Route as AdminMoedasRouteImport } from './routes/admin.moedas'
 import { Route as AdminNoticiasRouteImport } from './routes/admin.noticias'
 import { Route as AdminOnlineRouteImport } from './routes/admin.online'
@@ -138,6 +140,16 @@ const AdminChamadosRoute = AdminChamadosRouteImport.update({
 const AdminContasRoute = AdminContasRouteImport.update({
   id: '/contas',
   path: '/contas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminConteudoRoute = AdminConteudoRouteImport.update({
+  id: '/conteudo',
+  path: '/conteudo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDownloadsRoute = AdminDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminMoedasRoute = AdminMoedasRouteImport.update({
@@ -298,6 +310,8 @@ export interface FileRoutesByFullPath {
   '/vip': typeof VipRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
@@ -341,6 +355,8 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
@@ -389,6 +405,8 @@ export interface FileRoutesById {
   '/vip': typeof VipRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
   '/admin/online': typeof AdminOnlineRoute
@@ -438,6 +456,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/admin/chamados'
     | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
     | '/admin/online'
@@ -481,6 +501,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/admin/chamados'
     | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
     | '/admin/online'
@@ -528,6 +550,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/admin/chamados'
     | '/admin/contas'
+    | '/admin/conteudo'
+    | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
     | '/admin/online'
@@ -695,6 +719,20 @@ declare module '@tanstack/react-router' {
       path: '/contas'
       fullPath: '/admin/contas'
       preLoaderRoute: typeof AdminContasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/conteudo': {
+      id: '/admin/conteudo'
+      path: '/conteudo'
+      fullPath: '/admin/conteudo'
+      preLoaderRoute: typeof AdminConteudoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/downloads': {
+      id: '/admin/downloads'
+      path: '/downloads'
+      fullPath: '/admin/downloads'
+      preLoaderRoute: typeof AdminDownloadsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/moedas': {
@@ -899,6 +937,8 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminChamadosRoute: typeof AdminChamadosRoute
   AdminContasRoute: typeof AdminContasRoute
+  AdminConteudoRoute: typeof AdminConteudoRoute
+  AdminDownloadsRoute: typeof AdminDownloadsRoute
   AdminMoedasRoute: typeof AdminMoedasRoute
   AdminNoticiasRoute: typeof AdminNoticiasRoute
   AdminOnlineRoute: typeof AdminOnlineRoute
@@ -910,6 +950,8 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminChamadosRoute: AdminChamadosRoute,
   AdminContasRoute: AdminContasRoute,
+  AdminConteudoRoute: AdminConteudoRoute,
+  AdminDownloadsRoute: AdminDownloadsRoute,
   AdminMoedasRoute: AdminMoedasRoute,
   AdminNoticiasRoute: AdminNoticiasRoute,
   AdminOnlineRoute: AdminOnlineRoute,
