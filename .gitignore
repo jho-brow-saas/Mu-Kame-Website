@@ -1,0 +1,15 @@
+﻿config.local.php
+.env
+.env.*
+
+uploads/
+dados/
+logs/
+backups/
+
+*.bak
+*.sql
+*.log
+
+appserv/
+cgi-bin/

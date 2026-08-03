@@ -1,0 +1,4 @@
+<?php require_once('config.php'); $pageTitle=t('vipcoins'); include('includes/header.php'); ?>
+<div class="page-head"><span class="eyebrow"><?php echo h(t('upgrade')); ?></span><h1><?php echo h(t('vip_plans')); ?></h1><p><?php echo h(t('vip_desc')); ?></p></div>
+<div class="pricing-grid"><div class="panel price"><span>FREE</span><h2>R$ 0</h2><p><?php echo h(t('basic_access')); ?></p></div><div class="panel price featured"><span>SILVER</span><h2>R$ 19,90</h2><p><?php echo h(t('more_advantages')); ?></p><a class="primary-btn" href="suporte.php"><?php echo h(t('buy')); ?></a></div><div class="panel price"><span>GOLD</span><h2>R$ 39,90</h2><p><?php echo h(t('premium_experience')); ?></p><a class="primary-btn" href="suporte.php"><?php echo h(t('buy')); ?></a></div></div>
+<?php include('includes/footer.php'); ?>
