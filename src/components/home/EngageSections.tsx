@@ -64,9 +64,13 @@ export function NewsSection() {
               <TagBadge tone="muted">{item.category}</TagBadge>
               <h3 className="card-title uppercase text-bone">{item.subject}</h3>
               <p className="line-clamp-3 text-sm leading-relaxed text-parchment/80">{item.content}</p>
-              <BracketLink to="/noticias/$slug" params={{ slug: item.slug }} className="mt-auto">
-                Ler comunicado
-              </BracketLink>
+              <Link
+                to="/noticias/$slug"
+                params={{ slug: item.slug }}
+                className={cn(bracketClasses, "mt-auto")}
+              >
+                <BracketMarks>Ler comunicado</BracketMarks>
+              </Link>
             </li>
           ))}
         </ul>
