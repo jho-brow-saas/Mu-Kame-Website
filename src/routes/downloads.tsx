@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { ActionAnchor } from "@/components/ui-kit/Buttons";
 import { SectionHeading } from "@/components/ui-kit/SectionHeading";
-import { serverConfig } from "@/config/server";
+import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States";
+import { useDownloads } from "@/hooks/use-downloads";
+import { isSafeExternalUrl } from "@/lib/mukame-format";
 import { Download, Monitor, Smartphone } from "lucide-react";
 
 const title = "Downloads — MU Kame";
@@ -23,6 +25,9 @@ export const Route = createFileRoute("/downloads")({
 });
 
 function DownloadsPage() {
+  const { data, isPending, isError, refetch } = useDownloads();
+  const items = data?.items ?? [];
+
   return (
     <SiteLayout>
       <PageHero
@@ -31,32 +36,54 @@ function DownloadsPage() {
         description="Cliente completo para Windows, patch de atualização e uma versão Android em desenvolvimento."
       />
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <ul className="grid gap-5 md:grid-cols-3">
-          <li className="surface-card flex flex-col gap-4 p-6">
-            <Monitor className="size-5 text-gold" aria-hidden="true" />
-            <h2 className="card-title text-ivory">Cliente completo (Windows)</h2>
-            <p className="text-sm text-mist">Instalação completa do MU Kame para PC, pronta para o lançamento.</p>
-            <ActionAnchor href={serverConfig.pcDownloadUrl} className="mt-auto">
-              <Download className="size-4" aria-hidden="true" />
-              Baixar cliente PC
-            </ActionAnchor>
-          </li>
-          <li className="surface-card flex flex-col gap-4 p-6">
-            <Download className="size-5 text-gold" aria-hidden="true" />
-            <h2 className="card-title text-ivory">Patch de atualização</h2>
-            <p className="text-sm text-mist">Atualize um cliente já instalado com os arquivos mais recentes.</p>
-            <ActionAnchor href={serverConfig.patchDownloadUrl} variant="secondary" className="mt-auto">
-              <Download className="size-4" aria-hidden="true" />
-              Baixar patch
-            </ActionAnchor>
-          </li>
-          <li className="surface-card flex flex-col gap-4 p-6">
-            <Smartphone className="size-5 text-mist" aria-hidden="true" />
-            <h2 className="card-title text-ivory">Android</h2>
-            <p className="text-sm text-mist">Versão Android em desenvolvimento. Nenhuma data foi divulgada.</p>
-            <span className="mt-auto text-xs text-graylight">Indisponível no momento.</span>
-          </li>
-        </ul>
+        {isPending ? <LoadingState label="Carregando arquivos oficiais…" /> : null}
+        {isError ? (
+          <ErrorState
+            description="Não foi possível carregar os downloads agora."
+            onRetry={() => void refetch()}
+          />
+        ) : null}
+        {!isPending && !isError && items.length === 0 ? (
+          <EmptyState
+            title="Nenhum arquivo publicado"
+            description="Os arquivos oficiais aparecerão aqui assim que forem liberados."
+          />
+        ) : null}
+
+        {items.length > 0 ? (
+          <ul className="grid gap-5 md:grid-cols-3">
+            {items.map((item) => {
+              const downloadable = item.available && isSafeExternalUrl(item.url);
+              const Icon = item.platform.toLowerCase().includes("android") ? Smartphone : Monitor;
+              return (
+                <li key={item.id} className="surface-card flex flex-col gap-4 p-6">
+                  <Icon
+                    className={downloadable ? "size-5 text-gold" : "size-5 text-mist"}
+                    aria-hidden="true"
+                  />
+                  <h2 className="card-title text-ivory">{item.name}</h2>
+                  <p className="text-sm text-mist">
+                    {item.message ?? `${item.platform} · ${item.type === "patch" ? "Patch de atualização" : "Cliente do jogo"}`}
+                  </p>
+                  {downloadable ? (
+                    <ActionAnchor
+                      href={item.url as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant={item.type === "client" ? "primary" : "secondary"}
+                      className="mt-auto"
+                    >
+                      <Download className="size-4" aria-hidden="true" />
+                      Baixar
+                    </ActionAnchor>
+                  ) : (
+                    <span className="mt-auto text-xs text-graylight">Em breve</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
       </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6">

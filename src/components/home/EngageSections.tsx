@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { SectionHeading, MaterialSection } from "@/components/ui-kit/SectionHeading";
@@ -6,7 +5,10 @@ import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States
 import { TagBadge, PlateHeader } from "@/components/ui-kit/Cards";
 import { ActionAnchor, ActionLink, bracketClasses, BracketMarks } from "@/components/ui-kit/Buttons";
 import { VipPlansGrid } from "@/components/vip/VipPlansGrid";
-import { api, type NewsItem } from "@/services/api";
+import { useNews } from "@/hooks/use-news";
+import { useDownloads } from "@/hooks/use-downloads";
+import { useServerStatus } from "@/hooks/use-server-status";
+import { excerpt, formatBrDate, formatWhatsappLabel, isSafeExternalUrl, whatsappUrl } from "@/lib/mukame-format";
 import { serverConfig, whatsappLink, faqItems } from "@/config/server";
 import { Download, Instagram, MessageCircle, Music2, Smartphone } from "lucide-react";
 
@@ -30,51 +32,46 @@ export function VipSection() {
 }
 
 export function NewsSection() {
-  const [state, setState] = useState<"loading" | "error" | "ready">("loading");
-  const [news, setNews] = useState<NewsItem[]>([]);
-
-  useEffect(() => {
-    let active = true;
-    api
-      .getNews()
-      .then((items) => {
-        if (!active) return;
-        setNews(items);
-        setState("ready");
-      })
-      .catch(() => active && setState("error"));
-    return () => {
-      active = false;
-    };
-  }, []);
+  const { data, isPending, isError, refetch } = useNews(6);
+  const items = data?.items ?? [];
 
   return (
     <MaterialSection material="parchment">
       <SectionHeading eyebrow="Notícias" title="Comunicados oficiais" className="mb-8" />
-      {state === "loading" ? <LoadingState label="Carregando comunicados…" /> : null}
-      {state === "error" ? <ErrorState description="Não foi possível carregar os comunicados agora." /> : null}
-      {state === "ready" && news.length === 0 ? (
+      {isPending ? <LoadingState label="Carregando comunicados…" /> : null}
+      {isError ? (
+        <ErrorState
+          description="Não foi possível carregar os comunicados agora."
+          onRetry={() => void refetch()}
+        />
+      ) : null}
+      {!isPending && !isError && items.length === 0 ? (
         <EmptyState
           title="Nada publicado ainda"
           description="Os primeiros comunicados do MU Kame serão publicados em breve."
         />
       ) : null}
-      {state === "ready" && news.length > 0 ? (
+      {items.length > 0 ? (
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {news.map((item) => (
-            <li key={item.slug} className="plate plate-cut-soft flex flex-col gap-3 p-5 hover:border-gold/50">
-              <TagBadge tone="muted">{item.category}</TagBadge>
-              <h3 className="card-title uppercase text-bone">{item.subject}</h3>
-              <p className="line-clamp-3 text-sm leading-relaxed text-parchment/80">{item.content}</p>
-              <Link
-                to="/noticias/$slug"
-                params={{ slug: item.slug }}
-                className={cn(bracketClasses, "mt-auto")}
-              >
-                <BracketMarks>Ler comunicado</BracketMarks>
-              </Link>
-            </li>
-          ))}
+          {items.map((item) => {
+            const published = formatBrDate(item.publishedAt);
+            return (
+              <li key={item.id} className="plate plate-cut-soft flex flex-col gap-3 p-5 hover:border-gold/50">
+                {published ? <TagBadge tone="muted">{published}</TagBadge> : null}
+                <h3 className="card-title uppercase text-bone">{item.title}</h3>
+                <p className="line-clamp-3 text-sm leading-relaxed text-parchment/80">
+                  {excerpt(item.content)}
+                </p>
+                <Link
+                  to="/noticias/$slug"
+                  params={{ slug: String(item.id) }}
+                  className={cn(bracketClasses, "mt-auto")}
+                >
+                  <BracketMarks>Ler comunicado</BracketMarks>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       ) : null}
     </MaterialSection>
@@ -82,6 +79,9 @@ export function NewsSection() {
 }
 
 export function DownloadsSection() {
+  const { data, isPending, isError, refetch } = useDownloads();
+  const items = data?.items ?? [];
+
   return (
     <MaterialSection material="launcher">
       <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
@@ -93,18 +93,41 @@ export function DownloadsSection() {
         <div className="plate plate-cut-slot overflow-hidden">
           <PlateHeader right="win32">Instalação</PlateHeader>
           <div className="flex flex-col gap-3 p-5">
-            <ActionAnchor href={serverConfig.pcDownloadUrl}>
-              <Download className="size-4" aria-hidden="true" />
-              Baixar cliente PC
-            </ActionAnchor>
-            <ActionAnchor href={serverConfig.patchDownloadUrl} variant="secondary">
-              <Download className="size-4" aria-hidden="true" />
-              Baixar patch
-            </ActionAnchor>
-            <p className="flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
-              <Smartphone className="size-4 shrink-0 text-bronze" aria-hidden="true" />
-              versão android em desenvolvimento
-            </p>
+            {isPending ? <LoadingState label="Carregando arquivos…" /> : null}
+            {isError ? (
+              <ErrorState
+                description="Não foi possível carregar os downloads agora."
+                onRetry={() => void refetch()}
+              />
+            ) : null}
+            {!isPending && !isError && items.length === 0 ? (
+              <EmptyState
+                title="Nenhum arquivo publicado"
+                description="Os arquivos oficiais aparecerão aqui assim que forem liberados."
+              />
+            ) : null}
+            {items.map((item) =>
+              item.available && isSafeExternalUrl(item.url) ? (
+                <ActionAnchor
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant={item.type === "client" ? "primary" : "secondary"}
+                >
+                  <Download className="size-4" aria-hidden="true" />
+                  Baixar {item.name}
+                </ActionAnchor>
+              ) : (
+                <p
+                  key={item.id}
+                  className="flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash"
+                >
+                  <Smartphone className="size-4 shrink-0 text-bronze" aria-hidden="true" />
+                  {item.name}: em breve
+                </p>
+              ),
+            )}
           </div>
         </div>
       </div>
@@ -113,6 +136,15 @@ export function DownloadsSection() {
 }
 
 export function CommunitySection() {
+  const { data } = useServerStatus();
+  const server = data?.server;
+  const apiWhatsapp = whatsappUrl(server?.supportWhatsApp, serverConfig.supportMessage);
+  const handle = server?.socialHandle ?? serverConfig.socialHandle;
+  const whatsappHref = apiWhatsapp ?? whatsappLink;
+  const whatsappLabel = server?.supportWhatsApp
+    ? formatWhatsappLabel(server.supportWhatsApp)
+    : serverConfig.supportWhatsAppLabel;
+
   return (
     <MaterialSection material="stone">
       <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
@@ -124,30 +156,30 @@ export function CommunitySection() {
         <div className="plate plate-cut-slot overflow-hidden">
           <PlateHeader right="24h">Canais oficiais</PlateHeader>
           <div className="flex flex-col gap-3 p-5">
-            <ActionAnchor href={whatsappLink} target="_blank" rel="noreferrer">
+            <ActionAnchor href={whatsappHref} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="size-4" aria-hidden="true" />
-              {serverConfig.supportWhatsAppLabel}
+              {whatsappLabel}
             </ActionAnchor>
             <div className="flex flex-col gap-3 sm:flex-row">
               <ActionAnchor
                 href={serverConfig.instagramUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 variant="ghost"
                 className="flex-1"
               >
                 <Instagram className="size-4" aria-hidden="true" />
-                Instagram {serverConfig.socialHandle}
+                Instagram {handle}
               </ActionAnchor>
               <ActionAnchor
                 href={serverConfig.tiktokUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 variant="ghost"
                 className="flex-1"
               >
                 <Music2 className="size-4" aria-hidden="true" />
-                TikTok {serverConfig.socialHandle}
+                TikTok {handle}
               </ActionAnchor>
             </div>
           </div>

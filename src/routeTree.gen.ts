@@ -58,6 +58,7 @@ import { Route as RankingsMensalRouteImport } from './routes/rankings.mensal'
 import { Route as RankingsPkRouteImport } from './routes/rankings.pk'
 import { Route as RankingsResetRouteImport } from './routes/rankings.reset'
 import { Route as RankingsSemanalRouteImport } from './routes/rankings.semanal'
+import { Route as ApiPublicMukameRouteImport } from './routes/api/public/mukame'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -304,6 +305,11 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
   path: '/semanal',
   getParentRoute: () => RankingsRoute,
 } as any)
+const ApiPublicMukameRoute = ApiPublicMukameRouteImport.update({
+  id: '/api/public/mukame',
+  path: '/api/public/mukame',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -355,6 +361,7 @@ export interface FileRoutesByFullPath {
   '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
+  '/api/public/mukame': typeof ApiPublicMukameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -402,6 +409,7 @@ export interface FileRoutesByTo {
   '/conta': typeof ContaIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
+  '/api/public/mukame': typeof ApiPublicMukameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -454,6 +462,7 @@ export interface FileRoutesById {
   '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
+  '/api/public/mukame': typeof ApiPublicMukameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -507,6 +516,7 @@ export interface FileRouteTypes {
     | '/conta/'
     | '/noticias/'
     | '/rankings/'
+    | '/api/public/mukame'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -554,6 +564,7 @@ export interface FileRouteTypes {
     | '/conta'
     | '/noticias'
     | '/rankings'
+    | '/api/public/mukame'
   id:
     | '__root__'
     | '/'
@@ -605,6 +616,7 @@ export interface FileRouteTypes {
     | '/conta/'
     | '/noticias/'
     | '/rankings/'
+    | '/api/public/mukame'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -622,6 +634,7 @@ export interface RootRouteChildren {
   RegrasRoute: typeof RegrasRoute
   SuporteRoute: typeof SuporteRoute
   VipRoute: typeof VipRoute
+  ApiPublicMukameRoute: typeof ApiPublicMukameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -969,6 +982,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingsSemanalRouteImport
       parentRoute: typeof RankingsRoute
     }
+    '/api/public/mukame': {
+      id: '/api/public/mukame'
+      path: '/api/public/mukame'
+      fullPath: '/api/public/mukame'
+      preLoaderRoute: typeof ApiPublicMukameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1093,6 +1113,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegrasRoute: RegrasRoute,
   SuporteRoute: SuporteRoute,
   VipRoute: VipRoute,
+  ApiPublicMukameRoute: ApiPublicMukameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
