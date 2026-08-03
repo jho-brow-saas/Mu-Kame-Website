@@ -25,6 +25,8 @@ import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminContasRouteImport } from './routes/admin.contas'
+import { Route as AdminMoedasRouteImport } from './routes/admin.moedas'
+import { Route as AdminOnlineRouteImport } from './routes/admin.online'
 import { Route as AdminPersonagensRouteImport } from './routes/admin.personagens'
 import { Route as AdminVipRouteImport } from './routes/admin.vip'
 import { Route as ContaIndexRouteImport } from './routes/conta.index'
@@ -129,6 +131,16 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminContasRoute = AdminContasRouteImport.update({
   id: '/contas',
   path: '/contas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMoedasRoute = AdminMoedasRouteImport.update({
+  id: '/moedas',
+  path: '/moedas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOnlineRoute = AdminOnlineRouteImport.update({
+  id: '/online',
+  path: '/online',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminPersonagensRoute = AdminPersonagensRouteImport.update({
@@ -273,6 +285,8 @@ export interface FileRoutesByFullPath {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
@@ -312,6 +326,8 @@ export interface FileRoutesByTo {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
@@ -356,6 +372,8 @@ export interface FileRoutesById {
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/admin/contas': typeof AdminContasRoute
+  '/admin/moedas': typeof AdminMoedasRoute
+  '/admin/online': typeof AdminOnlineRoute
   '/admin/personagens': typeof AdminPersonagensRoute
   '/admin/vip': typeof AdminVipRoute
   '/conta/chamados': typeof ContaChamadosRoute
@@ -401,6 +419,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/moedas'
+    | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
     | '/conta/chamados'
@@ -440,6 +460,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/moedas'
+    | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
     | '/conta/chamados'
@@ -483,6 +505,8 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/vip'
     | '/admin/contas'
+    | '/admin/moedas'
+    | '/admin/online'
     | '/admin/personagens'
     | '/admin/vip'
     | '/conta/chamados'
@@ -640,6 +664,20 @@ declare module '@tanstack/react-router' {
       path: '/contas'
       fullPath: '/admin/contas'
       preLoaderRoute: typeof AdminContasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/moedas': {
+      id: '/admin/moedas'
+      path: '/moedas'
+      fullPath: '/admin/moedas'
+      preLoaderRoute: typeof AdminMoedasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/online': {
+      id: '/admin/online'
+      path: '/online'
+      fullPath: '/admin/online'
+      preLoaderRoute: typeof AdminOnlineRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/personagens': {
@@ -822,6 +860,8 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminContasRoute: typeof AdminContasRoute
+  AdminMoedasRoute: typeof AdminMoedasRoute
+  AdminOnlineRoute: typeof AdminOnlineRoute
   AdminPersonagensRoute: typeof AdminPersonagensRoute
   AdminVipRoute: typeof AdminVipRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -829,6 +869,8 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminContasRoute: AdminContasRoute,
+  AdminMoedasRoute: AdminMoedasRoute,
+  AdminOnlineRoute: AdminOnlineRoute,
   AdminPersonagensRoute: AdminPersonagensRoute,
   AdminVipRoute: AdminVipRoute,
   AdminIndexRoute: AdminIndexRoute,
