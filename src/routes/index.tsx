@@ -52,10 +52,12 @@ function HomePage() {
       <AboutSection />
       <QuickInfoSection />
       <RatesSection />
+      <RealmMapStrip />
       <DifferentialsSection />
       <RankingPreviewSection />
       <EventsSection />
       <CastleSiegePreview />
+      <GuildCallSection />
       <VipSection />
       <NewsSection />
       <DownloadsSection />
