@@ -23,16 +23,17 @@ export function Hero() {
         fetchPriority="high"
         decoding="async"
         sizes="100vw"
-        className="absolute inset-0 size-full scale-105 object-cover object-[72%_center] opacity-45 contrast-125 saturate-50 sm:object-[60%_center] lg:scale-100 lg:object-center lg:opacity-60"
+        className="absolute inset-0 size-full scale-105 object-cover object-[72%_center] opacity-70 contrast-110 saturate-75 brightness-125 sm:object-[62%_center] lg:scale-100 lg:object-center lg:opacity-100"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-b from-obsidian/85 via-obsidian/80 to-obsidian"
+        className="absolute inset-0 bg-linear-to-b from-obsidian/60 via-obsidian/45 to-obsidian"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-r from-obsidian via-obsidian/70 to-transparent lg:via-obsidian/45"
+        className="absolute inset-0 bg-linear-to-r from-obsidian via-obsidian/75 to-transparent lg:from-obsidian/95 lg:via-obsidian/40"
       />
+
       <span aria-hidden="true" className="topo-lines pointer-events-none absolute inset-0 opacity-40" />
       <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
 
