@@ -4,8 +4,7 @@ import { EmptyState } from "@/components/ui-kit/States";
 import { CriticalActionButton } from "@/components/private/CriticalActionButton";
 import { PermissionGate } from "@/components/private/PermissionGate";
 import { featureFlags } from "@/config/access";
-import { fail } from "@/services/api";
-import { disabledError } from "@/services/api";
+import { disabledError, fail } from "@/services/api";
 
 export const Route = createFileRoute("/admin/noticias")({
   component: AdminNewsPage,

@@ -24,9 +24,11 @@ import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAuditoriaRouteImport } from './routes/admin.auditoria'
 import { Route as AdminChamadosRouteImport } from './routes/admin.chamados'
 import { Route as AdminContasRouteImport } from './routes/admin.contas'
 import { Route as AdminConteudoRouteImport } from './routes/admin.conteudo'
+import { Route as AdminDiagnosticoRouteImport } from './routes/admin.diagnostico'
 import { Route as AdminDownloadsRouteImport } from './routes/admin.downloads'
 import { Route as AdminMoedasRouteImport } from './routes/admin.moedas'
 import { Route as AdminNoticiasRouteImport } from './routes/admin.noticias'
@@ -132,6 +134,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAuditoriaRoute = AdminAuditoriaRouteImport.update({
+  id: '/auditoria',
+  path: '/auditoria',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminChamadosRoute = AdminChamadosRouteImport.update({
   id: '/chamados',
   path: '/chamados',
@@ -145,6 +152,11 @@ const AdminContasRoute = AdminContasRouteImport.update({
 const AdminConteudoRoute = AdminConteudoRouteImport.update({
   id: '/conteudo',
   path: '/conteudo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDiagnosticoRoute = AdminDiagnosticoRouteImport.update({
+  id: '/diagnostico',
+  path: '/diagnostico',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDownloadsRoute = AdminDownloadsRouteImport.update({
@@ -308,9 +320,11 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
   '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
@@ -353,9 +367,11 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
   '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
@@ -403,9 +419,11 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/auditoria': typeof AdminAuditoriaRoute
   '/admin/chamados': typeof AdminChamadosRoute
   '/admin/contas': typeof AdminContasRoute
   '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/diagnostico': typeof AdminDiagnosticoRoute
   '/admin/downloads': typeof AdminDownloadsRoute
   '/admin/moedas': typeof AdminMoedasRoute
   '/admin/noticias': typeof AdminNoticiasRoute
@@ -454,9 +472,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
     | '/admin/chamados'
     | '/admin/contas'
     | '/admin/conteudo'
+    | '/admin/diagnostico'
     | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
@@ -499,9 +519,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
     | '/admin/chamados'
     | '/admin/contas'
     | '/admin/conteudo'
+    | '/admin/diagnostico'
     | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
@@ -548,9 +570,11 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/auditoria'
     | '/admin/chamados'
     | '/admin/contas'
     | '/admin/conteudo'
+    | '/admin/diagnostico'
     | '/admin/downloads'
     | '/admin/moedas'
     | '/admin/noticias'
@@ -707,6 +731,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/auditoria': {
+      id: '/admin/auditoria'
+      path: '/auditoria'
+      fullPath: '/admin/auditoria'
+      preLoaderRoute: typeof AdminAuditoriaRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/chamados': {
       id: '/admin/chamados'
       path: '/chamados'
@@ -726,6 +757,13 @@ declare module '@tanstack/react-router' {
       path: '/conteudo'
       fullPath: '/admin/conteudo'
       preLoaderRoute: typeof AdminConteudoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/diagnostico': {
+      id: '/admin/diagnostico'
+      path: '/diagnostico'
+      fullPath: '/admin/diagnostico'
+      preLoaderRoute: typeof AdminDiagnosticoRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/downloads': {
@@ -935,9 +973,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAuditoriaRoute: typeof AdminAuditoriaRoute
   AdminChamadosRoute: typeof AdminChamadosRoute
   AdminContasRoute: typeof AdminContasRoute
   AdminConteudoRoute: typeof AdminConteudoRoute
+  AdminDiagnosticoRoute: typeof AdminDiagnosticoRoute
   AdminDownloadsRoute: typeof AdminDownloadsRoute
   AdminMoedasRoute: typeof AdminMoedasRoute
   AdminNoticiasRoute: typeof AdminNoticiasRoute
@@ -948,9 +988,11 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuditoriaRoute: AdminAuditoriaRoute,
   AdminChamadosRoute: AdminChamadosRoute,
   AdminContasRoute: AdminContasRoute,
   AdminConteudoRoute: AdminConteudoRoute,
+  AdminDiagnosticoRoute: AdminDiagnosticoRoute,
   AdminDownloadsRoute: AdminDownloadsRoute,
   AdminMoedasRoute: AdminMoedasRoute,
   AdminNoticiasRoute: AdminNoticiasRoute,
