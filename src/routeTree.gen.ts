@@ -10,128 +10,368 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
-import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as PersonagensIndexRouteImport } from './routes/personagens/index'
-import { Route as RankingsIndexRouteImport } from './routes/rankings/index'
-import { Route as SuporteIndexRouteImport } from './routes/suporte/index'
-import { Route as VipIndexRouteImport } from './routes/vip/index'
+import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as CastleSiegeRouteImport } from './routes/castle-siege'
+import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as EventosRouteImport } from './routes/eventos'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as NoticiasRouteImport } from './routes/noticias'
+import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as RegrasRouteImport } from './routes/regras'
+import { Route as SuporteRouteImport } from './routes/suporte'
+import { Route as VipRouteImport } from './routes/vip'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
+import { Route as RankingsBloodCastleRouteImport } from './routes/rankings.blood-castle'
+import { Route as RankingsChaosCastleRouteImport } from './routes/rankings.chaos-castle'
+import { Route as RankingsClassesRouteImport } from './routes/rankings.classes'
+import { Route as RankingsDevilSquareRouteImport } from './routes/rankings.devil-square'
+import { Route as RankingsGuildsRouteImport } from './routes/rankings.guilds'
+import { Route as RankingsKillsRouteImport } from './routes/rankings.kills'
+import { Route as RankingsLevelRouteImport } from './routes/rankings.level'
+import { Route as RankingsMasterLevelRouteImport } from './routes/rankings.master-level'
+import { Route as RankingsMasterResetRouteImport } from './routes/rankings.master-reset'
+import { Route as RankingsMensalRouteImport } from './routes/rankings.mensal'
+import { Route as RankingsPkRouteImport } from './routes/rankings.pk'
+import { Route as RankingsResetRouteImport } from './routes/rankings.reset'
+import { Route as RankingsSemanalRouteImport } from './routes/rankings.semanal'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CadastroIndexRoute = CadastroIndexRouteImport.update({
-  id: '/cadastro/',
-  path: '/cadastro/',
+const AreaDoJogadorRoute = AreaDoJogadorRouteImport.update({
+  id: '/area-do-jogador',
+  path: '/area-do-jogador',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
-  id: '/downloads/',
-  path: '/downloads/',
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
+const CastleSiegeRoute = CastleSiegeRouteImport.update({
+  id: '/castle-siege',
+  path: '/castle-siege',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PersonagensIndexRoute = PersonagensIndexRouteImport.update({
-  id: '/personagens/',
-  path: '/personagens/',
+const DownloadsRoute = DownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
   getParentRoute: () => rootRouteImport,
+} as any)
+const EventosRoute = EventosRouteImport.update({
+  id: '/eventos',
+  path: '/eventos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasRoute = NoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankingsRoute = RankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegrasRoute = RegrasRouteImport.update({
+  id: '/regras',
+  path: '/regras',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuporteRoute = SuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VipRoute = VipRouteImport.update({
+  id: '/vip',
+  path: '/vip',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NoticiasRoute,
+} as any)
+const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NoticiasRoute,
 } as any)
 const RankingsIndexRoute = RankingsIndexRouteImport.update({
-  id: '/rankings/',
-  path: '/rankings/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => RankingsRoute,
 } as any)
-const SuporteIndexRoute = SuporteIndexRouteImport.update({
-  id: '/suporte/',
-  path: '/suporte/',
-  getParentRoute: () => rootRouteImport,
+const RankingsBloodCastleRoute = RankingsBloodCastleRouteImport.update({
+  id: '/blood-castle',
+  path: '/blood-castle',
+  getParentRoute: () => RankingsRoute,
 } as any)
-const VipIndexRoute = VipIndexRouteImport.update({
-  id: '/vip/',
-  path: '/vip/',
-  getParentRoute: () => rootRouteImport,
+const RankingsChaosCastleRoute = RankingsChaosCastleRouteImport.update({
+  id: '/chaos-castle',
+  path: '/chaos-castle',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsClassesRoute = RankingsClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsDevilSquareRoute = RankingsDevilSquareRouteImport.update({
+  id: '/devil-square',
+  path: '/devil-square',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsGuildsRoute = RankingsGuildsRouteImport.update({
+  id: '/guilds',
+  path: '/guilds',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsKillsRoute = RankingsKillsRouteImport.update({
+  id: '/kills',
+  path: '/kills',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsLevelRoute = RankingsLevelRouteImport.update({
+  id: '/level',
+  path: '/level',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsMasterLevelRoute = RankingsMasterLevelRouteImport.update({
+  id: '/master-level',
+  path: '/master-level',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsMasterResetRoute = RankingsMasterResetRouteImport.update({
+  id: '/master-reset',
+  path: '/master-reset',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsMensalRoute = RankingsMensalRouteImport.update({
+  id: '/mensal',
+  path: '/mensal',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsPkRoute = RankingsPkRouteImport.update({
+  id: '/pk',
+  path: '/pk',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsResetRoute = RankingsResetRouteImport.update({
+  id: '/reset',
+  path: '/reset',
+  getParentRoute: () => RankingsRoute,
+} as any)
+const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
+  id: '/semanal',
+  path: '/semanal',
+  getParentRoute: () => RankingsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cadastro/': typeof CadastroIndexRoute
-  '/downloads/': typeof DownloadsIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/personagens/': typeof PersonagensIndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
+  '/cadastro': typeof CadastroRoute
+  '/castle-siege': typeof CastleSiegeRoute
+  '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
+  '/login': typeof LoginRoute
+  '/noticias': typeof NoticiasRouteWithChildren
+  '/rankings': typeof RankingsRouteWithChildren
+  '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
+  '/vip': typeof VipRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
+  '/rankings/guilds': typeof RankingsGuildsRoute
+  '/rankings/kills': typeof RankingsKillsRoute
+  '/rankings/level': typeof RankingsLevelRoute
+  '/rankings/master-level': typeof RankingsMasterLevelRoute
+  '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
+  '/rankings/pk': typeof RankingsPkRoute
+  '/rankings/reset': typeof RankingsResetRoute
+  '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
-  '/suporte/': typeof SuporteIndexRoute
-  '/vip/': typeof VipIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cadastro': typeof CadastroIndexRoute
-  '/downloads': typeof DownloadsIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/personagens': typeof PersonagensIndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
+  '/cadastro': typeof CadastroRoute
+  '/castle-siege': typeof CastleSiegeRoute
+  '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
+  '/login': typeof LoginRoute
+  '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
+  '/vip': typeof VipRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
+  '/rankings/guilds': typeof RankingsGuildsRoute
+  '/rankings/kills': typeof RankingsKillsRoute
+  '/rankings/level': typeof RankingsLevelRoute
+  '/rankings/master-level': typeof RankingsMasterLevelRoute
+  '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
+  '/rankings/pk': typeof RankingsPkRoute
+  '/rankings/reset': typeof RankingsResetRoute
+  '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
-  '/suporte': typeof SuporteIndexRoute
-  '/vip': typeof VipIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/cadastro/': typeof CadastroIndexRoute
-  '/downloads/': typeof DownloadsIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/personagens/': typeof PersonagensIndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
+  '/cadastro': typeof CadastroRoute
+  '/castle-siege': typeof CastleSiegeRoute
+  '/downloads': typeof DownloadsRoute
+  '/eventos': typeof EventosRoute
+  '/login': typeof LoginRoute
+  '/noticias': typeof NoticiasRouteWithChildren
+  '/rankings': typeof RankingsRouteWithChildren
+  '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
+  '/vip': typeof VipRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
+  '/rankings/blood-castle': typeof RankingsBloodCastleRoute
+  '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
+  '/rankings/classes': typeof RankingsClassesRoute
+  '/rankings/devil-square': typeof RankingsDevilSquareRoute
+  '/rankings/guilds': typeof RankingsGuildsRoute
+  '/rankings/kills': typeof RankingsKillsRoute
+  '/rankings/level': typeof RankingsLevelRoute
+  '/rankings/master-level': typeof RankingsMasterLevelRoute
+  '/rankings/master-reset': typeof RankingsMasterResetRoute
+  '/rankings/mensal': typeof RankingsMensalRoute
+  '/rankings/pk': typeof RankingsPkRoute
+  '/rankings/reset': typeof RankingsResetRoute
+  '/rankings/semanal': typeof RankingsSemanalRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
-  '/suporte/': typeof SuporteIndexRoute
-  '/vip/': typeof VipIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/cadastro/'
-    | '/downloads/'
-    | '/login/'
-    | '/personagens/'
+    | '/area-do-jogador'
+    | '/cadastro'
+    | '/castle-siege'
+    | '/downloads'
+    | '/eventos'
+    | '/login'
+    | '/noticias'
+    | '/rankings'
+    | '/regras'
+    | '/suporte'
+    | '/vip'
+    | '/noticias/$slug'
+    | '/rankings/blood-castle'
+    | '/rankings/chaos-castle'
+    | '/rankings/classes'
+    | '/rankings/devil-square'
+    | '/rankings/guilds'
+    | '/rankings/kills'
+    | '/rankings/level'
+    | '/rankings/master-level'
+    | '/rankings/master-reset'
+    | '/rankings/mensal'
+    | '/rankings/pk'
+    | '/rankings/reset'
+    | '/rankings/semanal'
+    | '/noticias/'
     | '/rankings/'
-    | '/suporte/'
-    | '/vip/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/area-do-jogador'
     | '/cadastro'
+    | '/castle-siege'
     | '/downloads'
+    | '/eventos'
     | '/login'
-    | '/personagens'
-    | '/rankings'
+    | '/regras'
     | '/suporte'
     | '/vip'
+    | '/noticias/$slug'
+    | '/rankings/blood-castle'
+    | '/rankings/chaos-castle'
+    | '/rankings/classes'
+    | '/rankings/devil-square'
+    | '/rankings/guilds'
+    | '/rankings/kills'
+    | '/rankings/level'
+    | '/rankings/master-level'
+    | '/rankings/master-reset'
+    | '/rankings/mensal'
+    | '/rankings/pk'
+    | '/rankings/reset'
+    | '/rankings/semanal'
+    | '/noticias'
+    | '/rankings'
   id:
     | '__root__'
     | '/'
-    | '/cadastro/'
-    | '/downloads/'
-    | '/login/'
-    | '/personagens/'
+    | '/area-do-jogador'
+    | '/cadastro'
+    | '/castle-siege'
+    | '/downloads'
+    | '/eventos'
+    | '/login'
+    | '/noticias'
+    | '/rankings'
+    | '/regras'
+    | '/suporte'
+    | '/vip'
+    | '/noticias/$slug'
+    | '/rankings/blood-castle'
+    | '/rankings/chaos-castle'
+    | '/rankings/classes'
+    | '/rankings/devil-square'
+    | '/rankings/guilds'
+    | '/rankings/kills'
+    | '/rankings/level'
+    | '/rankings/master-level'
+    | '/rankings/master-reset'
+    | '/rankings/mensal'
+    | '/rankings/pk'
+    | '/rankings/reset'
+    | '/rankings/semanal'
+    | '/noticias/'
     | '/rankings/'
-    | '/suporte/'
-    | '/vip/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CadastroIndexRoute: typeof CadastroIndexRoute
-  DownloadsIndexRoute: typeof DownloadsIndexRoute
-  LoginIndexRoute: typeof LoginIndexRoute
-  PersonagensIndexRoute: typeof PersonagensIndexRoute
-  RankingsIndexRoute: typeof RankingsIndexRoute
-  SuporteIndexRoute: typeof SuporteIndexRoute
-  VipIndexRoute: typeof VipIndexRoute
+  AreaDoJogadorRoute: typeof AreaDoJogadorRoute
+  CadastroRoute: typeof CadastroRoute
+  CastleSiegeRoute: typeof CastleSiegeRoute
+  DownloadsRoute: typeof DownloadsRoute
+  EventosRoute: typeof EventosRoute
+  LoginRoute: typeof LoginRoute
+  NoticiasRoute: typeof NoticiasRouteWithChildren
+  RankingsRoute: typeof RankingsRouteWithChildren
+  RegrasRoute: typeof RegrasRoute
+  SuporteRoute: typeof SuporteRoute
+  VipRoute: typeof VipRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,67 +383,263 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cadastro/': {
-      id: '/cadastro/'
+    '/area-do-jogador': {
+      id: '/area-do-jogador'
+      path: '/area-do-jogador'
+      fullPath: '/area-do-jogador'
+      preLoaderRoute: typeof AreaDoJogadorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
       path: '/cadastro'
-      fullPath: '/cadastro/'
-      preLoaderRoute: typeof CadastroIndexRouteImport
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/downloads/': {
-      id: '/downloads/'
+    '/castle-siege': {
+      id: '/castle-siege'
+      path: '/castle-siege'
+      fullPath: '/castle-siege'
+      preLoaderRoute: typeof CastleSiegeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads': {
+      id: '/downloads'
       path: '/downloads'
-      fullPath: '/downloads/'
-      preLoaderRoute: typeof DownloadsIndexRouteImport
+      fullPath: '/downloads'
+      preLoaderRoute: typeof DownloadsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login/': {
-      id: '/login/'
+    '/eventos': {
+      id: '/eventos'
+      path: '/eventos'
+      fullPath: '/eventos'
+      preLoaderRoute: typeof EventosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
       path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/personagens/': {
-      id: '/personagens/'
-      path: '/personagens'
-      fullPath: '/personagens/'
-      preLoaderRoute: typeof PersonagensIndexRouteImport
+    '/noticias': {
+      id: '/noticias'
+      path: '/noticias'
+      fullPath: '/noticias'
+      preLoaderRoute: typeof NoticiasRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/rankings': {
+      id: '/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regras': {
+      id: '/regras'
+      path: '/regras'
+      fullPath: '/regras'
+      preLoaderRoute: typeof RegrasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/suporte': {
+      id: '/suporte'
+      path: '/suporte'
+      fullPath: '/suporte'
+      preLoaderRoute: typeof SuporteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vip': {
+      id: '/vip'
+      path: '/vip'
+      fullPath: '/vip'
+      preLoaderRoute: typeof VipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof NoticiasRoute
+    }
+    '/noticias/$slug': {
+      id: '/noticias/$slug'
+      path: '/$slug'
+      fullPath: '/noticias/$slug'
+      preLoaderRoute: typeof NoticiasSlugRouteImport
+      parentRoute: typeof NoticiasRoute
     }
     '/rankings/': {
       id: '/rankings/'
-      path: '/rankings'
+      path: '/'
       fullPath: '/rankings/'
       preLoaderRoute: typeof RankingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof RankingsRoute
     }
-    '/suporte/': {
-      id: '/suporte/'
-      path: '/suporte'
-      fullPath: '/suporte/'
-      preLoaderRoute: typeof SuporteIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/rankings/blood-castle': {
+      id: '/rankings/blood-castle'
+      path: '/blood-castle'
+      fullPath: '/rankings/blood-castle'
+      preLoaderRoute: typeof RankingsBloodCastleRouteImport
+      parentRoute: typeof RankingsRoute
     }
-    '/vip/': {
-      id: '/vip/'
-      path: '/vip'
-      fullPath: '/vip/'
-      preLoaderRoute: typeof VipIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/rankings/chaos-castle': {
+      id: '/rankings/chaos-castle'
+      path: '/chaos-castle'
+      fullPath: '/rankings/chaos-castle'
+      preLoaderRoute: typeof RankingsChaosCastleRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/classes': {
+      id: '/rankings/classes'
+      path: '/classes'
+      fullPath: '/rankings/classes'
+      preLoaderRoute: typeof RankingsClassesRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/devil-square': {
+      id: '/rankings/devil-square'
+      path: '/devil-square'
+      fullPath: '/rankings/devil-square'
+      preLoaderRoute: typeof RankingsDevilSquareRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/guilds': {
+      id: '/rankings/guilds'
+      path: '/guilds'
+      fullPath: '/rankings/guilds'
+      preLoaderRoute: typeof RankingsGuildsRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/kills': {
+      id: '/rankings/kills'
+      path: '/kills'
+      fullPath: '/rankings/kills'
+      preLoaderRoute: typeof RankingsKillsRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/level': {
+      id: '/rankings/level'
+      path: '/level'
+      fullPath: '/rankings/level'
+      preLoaderRoute: typeof RankingsLevelRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/master-level': {
+      id: '/rankings/master-level'
+      path: '/master-level'
+      fullPath: '/rankings/master-level'
+      preLoaderRoute: typeof RankingsMasterLevelRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/master-reset': {
+      id: '/rankings/master-reset'
+      path: '/master-reset'
+      fullPath: '/rankings/master-reset'
+      preLoaderRoute: typeof RankingsMasterResetRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/mensal': {
+      id: '/rankings/mensal'
+      path: '/mensal'
+      fullPath: '/rankings/mensal'
+      preLoaderRoute: typeof RankingsMensalRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/pk': {
+      id: '/rankings/pk'
+      path: '/pk'
+      fullPath: '/rankings/pk'
+      preLoaderRoute: typeof RankingsPkRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/reset': {
+      id: '/rankings/reset'
+      path: '/reset'
+      fullPath: '/rankings/reset'
+      preLoaderRoute: typeof RankingsResetRouteImport
+      parentRoute: typeof RankingsRoute
+    }
+    '/rankings/semanal': {
+      id: '/rankings/semanal'
+      path: '/semanal'
+      fullPath: '/rankings/semanal'
+      preLoaderRoute: typeof RankingsSemanalRouteImport
+      parentRoute: typeof RankingsRoute
     }
   }
 }
 
+interface NoticiasRouteChildren {
+  NoticiasSlugRoute: typeof NoticiasSlugRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
+}
+
+const NoticiasRouteChildren: NoticiasRouteChildren = {
+  NoticiasSlugRoute: NoticiasSlugRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
+}
+
+const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
+  NoticiasRouteChildren,
+)
+
+interface RankingsRouteChildren {
+  RankingsBloodCastleRoute: typeof RankingsBloodCastleRoute
+  RankingsChaosCastleRoute: typeof RankingsChaosCastleRoute
+  RankingsClassesRoute: typeof RankingsClassesRoute
+  RankingsDevilSquareRoute: typeof RankingsDevilSquareRoute
+  RankingsGuildsRoute: typeof RankingsGuildsRoute
+  RankingsKillsRoute: typeof RankingsKillsRoute
+  RankingsLevelRoute: typeof RankingsLevelRoute
+  RankingsMasterLevelRoute: typeof RankingsMasterLevelRoute
+  RankingsMasterResetRoute: typeof RankingsMasterResetRoute
+  RankingsMensalRoute: typeof RankingsMensalRoute
+  RankingsPkRoute: typeof RankingsPkRoute
+  RankingsResetRoute: typeof RankingsResetRoute
+  RankingsSemanalRoute: typeof RankingsSemanalRoute
+  RankingsIndexRoute: typeof RankingsIndexRoute
+}
+
+const RankingsRouteChildren: RankingsRouteChildren = {
+  RankingsBloodCastleRoute: RankingsBloodCastleRoute,
+  RankingsChaosCastleRoute: RankingsChaosCastleRoute,
+  RankingsClassesRoute: RankingsClassesRoute,
+  RankingsDevilSquareRoute: RankingsDevilSquareRoute,
+  RankingsGuildsRoute: RankingsGuildsRoute,
+  RankingsKillsRoute: RankingsKillsRoute,
+  RankingsLevelRoute: RankingsLevelRoute,
+  RankingsMasterLevelRoute: RankingsMasterLevelRoute,
+  RankingsMasterResetRoute: RankingsMasterResetRoute,
+  RankingsMensalRoute: RankingsMensalRoute,
+  RankingsPkRoute: RankingsPkRoute,
+  RankingsResetRoute: RankingsResetRoute,
+  RankingsSemanalRoute: RankingsSemanalRoute,
+  RankingsIndexRoute: RankingsIndexRoute,
+}
+
+const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
+  RankingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CadastroIndexRoute: CadastroIndexRoute,
-  DownloadsIndexRoute: DownloadsIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
-  PersonagensIndexRoute: PersonagensIndexRoute,
-  RankingsIndexRoute: RankingsIndexRoute,
-  SuporteIndexRoute: SuporteIndexRoute,
-  VipIndexRoute: VipIndexRoute,
+  AreaDoJogadorRoute: AreaDoJogadorRoute,
+  CadastroRoute: CadastroRoute,
+  CastleSiegeRoute: CastleSiegeRoute,
+  DownloadsRoute: DownloadsRoute,
+  EventosRoute: EventosRoute,
+  LoginRoute: LoginRoute,
+  NoticiasRoute: NoticiasRouteWithChildren,
+  RankingsRoute: RankingsRouteWithChildren,
+  RegrasRoute: RegrasRoute,
+  SuporteRoute: SuporteRoute,
+  VipRoute: VipRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
