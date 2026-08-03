@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CastleSiegeRouteImport } from './routes/castle-siege'
+import { Route as ContaRouteImport } from './routes/conta'
 import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
@@ -43,6 +45,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreaDoJogadorRoute = AreaDoJogadorRouteImport.update({
   id: '/area-do-jogador',
   path: '/area-do-jogador',
@@ -56,6 +63,11 @@ const CadastroRoute = CadastroRouteImport.update({
 const CastleSiegeRoute = CastleSiegeRouteImport.update({
   id: '/castle-siege',
   path: '/castle-siege',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContaRoute = ContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadsRoute = DownloadsRouteImport.update({
@@ -181,9 +193,11 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/conta': typeof ContaRoute
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -211,9 +225,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/conta': typeof ContaRoute
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -240,9 +256,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/conta': typeof ContaRoute
   '/downloads': typeof DownloadsRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -272,9 +290,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
@@ -302,9 +322,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
@@ -330,9 +352,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/conta'
     | '/downloads'
     | '/eventos'
     | '/login'
@@ -361,9 +385,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   CastleSiegeRoute: typeof CastleSiegeRoute
+  ContaRoute: typeof ContaRoute
   DownloadsRoute: typeof DownloadsRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
@@ -381,6 +407,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/area-do-jogador': {
@@ -402,6 +435,13 @@ declare module '@tanstack/react-router' {
       path: '/castle-siege'
       fullPath: '/castle-siege'
       preLoaderRoute: typeof CastleSiegeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conta': {
+      id: '/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof ContaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/downloads': {
@@ -629,9 +669,11 @@ const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   CastleSiegeRoute: CastleSiegeRoute,
+  ContaRoute: ContaRoute,
   DownloadsRoute: DownloadsRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
