@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { Download, Monitor, HardDrive, Cpu } from "lucide-react";
 
-export const Route = createFileRoute("/downloads")({
+export const Route = createFileRoute("/downloads/")({
   head: () => ({
     title: "Downloads | MU Kame - Baixe o Jogo",
     meta: [

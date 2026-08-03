@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
+import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const CadastroIndexRoute = CadastroIndexRouteImport.update({
   path: '/cadastro/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
+  id: '/downloads/',
+  path: '/downloads/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
+  '/downloads/': typeof DownloadsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroIndexRoute
+  '/downloads': typeof DownloadsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
+  '/downloads/': typeof DownloadsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cadastro/'
+  fullPaths: '/' | '/cadastro/' | '/downloads/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro'
-  id: '__root__' | '/' | '/cadastro/'
+  to: '/' | '/cadastro' | '/downloads'
+  id: '__root__' | '/' | '/cadastro/' | '/downloads/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroIndexRoute: typeof CadastroIndexRoute
+  DownloadsIndexRoute: typeof DownloadsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CadastroIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/downloads/': {
+      id: '/downloads/'
+      path: '/downloads'
+      fullPath: '/downloads/'
+      preLoaderRoute: typeof DownloadsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroIndexRoute: CadastroIndexRoute,
+  DownloadsIndexRoute: DownloadsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
