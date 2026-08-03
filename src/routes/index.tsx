@@ -23,6 +23,8 @@ import {
   FaqSection,
   FinalCta,
 } from "@/components/home/EngageSections";
+import heroImage from "@/assets/hero-realm.jpg";
+
 
 const title = "MU Kame — Season 6.15 Medium";
 const description =
