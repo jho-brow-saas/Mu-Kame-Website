@@ -13,20 +13,29 @@ const specs = [
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden edge-rule-bottom">
+    <section className="relative isolate min-h-[38rem] overflow-hidden edge-rule-bottom">
       <img
         src={heroImage}
-        alt="Horizonte medieval noturno com um portal arcano distante e silhuetas de guerreiros"
+        alt="Fortaleza medieval gótica ao luar com muralhas iluminadas por tochas e cavaleiros em silhueta diante de um portal arcano"
         width={1920}
-        height={1080}
-        className="absolute inset-0 size-full object-cover opacity-30 contrast-125 saturate-50"
+        height={1088}
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+        sizes="100vw"
+        className="absolute inset-0 size-full scale-105 object-cover object-[72%_center] opacity-45 contrast-125 saturate-50 sm:object-[60%_center] lg:scale-100 lg:object-center lg:opacity-60"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-b from-obsidian/70 via-obsidian/88 to-obsidian"
+        className="absolute inset-0 bg-linear-to-b from-obsidian/85 via-obsidian/80 to-obsidian"
       />
-      <span aria-hidden="true" className="topo-lines pointer-events-none absolute inset-0 opacity-60" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-linear-to-r from-obsidian via-obsidian/70 to-transparent lg:via-obsidian/45"
+      />
+      <span aria-hidden="true" className="topo-lines pointer-events-none absolute inset-0 opacity-40" />
       <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
+
 
       <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24 lg:px-8">
         <div className="flex flex-col gap-6">
