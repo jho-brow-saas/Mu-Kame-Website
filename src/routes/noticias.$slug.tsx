@@ -55,7 +55,7 @@ function NoticiaDetalhe() {
             title="Este comunicado ainda não existe"
             description="Os primeiros comunicados do MU Kame serão publicados em breve."
             action={
-              <Link to="/noticias" className="text-sm font-semibold text-jade hover:text-jade-glow">
+              <Link to="/noticias" className="text-sm font-semibold text-gold hover:text-gold-soft">
                 Voltar para notícias
               </Link>
             }
@@ -76,7 +76,7 @@ function NoticiaDetalhe() {
           </time>
         </div>
         <p className="body-text whitespace-pre-line text-mist">{item.content}</p>
-        <Link to="/noticias" className="text-sm font-semibold text-jade hover:text-jade-glow">
+        <Link to="/noticias" className="text-sm font-semibold text-gold hover:text-gold-soft">
           Voltar para notícias
         </Link>
       </article>

@@ -56,7 +56,7 @@ function SuportePage() {
   const [sent, setSent] = useState(false);
 
   const fieldClass =
-    "min-h-[44px] w-full rounded-xl border border-white/12 bg-[color:var(--surface)]/70 px-4 py-3 text-base text-ivory placeholder:text-graylight";
+    "min-h-[44px] w-full border border-white/12 bg-[color:var(--surface)]/70 px-4 py-3 text-base text-ivory placeholder:text-graylight";
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();

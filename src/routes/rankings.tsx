@@ -51,7 +51,7 @@ function RankingsLayout() {
               <Link
                 to={tab.to}
                 activeOptions={{ exact: "exact" in tab }}
-                className="inline-flex min-h-[44px] shrink-0 items-center rounded-xl border border-white/10 px-4 text-sm text-mist transition-colors hover:text-ivory data-[status=active]:border-jade/40 data-[status=active]:bg-jade/10 data-[status=active]:text-jade"
+                className="inline-flex min-h-[44px] shrink-0 items-center border border-white/10 px-4 text-sm text-mist transition-colors hover:text-ivory data-[status=active]:border-gold/40 data-[status=active]:bg-gold/10 data-[status=active]:text-gold"
               >
                 {tab.label}
               </Link>

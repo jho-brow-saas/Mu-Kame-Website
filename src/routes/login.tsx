@@ -37,7 +37,7 @@ function LoginPage() {
   const [feedback, setFeedback] = useState<{ type: "ok" | "error"; message: string } | null>(null);
 
   const fieldClass =
-    "min-h-[44px] w-full rounded-xl border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory placeholder:text-graylight";
+    "min-h-[44px] w-full border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory placeholder:text-graylight";
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -101,7 +101,7 @@ function LoginPage() {
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-lg text-mist"
+                className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-mist"
               >
                 {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
               </button>
@@ -120,7 +120,7 @@ function LoginPage() {
           ) : null}
 
           <p className="text-sm text-mist">
-            Ainda não tem conta? <Link to="/cadastro" className="text-jade hover:text-jade-glow">Criar conta</Link>
+            Ainda não tem conta? <Link to="/cadastro" className="text-gold hover:text-gold-soft">Criar conta</Link>
           </p>
         </form>
       </section>

@@ -52,9 +52,9 @@ function EventosPage() {
               onClick={() => setFilter(item.id)}
               aria-pressed={filter === item.id}
               className={cn(
-                "min-h-[44px] rounded-xl border px-4 text-sm transition-colors",
+                "min-h-[44px] border px-4 text-sm transition-colors",
                 filter === item.id
-                  ? "border-jade/40 bg-jade/10 text-jade"
+                  ? "border-gold/40 bg-gold/10 text-gold"
                   : "border-white/10 text-mist hover:text-ivory",
               )}
             >
