@@ -20,7 +20,7 @@ function Index() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center">
       <h1 className="mb-6 text-4xl font-bold tracking-tight lg:text-5xl">
-        oque faço nessa tela do terminal?
+        verifique se estamos conectador no github
       </h1>
       <div className="max-w-4xl w-full text-left space-y-6 bg-card p-6 rounded-lg border shadow-sm">
         <p className="text-lg">
