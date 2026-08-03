@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RankingsRouteImport } from './routes/rankings'
@@ -31,6 +32,11 @@ import { Route as RankingsSemanalRouteImport } from './routes/rankings.semanal'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AreaDoJogadorRoute = AreaDoJogadorRouteImport.update({
+  id: '/area-do-jogador',
+  path: '/area-do-jogador',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CadastroRoute = CadastroRouteImport.update({
@@ -121,6 +127,7 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRouteWithChildren
@@ -141,6 +148,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -161,6 +169,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRouteWithChildren
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/area-do-jogador'
     | '/cadastro'
     | '/login'
     | '/rankings'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/area-do-jogador'
     | '/cadastro'
     | '/login'
     | '/rankings/blood-castle'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/area-do-jogador'
     | '/cadastro'
     | '/login'
     | '/rankings'
@@ -243,6 +255,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   LoginRoute: typeof LoginRoute
   RankingsRoute: typeof RankingsRouteWithChildren
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/area-do-jogador': {
+      id: '/area-do-jogador'
+      path: '/area-do-jogador'
+      fullPath: '/area-do-jogador'
+      preLoaderRoute: typeof AreaDoJogadorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cadastro': {
@@ -419,6 +439,7 @@ const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   LoginRoute: LoginRoute,
   RankingsRoute: RankingsRouteWithChildren,
