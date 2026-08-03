@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
+import { Route as RankingsLevelRouteImport } from './routes/rankings.level'
 import { Route as RankingsMasterResetRouteImport } from './routes/rankings.master-reset'
 import { Route as RankingsResetRouteImport } from './routes/rankings.reset'
 
@@ -30,6 +31,11 @@ const RankingsIndexRoute = RankingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => RankingsRoute,
 } as any)
+const RankingsLevelRoute = RankingsLevelRouteImport.update({
+  id: '/level',
+  path: '/level',
+  getParentRoute: () => RankingsRoute,
+} as any)
 const RankingsMasterResetRoute = RankingsMasterResetRouteImport.update({
   id: '/master-reset',
   path: '/master-reset',
@@ -44,12 +50,14 @@ const RankingsResetRoute = RankingsResetRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings': typeof RankingsIndexRoute
@@ -58,6 +66,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/rankings': typeof RankingsRouteWithChildren
+  '/rankings/level': typeof RankingsLevelRoute
   '/rankings/master-reset': typeof RankingsMasterResetRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/': typeof RankingsIndexRoute
@@ -67,15 +76,22 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/rankings'
+    | '/rankings/level'
     | '/rankings/master-reset'
     | '/rankings/reset'
     | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rankings/master-reset' | '/rankings/reset' | '/rankings'
+  to:
+    | '/'
+    | '/rankings/level'
+    | '/rankings/master-reset'
+    | '/rankings/reset'
+    | '/rankings'
   id:
     | '__root__'
     | '/'
     | '/rankings'
+    | '/rankings/level'
     | '/rankings/master-reset'
     | '/rankings/reset'
     | '/rankings/'
@@ -109,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingsIndexRouteImport
       parentRoute: typeof RankingsRoute
     }
+    '/rankings/level': {
+      id: '/rankings/level'
+      path: '/level'
+      fullPath: '/rankings/level'
+      preLoaderRoute: typeof RankingsLevelRouteImport
+      parentRoute: typeof RankingsRoute
+    }
     '/rankings/master-reset': {
       id: '/rankings/master-reset'
       path: '/master-reset'
@@ -127,12 +150,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface RankingsRouteChildren {
+  RankingsLevelRoute: typeof RankingsLevelRoute
   RankingsMasterResetRoute: typeof RankingsMasterResetRoute
   RankingsResetRoute: typeof RankingsResetRoute
   RankingsIndexRoute: typeof RankingsIndexRoute
 }
 
 const RankingsRouteChildren: RankingsRouteChildren = {
+  RankingsLevelRoute: RankingsLevelRoute,
   RankingsMasterResetRoute: RankingsMasterResetRoute,
   RankingsResetRoute: RankingsResetRoute,
   RankingsIndexRoute: RankingsIndexRoute,
