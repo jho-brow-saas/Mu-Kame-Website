@@ -19,6 +19,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RegrasRouteImport } from './routes/regras'
+import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
@@ -85,6 +86,11 @@ const RankingsRoute = RankingsRouteImport.update({
 const RegrasRoute = RegrasRouteImport.update({
   id: '/regras',
   path: '/regras',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuporteRoute = SuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VipRoute = VipRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
   '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -211,6 +218,7 @@ export interface FileRoutesByTo {
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -241,6 +249,7 @@ export interface FileRoutesById {
   '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
   '/regras': typeof RegrasRoute
+  '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/rankings'
     | '/regras'
+    | '/suporte'
     | '/vip'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -299,6 +309,7 @@ export interface FileRouteTypes {
     | '/eventos'
     | '/login'
     | '/regras'
+    | '/suporte'
     | '/vip'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -328,6 +339,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/rankings'
     | '/regras'
+    | '/suporte'
     | '/vip'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
@@ -358,6 +370,7 @@ export interface RootRouteChildren {
   NoticiasRoute: typeof NoticiasRouteWithChildren
   RankingsRoute: typeof RankingsRouteWithChildren
   RegrasRoute: typeof RegrasRoute
+  SuporteRoute: typeof SuporteRoute
   VipRoute: typeof VipRoute
 }
 
@@ -431,6 +444,13 @@ declare module '@tanstack/react-router' {
       path: '/regras'
       fullPath: '/regras'
       preLoaderRoute: typeof RegrasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/suporte': {
+      id: '/suporte'
+      path: '/suporte'
+      fullPath: '/suporte'
+      preLoaderRoute: typeof SuporteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vip': {
@@ -618,6 +638,7 @@ const rootRouteChildren: RootRouteChildren = {
   NoticiasRoute: NoticiasRouteWithChildren,
   RankingsRoute: RankingsRouteWithChildren,
   RegrasRoute: RegrasRoute,
+  SuporteRoute: SuporteRoute,
   VipRoute: VipRoute,
 }
 export const routeTree = rootRouteImport
