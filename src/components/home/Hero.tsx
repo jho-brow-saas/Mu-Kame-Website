@@ -21,7 +21,7 @@ export function Hero() {
         height={1088}
         loading="eager"
         decoding="sync"
-        decoding="async"
+
         sizes="100vw"
         className="absolute inset-0 size-full scale-105 object-cover object-[72%_center] opacity-70 contrast-110 saturate-75 brightness-125 sm:object-[62%_center] lg:scale-100 lg:object-center lg:opacity-100"
       />
