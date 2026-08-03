@@ -135,3 +135,49 @@ export const faqItems = [
   { q: "Como entrar em contato com o suporte?", a: `O suporte oficial é feito pelo WhatsApp ${serverConfig.supportWhatsAppLabel}.` },
   { q: "Quando será o primeiro Castle Siege?", a: "A data e o horário do primeiro Castle Siege ainda serão divulgados." },
 ];
+
+export type RulesSection = { title: string; items: string[] };
+
+export const rulesSections: RulesSection[] = [
+  {
+    title: "1. Conduta geral",
+    items: [
+      "Respeite todos os jogadores e a equipe do servidor.",
+      "É proibido usar nomes ofensivos, discriminatórios ou que imitem membros da equipe.",
+      "Divulgação de outros servidores nos canais oficiais resulta em banimento.",
+    ],
+  },
+  {
+    title: "2. Programas de terceiros",
+    items: [
+      "Bots externos, macros de terceiros, hacks e speed são terminantemente proibidos.",
+      "Exploração de falhas (bugs) deve ser comunicada ao suporte, não utilizada.",
+      "Contas envolvidas em duplicação de itens ou Zen são removidas permanentemente.",
+    ],
+  },
+  {
+    title: "3. Contas e comércio",
+    items: [
+      "Cada jogador é responsável pela segurança da própria senha.",
+      "A equipe nunca solicita senha por WhatsApp, chat do jogo ou redes sociais.",
+      "Negociações feitas fora dos sistemas oficiais do jogo não têm suporte.",
+    ],
+  },
+  {
+    title: "4. Guilds e Castle Siege",
+    items: [
+      "Acordos entre guilds para manipular resultados de eventos são proibidos.",
+      "Contas secundárias usadas para sabotar eventos serão punidas.",
+      "A administração pode ajustar regras do Castle Siege para manter o equilíbrio.",
+    ],
+  },
+  {
+    title: "5. Punições",
+    items: [
+      "As punições variam de advertência e silenciamento a banimento permanente.",
+      "A gravidade e a reincidência definem a punição aplicada.",
+      "Decisões da administração são finais, com direito a recurso pelo suporte oficial.",
+    ],
+  },
+];
+
