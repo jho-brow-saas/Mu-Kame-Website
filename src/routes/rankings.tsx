@@ -44,7 +44,7 @@ function RankingsLayout() {
         title="Rankings do MU Kame"
         description="Todos os rankings serão alimentados diretamente pelo servidor após o lançamento em 01 de setembro de 2026."
       />
-      <nav aria-label="Categorias de ranking" className="border-b border-white/8 bg-[color:var(--realm)]/40">
+      <nav aria-label="Categorias de ranking" className="metal-sheet edge-rule-bottom">
         <ul className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-4 sm:px-6 lg:px-8">
           {rankingTabs.map((tab) => (
             <li key={tab.to}>

@@ -37,7 +37,7 @@ function LoginPage() {
   const [feedback, setFeedback] = useState<{ type: "ok" | "error"; message: string } | null>(null);
 
   const fieldClass =
-    "min-h-[44px] w-full border border-white/12 bg-[color:var(--surface)]/70 px-4 text-base text-ivory placeholder:text-graylight";
+    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold";
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
