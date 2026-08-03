@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { Star, Zap, Shield } from "lucide-react";
 
-export const Route = createFileRoute("/vip")({
+export const Route = createFileRoute("/vip/")({
   head: () => ({
     title: "VIP | MU Kame - Vantagens Exclusivas",
     meta: [

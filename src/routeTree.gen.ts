@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
 import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
+import { Route as RankingsIndexRouteImport } from './routes/rankings/index'
+import { Route as VipIndexRouteImport } from './routes/vip/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,53 @@ const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
   path: '/downloads/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RankingsIndexRoute = RankingsIndexRouteImport.update({
+  id: '/rankings/',
+  path: '/rankings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VipIndexRoute = VipIndexRouteImport.update({
+  id: '/vip/',
+  path: '/vip/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/rankings/': typeof RankingsIndexRoute
+  '/vip/': typeof VipIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroIndexRoute
   '/downloads': typeof DownloadsIndexRoute
+  '/rankings': typeof RankingsIndexRoute
+  '/vip': typeof VipIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/rankings/': typeof RankingsIndexRoute
+  '/vip/': typeof VipIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cadastro/' | '/downloads/'
+  fullPaths: '/' | '/cadastro/' | '/downloads/' | '/rankings/' | '/vip/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro' | '/downloads'
-  id: '__root__' | '/' | '/cadastro/' | '/downloads/'
+  to: '/' | '/cadastro' | '/downloads' | '/rankings' | '/vip'
+  id: '__root__' | '/' | '/cadastro/' | '/downloads/' | '/rankings/' | '/vip/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroIndexRoute: typeof CadastroIndexRoute
   DownloadsIndexRoute: typeof DownloadsIndexRoute
+  RankingsIndexRoute: typeof RankingsIndexRoute
+  VipIndexRoute: typeof VipIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DownloadsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rankings/': {
+      id: '/rankings/'
+      path: '/rankings'
+      fullPath: '/rankings/'
+      preLoaderRoute: typeof RankingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vip/': {
+      id: '/vip/'
+      path: '/vip'
+      fullPath: '/vip/'
+      preLoaderRoute: typeof VipIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +123,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroIndexRoute: CadastroIndexRoute,
   DownloadsIndexRoute: DownloadsIndexRoute,
+  RankingsIndexRoute: RankingsIndexRoute,
+  VipIndexRoute: VipIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
