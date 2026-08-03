@@ -23,6 +23,8 @@ import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminContasRouteImport } from './routes/admin.contas'
 import { Route as ContaIndexRouteImport } from './routes/conta.index'
 import { Route as ContaChamadosRouteImport } from './routes/conta.chamados'
 import { Route as ContaDownloadsRouteImport } from './routes/conta.downloads'
@@ -116,6 +118,16 @@ const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContasRoute = AdminContasRouteImport.update({
+  id: '/contas',
+  path: '/contas',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ContaIndexRoute = ContaIndexRouteImport.update({
   id: '/',
@@ -235,7 +247,7 @@ const RankingsSemanalRoute = RankingsSemanalRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
@@ -248,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/contas': typeof AdminContasRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -268,13 +281,13 @@ export interface FileRoutesByFullPath {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin/': typeof AdminIndexRoute
   '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
@@ -284,6 +297,7 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/contas': typeof AdminContasRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -304,6 +318,7 @@ export interface FileRoutesByTo {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin': typeof AdminIndexRoute
   '/conta': typeof ContaIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rankings': typeof RankingsIndexRoute
@@ -311,7 +326,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
@@ -324,6 +339,7 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/admin/contas': typeof AdminContasRoute
   '/conta/chamados': typeof ContaChamadosRoute
   '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
@@ -344,6 +360,7 @@ export interface FileRoutesById {
   '/rankings/pk': typeof RankingsPkRoute
   '/rankings/reset': typeof RankingsResetRoute
   '/rankings/semanal': typeof RankingsSemanalRoute
+  '/admin/': typeof AdminIndexRoute
   '/conta/': typeof ContaIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rankings/': typeof RankingsIndexRoute
@@ -365,6 +382,7 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/contas'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -385,13 +403,13 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin/'
     | '/conta/'
     | '/noticias/'
     | '/rankings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
@@ -401,6 +419,7 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/contas'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -421,6 +440,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin'
     | '/conta'
     | '/noticias'
     | '/rankings'
@@ -440,6 +460,7 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/admin/contas'
     | '/conta/chamados'
     | '/conta/downloads'
     | '/conta/evolucao'
@@ -460,6 +481,7 @@ export interface FileRouteTypes {
     | '/rankings/pk'
     | '/rankings/reset'
     | '/rankings/semanal'
+    | '/admin/'
     | '/conta/'
     | '/noticias/'
     | '/rankings/'
@@ -467,7 +489,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AreaDoJogadorRoute: typeof AreaDoJogadorRoute
   CadastroRoute: typeof CadastroRoute
   CastleSiegeRoute: typeof CastleSiegeRoute
@@ -581,6 +603,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/vip'
       preLoaderRoute: typeof VipRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/contas': {
+      id: '/admin/contas'
+      path: '/contas'
+      fullPath: '/admin/contas'
+      preLoaderRoute: typeof AdminContasRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/conta/': {
       id: '/conta/'
@@ -746,6 +782,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminContasRoute: typeof AdminContasRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminContasRoute: AdminContasRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface ContaRouteChildren {
   ContaChamadosRoute: typeof ContaChamadosRoute
   ContaDownloadsRoute: typeof ContaDownloadsRoute
@@ -822,7 +870,7 @@ const RankingsRouteWithChildren = RankingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AreaDoJogadorRoute: AreaDoJogadorRoute,
   CadastroRoute: CadastroRoute,
   CastleSiegeRoute: CastleSiegeRoute,
