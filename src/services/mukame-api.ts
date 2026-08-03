@@ -20,11 +20,15 @@ import type {
 export const API_BASE_URL = "https://api.mukame.online/index.php";
 
 /**
- * A API oficial não envia cabeçalhos CORS. No navegador as chamadas passam
- * pelo proxy somente-leitura de mesma origem; no servidor (SSR) vamos direto
- * ao upstream.
+ * A API oficial libera CORS para os domínios de produção do MU Kame, então o
+ * navegador chama `API_BASE_URL` diretamente. Origens de desenvolvimento/prévia
+ * (localhost e *.lovable.app) não estão na allowlist da API e continuam usando
+ * o proxy somente-leitura de mesma origem apenas como fallback de dev.
  */
 const PROXY_PATH = "/api/public/mukame";
+
+/** Domínios em que a API oficial responde com `Access-Control-Allow-Origin`. */
+const CORS_ALLOWED_HOSTS = new Set(["novo.mukame.online", "mukame.online", "www.mukame.online"]);
 
 /** Timeout padrão das requisições públicas. */
 const REQUEST_TIMEOUT_MS = 8_000;
@@ -46,9 +50,15 @@ export class MuKameApiError extends Error {
 
 export type QueryParams = Record<string, string | number | undefined>;
 
+/** No navegador: direto em produção, proxy de mesma origem apenas em dev/prévia. */
+function useDevProxy(): boolean {
+  if (typeof window === "undefined") return false;
+  return !CORS_ALLOWED_HOSTS.has(window.location.hostname);
+}
+
 function buildUrl(params: QueryParams): string {
-  const isBrowser = typeof window !== "undefined";
-  const url = new URL(isBrowser ? PROXY_PATH : API_BASE_URL, isBrowser ? window.location.origin : undefined);
+  const viaProxy = useDevProxy();
+  const url = new URL(viaProxy ? PROXY_PATH : API_BASE_URL, viaProxy ? window.location.origin : undefined);
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined) continue;
@@ -57,6 +67,7 @@ function buildUrl(params: QueryParams): string {
   url.search = search.toString();
   return url.toString();
 }
+
 
 
 /** Requisição GET genérica com timeout, validação de HTTP e do envelope `ok`. */
