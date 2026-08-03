@@ -23,6 +23,8 @@ import {
   FaqSection,
   FinalCta,
 } from "@/components/home/EngageSections";
+import heroImage from "@/assets/hero-realm.jpg";
+
 
 const title = "MU Kame — Season 6.15 Medium";
 const description =
@@ -39,7 +41,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "https://novo.mukame.online/" }],
+    links: [
+      { rel: "canonical", href: "https://novo.mukame.online/" },
+      { rel: "preload", as: "image", href: heroImage },
+    ],
+
   }),
   component: HomePage,
 });
