@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { ShieldCheck, Mail, Lock, User } from "lucide-react";
 
-export const Route = createFileRoute("/cadastro")({
+export const Route = createFileRoute("/cadastro/")({
   head: () => ({
     title: "Cadastro | MU Kame - Crie sua conta",
     meta: [
