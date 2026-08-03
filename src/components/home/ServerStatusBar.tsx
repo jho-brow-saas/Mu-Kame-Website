@@ -1,39 +1,23 @@
-import { useEffect, useState } from "react";
-import { serverConfig } from "@/config/server";
-import { api, DEMO_MODE, type ServerStatus } from "@/services/api";
+import { useServerStatus } from "@/hooks/use-server-status";
+import { serverStateLabel } from "@/lib/mukame-format";
 
-const statusLabel: Record<ServerStatus["status"], string> = {
-  online: "Online",
-  offline: "Offline",
-  preparing: "Em preparação",
-};
-
-/** Faixa de leitura técnica: dados do servidor em mono, no espírito de um painel de LAN house. */
+/** Faixa de leitura técnica: dados reais do servidor em mono, no espírito de um painel de LAN house. */
 export function ServerStatusBar() {
-  const [status, setStatus] = useState<ServerStatus | null>(null);
+  const { data, isPending, isError, refetch } = useServerStatus();
+  const server = data?.server;
 
-  useEffect(() => {
-    let active = true;
-    api
-      .getStatus()
-      .then((data) => {
-        if (active) setStatus(data);
-      })
-      .catch(() => {
-        if (active) setStatus(null);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
+  const placeholder = isPending ? "···" : "—";
 
   const items = [
-    { label: "Servidor", value: status ? statusLabel[status.status] : "Em preparação" },
-    { label: "Online", value: String(status?.playersOnline ?? 0) },
-    { label: "Season", value: serverConfig.season },
-    { label: "Estilo", value: serverConfig.mode },
-    { label: "Master Lv.", value: String(serverConfig.masterLevel) },
-    { label: "Plataforma", value: serverConfig.platform },
+    { label: "Servidor", value: serverStateLabelOrPlaceholder(data?.state, isPending) },
+    {
+      label: "Online",
+      value: data ? String(data.publicDataEnabled ? data.onlinePlayers : 0) : placeholder,
+    },
+    { label: "Season", value: server?.season ?? placeholder },
+    { label: "Estilo", value: server?.mode ?? placeholder },
+    { label: "Master Lv.", value: server ? String(server.masterLevel) : placeholder },
+    { label: "Plataforma", value: server?.platform ?? placeholder },
   ];
 
   return (
@@ -48,12 +32,33 @@ export function ServerStatusBar() {
             </li>
           ))}
         </ul>
-        {DEMO_MODE ? (
+        {isError ? (
+          <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-gold/15 pt-3">
+            <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ash">
+              &gt; não foi possível ler o status do servidor agora
+            </p>
+            <button
+              type="button"
+              onClick={() => void refetch()}
+              className="min-h-[32px] border border-gold/40 px-3 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-bone hover:border-gold hover:text-gold-soft"
+            >
+              Tentar novamente
+            </button>
+          </div>
+        ) : data && !data.publicDataEnabled && data.message ? (
           <p className="mt-3 border-t border-gold/15 pt-3 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ash">
-            &gt; dados em tempo real após a integração com o servidor
+            &gt; {data.message}
           </p>
         ) : null}
       </div>
     </section>
   );
+}
+
+function serverStateLabelOrPlaceholder(
+  state: Parameters<typeof serverStateLabel>[0],
+  isPending: boolean,
+): string {
+  if (!state) return isPending ? "···" : "Em preparação";
+  return serverStateLabel(state);
 }

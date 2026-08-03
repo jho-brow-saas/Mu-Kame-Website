@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { serverConfig } from "@/config/server";
+import { formatBrDateTime } from "@/lib/mukame-format";
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number; done: boolean };
 
@@ -16,17 +17,31 @@ function computeRemaining(target: number): Remaining {
   };
 }
 
-const target = new Date(serverConfig.launchDate).getTime();
+export type CountdownProps = {
+  /** Data ISO de lançamento vinda da API (`data.server.launchDate`). */
+  launchDate?: string | null;
+};
 
 /** Terminal CRT: contagem em IBM Plex Mono sobre vidro esverdeado de monitor antigo. */
-export function Countdown() {
+export function Countdown({ launchDate }: CountdownProps) {
+  const target = useMemo(() => {
+    const parsed = launchDate ? new Date(launchDate).getTime() : Number.NaN;
+    return Number.isNaN(parsed) ? null : parsed;
+  }, [launchDate]);
+
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
   useEffect(() => {
+    if (target === null) {
+      setRemaining(null);
+      return;
+    }
     setRemaining(computeRemaining(target));
     const id = window.setInterval(() => setRemaining(computeRemaining(target)), 1000);
     return () => window.clearInterval(id);
-  }, []);
+  }, [target]);
+
+  const launchLabel = launchDate ? formatBrDateTime(launchDate) : null;
 
   const units = [
     { label: "Dias", value: remaining?.days },
@@ -50,13 +65,13 @@ export function Countdown() {
       {remaining?.done ? (
         <div className="relative flex flex-col items-center gap-2 px-6 py-10 text-center">
           <p className="data-text text-[0.72rem] uppercase tracking-[0.24em] text-arcane">status: online</p>
-          <h2 className="ceremonial text-2xl text-gold-soft">O servidor está online</h2>
+          <h2 className="ceremonial text-2xl text-gold-soft">Servidor lançado</h2>
           <p className="text-sm text-parchment/85">Entre agora e construa sua história.</p>
         </div>
       ) : (
         <div className="relative px-4 py-5">
           <p className="data-text mb-4 text-[0.68rem] uppercase tracking-[0.18em] text-arcane">
-            &gt; abertura em {serverConfig.launchLabel}
+            &gt; {launchLabel ? `abertura em ${launchLabel}` : "sincronizando data de abertura"}
             <span className="caret-blink ml-1 text-gold">_</span>
           </p>
           <ul className="grid grid-cols-4 gap-2">

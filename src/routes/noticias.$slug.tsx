@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { PageHero } from "@/components/layout/SiteLayout";
-import { EmptyState, LoadingState } from "@/components/ui-kit/States";
+import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States";
 import { TagBadge } from "@/components/ui-kit/Cards";
-import { api, type NewsItem } from "@/services/api";
+import { useNews } from "@/hooks/use-news";
+import { formatBrDate, parseApiDate, toPlainText } from "@/lib/mukame-format";
 
 export const Route = createFileRoute("/noticias/$slug")({
   head: () => ({
@@ -11,6 +11,9 @@ export const Route = createFileRoute("/noticias/$slug")({
       { title: "Comunicado — MU Kame" },
       { name: "description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
       { property: "og:type", content: "article" },
+      { property: "og:title", content: "Comunicado — MU Kame" },
+      { property: "og:description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: NoticiaDetalhe,
@@ -18,30 +21,24 @@ export const Route = createFileRoute("/noticias/$slug")({
 
 function NoticiaDetalhe() {
   const { slug } = Route.useParams();
-  const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<NewsItem | null>(null);
+  const { data, isPending, isError, refetch } = useNews(30);
+  const item = data?.items.find((entry) => String(entry.id) === slug) ?? null;
 
-  useEffect(() => {
-    let active = true;
-    api
-      .getNews()
-      .then((items) => {
-        if (!active) return;
-        setItem(items.find((entry) => entry.slug === slug) ?? null);
-        setLoading(false);
-      })
-      .catch(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [slug]);
-
-  if (loading) {
+  if (isPending) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <LoadingState label="Carregando comunicado…" />
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
+        <ErrorState
+          description="Não foi possível carregar este comunicado agora."
+          onRetry={() => void refetch()}
+        />
       </section>
     );
   }
@@ -65,17 +62,22 @@ function NoticiaDetalhe() {
     );
   }
 
+  const published = formatBrDate(item.publishedAt);
+  const publishedIso = parseApiDate(item.publishedAt)?.toISOString();
+
   return (
     <>
-      <PageHero eyebrow="Comunicado" title={item.subject} />
+      <PageHero eyebrow="Comunicado" title={item.title} />
       <article className="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-12 sm:px-6">
-        <div className="flex items-center gap-3">
-          <TagBadge tone="muted">{item.category}</TagBadge>
-          <time className="text-xs text-graylight" dateTime={item.date}>
-            {new Date(item.date).toLocaleDateString("pt-BR")}
-          </time>
-        </div>
-        <p className="body-text whitespace-pre-line text-mist">{item.content}</p>
+        {published ? (
+          <div className="flex items-center gap-3">
+            <TagBadge tone="muted">Comunicado</TagBadge>
+            <time className="text-xs text-graylight" dateTime={publishedIso}>
+              {published}
+            </time>
+          </div>
+        ) : null}
+        <p className="body-text whitespace-pre-line text-mist">{toPlainText(item.content)}</p>
         <Link to="/noticias" className="text-sm font-semibold text-gold hover:text-gold-soft">
           Voltar para notícias
         </Link>

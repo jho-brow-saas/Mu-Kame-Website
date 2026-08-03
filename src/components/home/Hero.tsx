@@ -1,17 +1,22 @@
-import { serverConfig } from "@/config/server";
 import { Countdown } from "@/components/common/Countdown";
 import { ActionAnchor, ActionLink } from "@/components/ui-kit/Buttons";
+import { useServerStatus } from "@/hooks/use-server-status";
+import { serverConfig } from "@/config/server";
 import { Download, ShieldPlus, Compass } from "lucide-react";
 import heroImage from "@/assets/hero-realm.jpg";
 
-const specs = [
-  { label: "Season", value: serverConfig.season },
-  { label: "Progressão", value: serverConfig.mode },
-  { label: "Master Level", value: String(serverConfig.masterLevel) },
-  { label: "Plataforma", value: serverConfig.platform },
-];
-
 export function Hero() {
+  const { data, isPending } = useServerStatus();
+  const server = data?.server;
+  const placeholder = isPending ? "···" : "—";
+
+  const specs = [
+    { label: "Season", value: server?.season ?? placeholder },
+    { label: "Progressão", value: server?.mode ?? placeholder },
+    { label: "Master Level", value: server ? String(server.masterLevel) : placeholder },
+    { label: "Plataforma", value: server?.platform ?? placeholder },
+  ];
+
   return (
     <section className="relative isolate min-h-[38rem] overflow-hidden edge-rule-bottom">
       <img
@@ -34,11 +39,8 @@ export function Hero() {
         className="absolute inset-0 bg-linear-to-r from-obsidian via-obsidian/60 to-transparent lg:from-obsidian/90 lg:via-obsidian/10 lg:to-transparent"
       />
 
-
-
       <span aria-hidden="true" className="topo-lines pointer-events-none absolute inset-0 opacity-40" />
       <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
-
 
       <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24 lg:px-8">
         <div className="flex flex-col gap-6">
@@ -49,7 +51,7 @@ export function Hero() {
           <div className="flex flex-col gap-3">
             <span className="flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.4em] text-bronze">
               <span aria-hidden="true" className="h-px w-10 bg-bronze" />
-              MU KAME
+              {server?.name ?? "MU KAME"}
             </span>
             <h1 className="hero-title text-bone">
               Reviva a lenda.
@@ -83,7 +85,7 @@ export function Hero() {
           </div>
         </div>
 
-        <Countdown />
+        <Countdown launchDate={server?.launchDate ?? null} />
       </div>
     </section>
   );
