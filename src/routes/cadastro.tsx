@@ -195,7 +195,7 @@ function CadastroPage() {
                 type="checkbox"
                 checked={values.acceptRules}
                 onChange={(e) => setValues((v) => ({ ...v, acceptRules: e.target.checked }))}
-                className="mt-1 size-4 accent-[color:var(--jade)]"
+                className="mt-1 size-4 accent-[color:var(--gold)]"
               />
               <span>
                 Li e aceito as <Link to="/regras" className="text-gold hover:text-gold-soft">regras do servidor</Link>.
