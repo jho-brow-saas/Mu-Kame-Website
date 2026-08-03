@@ -1,17 +1,22 @@
-import { SectionHeading } from "@/components/ui-kit/SectionHeading";
-import { StatCard, FeatureCard } from "@/components/ui-kit/Cards";
+import { SectionHeading, MaterialSection } from "@/components/ui-kit/SectionHeading";
+import { StatCard, FeatureCard, PlateHeader } from "@/components/ui-kit/Cards";
 import { serverConfig, serverHighlights, serverRates, differentials } from "@/config/server";
 import { Crown, Gem, History, Shield, Swords, Trophy, Users } from "lucide-react";
 
 export function AboutSection() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <MaterialSection material="parchment">
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <SectionHeading
-          eyebrow="Nossa proposta"
-          title="O clássico que marcou uma geração, reconstruído para uma nova era."
-          description="MU Kame nasce para recuperar a sensação das antigas Lan Houses, das primeiras guilds e das batalhas que atravessavam a madrugada — agora com uma experiência mais moderna, organizada e preparada para uma comunidade competitiva."
-        />
+        <div className="flex flex-col gap-5">
+          <SectionHeading
+            eyebrow="Nossa proposta"
+            title="O clássico que marcou uma geração, reconstruído para uma nova era."
+            description="MU Kame nasce para recuperar a sensação das antigas Lan Houses, das primeiras guilds e das batalhas que atravessavam a madrugada — agora com uma experiência mais organizada e preparada para uma comunidade competitiva."
+          />
+          <p className="ceremonial max-w-md text-[1.05rem] leading-relaxed text-gold-soft">
+            “{serverConfig.slogan}”
+          </p>
+        </div>
         <ul className="grid gap-4 sm:grid-cols-2">
           {[
             { title: "Nostalgia", description: "A essência do MU dos anos 2000 preservada com fidelidade.", icon: History },
@@ -25,85 +30,114 @@ export function AboutSection() {
           ))}
         </ul>
       </div>
-    </section>
+    </MaterialSection>
   );
 }
 
 export function QuickInfoSection() {
   const icons = [Gem, Shield, Crown, Swords, Users, History];
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+    <MaterialSection material="iron">
       <SectionHeading eyebrow="Informações rápidas" title="O essencial do MU Kame" className="mb-8" />
-      <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
         {serverHighlights.map((item, index) => (
           <li key={item.label}>
-            <StatCard label={item.label} value={item.value} icon={icons[index] ?? Gem} />
+            <StatCard label={item.label} value={item.value} icon={icons[index] ?? Gem} accent="gold" />
           </li>
         ))}
-
       </ul>
-    </section>
+    </MaterialSection>
   );
 }
 
 export function RatesSection() {
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+    <MaterialSection material="stone">
       <SectionHeading
         eyebrow="Transparência"
         title="Taxas do servidor"
         description="A experiência de 1500x corresponde ao VIP Ouro. A conta normal roda em 900x."
         className="mb-8"
       />
-      <div className="surface-card overflow-hidden">
+      <div className="plate plate-cut-slot overflow-hidden">
+        <PlateHeader right="exp / drop">Tabela de taxas</PlateHeader>
         <table className="w-full text-left text-sm">
           <caption className="sr-only">Comparativo de experiência e drop por tipo de conta</caption>
           <thead>
-            <tr className="border-b border-white/8 text-[0.65rem] uppercase tracking-[0.2em] text-graylight">
-              <th scope="col" className="px-5 py-4 font-semibold">Conta</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Experiência</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Drop</th>
+            <tr className="border-b border-gold/20 bg-obsidian/50">
+              <th scope="col" className="label-text px-4 py-3 text-ash">Conta</th>
+              <th scope="col" className="label-text px-4 py-3 text-ash">Experiência</th>
+              <th scope="col" className="label-text px-4 py-3 text-ash">Drop</th>
             </tr>
           </thead>
           <tbody>
             {serverRates.map((rate) => (
-              <tr key={rate.id} className="border-b border-white/5 last:border-0">
-                <th scope="row" className="px-5 py-4 font-display text-base font-normal text-ivory">{rate.name}</th>
-                <td className="px-5 py-4 text-jade">{rate.experience}</td>
-                <td className="px-5 py-4 text-gold-soft">{rate.drop}</td>
+              <tr key={rate.id} className="border-b border-white/5 last:border-0 hover:bg-bronze-dark/30">
+                <th scope="row" className="px-4 py-3 font-ui text-[0.95rem] font-600 uppercase tracking-[0.08em] text-bone">
+                  {rate.name}
+                </th>
+                <td className="data-text px-4 py-3 text-gold-soft">{rate.experience}</td>
+                <td className="data-text px-4 py-3 text-arcane">{rate.drop}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p className="mt-4 text-xs text-graylight">
-        As taxas podem variar conforme sala, evento ou sistema ativo.
+      <p className="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
+        &gt; taxas podem variar conforme sala, evento ou sistema ativo
       </p>
-    </section>
+    </MaterialSection>
   );
 }
 
 export function DifferentialsSection() {
   return (
-    <section className="border-y border-white/8 bg-[color:var(--realm)]/40 py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="Diferenciais" title="O que está confirmado no lançamento" className="mb-8" />
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {differentials.map((item) => (
+    <MaterialSection material="iron">
+      <SectionHeading eyebrow="Diferenciais" title="O que está confirmado no lançamento" className="mb-8" />
+      <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {differentials.map((item, index) => (
+          <li
+            key={item}
+            className="plate plate-cut-soft flex items-center gap-3 px-4 py-3 font-ui text-[0.9rem] uppercase tracking-[0.06em] text-bone transition-colors hover:border-gold/50"
+          >
+            <span aria-hidden="true" className="data-text text-[0.7rem] text-bronze">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span aria-hidden="true" className="h-4 w-px bg-gold/25" />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
+        Season {serverConfig.season} · status máximo {serverConfig.maxStats.toLocaleString("pt-BR")} ·{" "}
+        {serverConfig.classesCount} classes
+      </p>
+    </MaterialSection>
+  );
+}
+
+/** Faixa de mapa: referência aos mapas impressos e pôsteres de LAN house. */
+export function RealmMapStrip() {
+  const regions = ["Lorencia", "Noria", "Devias", "Dungeon", "Lost Tower", "Tarkan", "Icarus", "Kanturu"];
+  return (
+    <MaterialSection material="map">
+      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <SectionHeading
+          eyebrow="Continente"
+          title="Um mapa que você já conhece de cor."
+          description="Das ruas de Lorencia às ruínas de Kanturu, o traçado clássico permanece — o mesmo caminho, uma nova jornada."
+        />
+        <ul className="grid grid-cols-2 gap-px border border-gold/20 bg-gold/10 sm:grid-cols-4">
+          {regions.map((region) => (
             <li
-              key={item}
-              className="surface-card flex items-center gap-3 px-5 py-4 text-sm text-ivory transition-transform duration-300 hover:-translate-y-0.5"
+              key={region}
+              className="bg-obsidian/80 px-3 py-4 text-center font-mono text-[0.72rem] uppercase tracking-[0.16em] text-parchment/80 transition-colors hover:bg-bronze-dark/60 hover:text-gold-soft"
             >
-              <span className="size-1.5 shrink-0 rounded-full bg-jade" aria-hidden="true" />
-              {item}
+              {region}
             </li>
           ))}
         </ul>
-        <p className="mt-6 text-xs text-graylight">
-          Season {serverConfig.season} • Status máximo {serverConfig.maxStats.toLocaleString("pt-BR")} •{" "}
-          {serverConfig.classesCount} classes disponíveis
-        </p>
       </div>
-    </section>
+    </MaterialSection>
   );
 }
