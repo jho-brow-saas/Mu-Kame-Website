@@ -24,8 +24,10 @@ import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ContaIndexRouteImport } from './routes/conta.index'
+import { Route as ContaDownloadsRouteImport } from './routes/conta.downloads'
 import { Route as ContaEvolucaoRouteImport } from './routes/conta.evolucao'
 import { Route as ContaPersonagensRouteImport } from './routes/conta.personagens'
+import { Route as ContaVipMoedasRouteImport } from './routes/conta.vip-moedas'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as RankingsIndexRouteImport } from './routes/rankings.index'
@@ -118,6 +120,11 @@ const ContaIndexRoute = ContaIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ContaRoute,
 } as any)
+const ContaDownloadsRoute = ContaDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => ContaRoute,
+} as any)
 const ContaEvolucaoRoute = ContaEvolucaoRouteImport.update({
   id: '/evolucao',
   path: '/evolucao',
@@ -126,6 +133,11 @@ const ContaEvolucaoRoute = ContaEvolucaoRouteImport.update({
 const ContaPersonagensRoute = ContaPersonagensRouteImport.update({
   id: '/personagens',
   path: '/personagens',
+  getParentRoute: () => ContaRoute,
+} as any)
+const ContaVipMoedasRoute = ContaVipMoedasRouteImport.update({
+  id: '/vip-moedas',
+  path: '/vip-moedas',
   getParentRoute: () => ContaRoute,
 } as any)
 const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
@@ -224,8 +236,10 @@ export interface FileRoutesByFullPath {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -256,8 +270,10 @@ export interface FileRoutesByTo {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -292,8 +308,10 @@ export interface FileRoutesById {
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
+  '/conta/downloads': typeof ContaDownloadsRoute
   '/conta/evolucao': typeof ContaEvolucaoRoute
   '/conta/personagens': typeof ContaPersonagensRoute
+  '/conta/vip-moedas': typeof ContaVipMoedasRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/rankings/blood-castle': typeof RankingsBloodCastleRoute
   '/rankings/chaos-castle': typeof RankingsChaosCastleRoute
@@ -329,8 +347,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -361,8 +381,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -396,8 +418,10 @@ export interface FileRouteTypes {
     | '/regras'
     | '/suporte'
     | '/vip'
+    | '/conta/downloads'
     | '/conta/evolucao'
     | '/conta/personagens'
+    | '/conta/vip-moedas'
     | '/noticias/$slug'
     | '/rankings/blood-castle'
     | '/rankings/chaos-castle'
@@ -541,6 +565,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContaIndexRouteImport
       parentRoute: typeof ContaRoute
     }
+    '/conta/downloads': {
+      id: '/conta/downloads'
+      path: '/downloads'
+      fullPath: '/conta/downloads'
+      preLoaderRoute: typeof ContaDownloadsRouteImport
+      parentRoute: typeof ContaRoute
+    }
     '/conta/evolucao': {
       id: '/conta/evolucao'
       path: '/evolucao'
@@ -553,6 +584,13 @@ declare module '@tanstack/react-router' {
       path: '/personagens'
       fullPath: '/conta/personagens'
       preLoaderRoute: typeof ContaPersonagensRouteImport
+      parentRoute: typeof ContaRoute
+    }
+    '/conta/vip-moedas': {
+      id: '/conta/vip-moedas'
+      path: '/vip-moedas'
+      fullPath: '/conta/vip-moedas'
+      preLoaderRoute: typeof ContaVipMoedasRouteImport
       parentRoute: typeof ContaRoute
     }
     '/noticias/': {
@@ -671,14 +709,18 @@ declare module '@tanstack/react-router' {
 }
 
 interface ContaRouteChildren {
+  ContaDownloadsRoute: typeof ContaDownloadsRoute
   ContaEvolucaoRoute: typeof ContaEvolucaoRoute
   ContaPersonagensRoute: typeof ContaPersonagensRoute
+  ContaVipMoedasRoute: typeof ContaVipMoedasRoute
   ContaIndexRoute: typeof ContaIndexRoute
 }
 
 const ContaRouteChildren: ContaRouteChildren = {
+  ContaDownloadsRoute: ContaDownloadsRoute,
   ContaEvolucaoRoute: ContaEvolucaoRoute,
   ContaPersonagensRoute: ContaPersonagensRoute,
+  ContaVipMoedasRoute: ContaVipMoedasRoute,
   ContaIndexRoute: ContaIndexRoute,
 }
 
