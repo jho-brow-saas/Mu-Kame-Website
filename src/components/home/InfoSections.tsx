@@ -37,9 +37,10 @@ export function QuickInfoSection() {
       <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {serverHighlights.map((item, index) => (
           <li key={item.label}>
-            <StatCard label={item.label} value={item.value} icon={icons[index]} />
+            <StatCard label={item.label} value={item.value} icon={icons[index] ?? Gem} />
           </li>
         ))}
+
       </ul>
     </section>
   );
