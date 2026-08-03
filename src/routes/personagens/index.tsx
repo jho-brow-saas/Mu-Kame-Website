@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { Users, Shield, Zap, Sparkles } from "lucide-react";
 
-export const Route = createFileRoute("/personagens")({
+export const Route = createFileRoute("/personagens/")({
   head: () => ({
     title: "Personagens | MU Kame - Guia de Classes",
     meta: [

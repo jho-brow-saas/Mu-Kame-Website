@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroIndexRouteImport } from './routes/cadastro/index'
 import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
+import { Route as PersonagensIndexRouteImport } from './routes/personagens/index'
 import { Route as RankingsIndexRouteImport } from './routes/rankings/index'
+import { Route as SuporteIndexRouteImport } from './routes/suporte/index'
 import { Route as VipIndexRouteImport } from './routes/vip/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -30,9 +32,19 @@ const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
   path: '/downloads/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PersonagensIndexRoute = PersonagensIndexRouteImport.update({
+  id: '/personagens/',
+  path: '/personagens/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RankingsIndexRoute = RankingsIndexRouteImport.update({
   id: '/rankings/',
   path: '/rankings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuporteIndexRoute = SuporteIndexRouteImport.update({
+  id: '/suporte/',
+  path: '/suporte/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VipIndexRoute = VipIndexRouteImport.update({
@@ -45,14 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/personagens/': typeof PersonagensIndexRoute
   '/rankings/': typeof RankingsIndexRoute
+  '/suporte/': typeof SuporteIndexRoute
   '/vip/': typeof VipIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroIndexRoute
   '/downloads': typeof DownloadsIndexRoute
+  '/personagens': typeof PersonagensIndexRoute
   '/rankings': typeof RankingsIndexRoute
+  '/suporte': typeof SuporteIndexRoute
   '/vip': typeof VipIndexRoute
 }
 export interface FileRoutesById {
@@ -60,22 +76,48 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cadastro/': typeof CadastroIndexRoute
   '/downloads/': typeof DownloadsIndexRoute
+  '/personagens/': typeof PersonagensIndexRoute
   '/rankings/': typeof RankingsIndexRoute
+  '/suporte/': typeof SuporteIndexRoute
   '/vip/': typeof VipIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cadastro/' | '/downloads/' | '/rankings/' | '/vip/'
+  fullPaths:
+    | '/'
+    | '/cadastro/'
+    | '/downloads/'
+    | '/personagens/'
+    | '/rankings/'
+    | '/suporte/'
+    | '/vip/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro' | '/downloads' | '/rankings' | '/vip'
-  id: '__root__' | '/' | '/cadastro/' | '/downloads/' | '/rankings/' | '/vip/'
+  to:
+    | '/'
+    | '/cadastro'
+    | '/downloads'
+    | '/personagens'
+    | '/rankings'
+    | '/suporte'
+    | '/vip'
+  id:
+    | '__root__'
+    | '/'
+    | '/cadastro/'
+    | '/downloads/'
+    | '/personagens/'
+    | '/rankings/'
+    | '/suporte/'
+    | '/vip/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroIndexRoute: typeof CadastroIndexRoute
   DownloadsIndexRoute: typeof DownloadsIndexRoute
+  PersonagensIndexRoute: typeof PersonagensIndexRoute
   RankingsIndexRoute: typeof RankingsIndexRoute
+  SuporteIndexRoute: typeof SuporteIndexRoute
   VipIndexRoute: typeof VipIndexRoute
 }
 
@@ -102,11 +144,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DownloadsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/personagens/': {
+      id: '/personagens/'
+      path: '/personagens'
+      fullPath: '/personagens/'
+      preLoaderRoute: typeof PersonagensIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rankings/': {
       id: '/rankings/'
       path: '/rankings'
       fullPath: '/rankings/'
       preLoaderRoute: typeof RankingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/suporte/': {
+      id: '/suporte/'
+      path: '/suporte'
+      fullPath: '/suporte/'
+      preLoaderRoute: typeof SuporteIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vip/': {
@@ -123,7 +179,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroIndexRoute: CadastroIndexRoute,
   DownloadsIndexRoute: DownloadsIndexRoute,
+  PersonagensIndexRoute: PersonagensIndexRoute,
   RankingsIndexRoute: RankingsIndexRoute,
+  SuporteIndexRoute: SuporteIndexRoute,
   VipIndexRoute: VipIndexRoute,
 }
 export const routeTree = rootRouteImport

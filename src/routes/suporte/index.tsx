@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "../../components/layout/Navbar";
 import { HelpCircle, MessageSquare, BookOpen, Mail } from "lucide-react";
 
-export const Route = createFileRoute("/suporte")({
+export const Route = createFileRoute("/suporte/")({
   head: () => ({
     title: "Suporte | MU Kame - Central de Ajuda",
     meta: [
