@@ -6,6 +6,7 @@ import { ActionLink, BracketLink } from "@/components/ui-kit/Buttons";
 import { useEvents } from "@/hooks/use-events";
 import { useCastleSiege } from "@/hooks/use-castle-siege";
 import { useRankings } from "@/hooks/use-rankings";
+import { useSettings } from "@/hooks/use-settings";
 import { eventCategoryLabel, formatBrDateTime, isGuildCategory } from "@/lib/mukame-format";
 import type { RankingType } from "@/types/mukame-api";
 import { Castle, CalendarClock } from "lucide-react";
@@ -69,17 +70,23 @@ function RankingPreviewCard({
 }
 
 export function RankingPreviewSection() {
-  const { data } = useRankings("reset", 10);
+  const { data: rankingsData } = useRankings("reset", 10);
+  const { data: settingsData } = useSettings();
+  
+  const launchDate = settingsData?.launchDate;
+  
   const releaseMessage =
-    data && data.items.length === 0
-      ? (data.message ?? "A disputa começa em 01 de setembro de 2026.")
+    rankingsData && rankingsData.items.length === 0
+      ? (rankingsData.message ?? (launchDate ? `A disputa começa em ${launchDate}.` : "A disputa começa em breve."))
       : "Os rankings são alimentados diretamente pelo servidor oficial.";
+
+  const sectionTitle = launchDate ? `A disputa começa em ${launchDate}` : "A disputa começa em breve";
 
   return (
     <MaterialSection material="iron">
       <SectionHeading
         eyebrow="Rankings"
-        title="A disputa começa em 01 de setembro de 2026"
+        title={sectionTitle}
         description={releaseMessage}
         className="mb-8"
       />
@@ -153,10 +160,12 @@ export function EventsSection() {
 
 export function CastleSiegePreview() {
   const { data, isPending, isError, refetch } = useCastleSiege();
+  const { data: settings } = useSettings();
+  
   const siege = data?.configured ? (data.castleSiege ?? null) : null;
   const owner = siege?.ownerGuild?.trim() ? siege.ownerGuild.trim() : null;
-  const start = formatBrDateTime(siege?.startDate ?? null);
-  const end = formatBrDateTime(siege?.endDate ?? null);
+  const start = siege?.startDate ? formatBrDateTime(siege.startDate) : (settings?.castleSiegeSchedule ?? null);
+  const end = siege?.endDate ? formatBrDateTime(siege.endDate) : null;
 
   return (
     <MaterialSection material="fortress">
@@ -207,7 +216,7 @@ export function CastleSiegePreview() {
               <ul className="flex flex-col divide-y divide-gold/10">
                 {[
                   { label: "Guild dominante", value: owner ?? "Indefinida" },
-                  { label: "Início", value: start ?? "A definir" },
+                  { label: "Início", value: start ?? (settings?.castleSiegeSchedule ? settings.castleSiegeSchedule : "Horário a definir") },
                   { label: "Término", value: end ?? "A definir" },
                 ].map((row) => (
                   <li key={row.label} className="flex items-baseline justify-between gap-3 px-4 py-3">

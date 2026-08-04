@@ -4,6 +4,10 @@ import { serverConfig, serverHighlights, serverRates, differentials } from "@/co
 import { Crown, Gem, History, Shield, Swords, Trophy, Users } from "lucide-react";
 
 export function AboutSection() {
+  const { data: settings } = useSettings();
+  const { data: status } = useServerStatus();
+  const serverName = settings?.serverName ?? status?.server?.name ?? serverConfig.name;
+
   return (
     <MaterialSection material="parchment">
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">

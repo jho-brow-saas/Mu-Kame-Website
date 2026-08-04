@@ -7,10 +7,12 @@ import { ActionAnchor, ActionLink, bracketClasses, BracketMarks } from "@/compon
 import { VipPlansGrid } from "@/components/vip/VipPlansGrid";
 import { useNews } from "@/hooks/use-news";
 import { useDownloads } from "@/hooks/use-downloads";
+import { useSocials } from "@/hooks/use-socials";
+import { useSettings } from "@/hooks/use-settings";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { excerpt, formatBrDate, formatWhatsappLabel, isSafeExternalUrl, whatsappUrl } from "@/lib/mukame-format";
 import { serverConfig, whatsappLink, faqItems } from "@/config/server";
-import { Download, Instagram, MessageCircle, Music2, Smartphone } from "lucide-react";
+import { Download, Instagram, MessageCircle, Music2, Smartphone, Send } from "lucide-react";
 
 export function VipSection() {
   return (
@@ -136,14 +138,15 @@ export function DownloadsSection() {
 }
 
 export function CommunitySection() {
-  const { data } = useServerStatus();
-  const server = data?.server;
-  const apiWhatsapp = whatsappUrl(server?.supportWhatsApp, serverConfig.supportMessage);
-  const handle = server?.socialHandle ?? serverConfig.socialHandle;
-  const whatsappHref = apiWhatsapp ?? whatsappLink;
-  const whatsappLabel = server?.supportWhatsApp
-    ? formatWhatsappLabel(server.supportWhatsApp)
-    : serverConfig.supportWhatsAppLabel;
+  const { data: statusData } = useServerStatus();
+  const { data: socialsData } = useSocials();
+  
+  const server = statusData?.server;
+  const socials = socialsData;
+  
+  const whatsappHref = socials?.whatsapp.url ?? whatsappUrl(server?.supportWhatsApp, serverConfig.supportMessage) ?? whatsappLink;
+  const whatsappLabel = socials?.whatsapp.handle ?? (server?.supportWhatsApp ? formatWhatsappLabel(server.supportWhatsApp) : serverConfig.supportWhatsAppLabel);
+  const handle = socials?.instagram.handle ?? server?.socialHandle ?? serverConfig.socialHandle;
 
   return (
     <MaterialSection material="stone">
@@ -161,26 +164,42 @@ export function CommunitySection() {
               {whatsappLabel}
             </ActionAnchor>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <ActionAnchor
-                href={serverConfig.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="ghost"
-                className="flex-1"
-              >
-                <Instagram className="size-4" aria-hidden="true" />
-                Instagram {handle}
-              </ActionAnchor>
-              <ActionAnchor
-                href={serverConfig.tiktokUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="ghost"
-                className="flex-1"
-              >
-                <Music2 className="size-4" aria-hidden="true" />
-                TikTok {handle}
-              </ActionAnchor>
+              {socials?.instagram.available !== false && (
+                <ActionAnchor
+                  href={socials?.instagram.url ?? serverConfig.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="ghost"
+                  className="flex-1"
+                >
+                  <Instagram className="size-4" aria-hidden="true" />
+                  Instagram {handle}
+                </ActionAnchor>
+              )}
+              {socials?.tiktok.available !== false && (
+                <ActionAnchor
+                  href={socials?.tiktok.url ?? serverConfig.tiktokUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="ghost"
+                  className="flex-1"
+                >
+                  <Music2 className="size-4" aria-hidden="true" />
+                  TikTok {handle}
+                </ActionAnchor>
+              )}
+              {socials?.discord.available && (
+                <ActionAnchor
+                  href={socials.discord.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="ghost"
+                  className="flex-1"
+                >
+                  <Send className="size-4" aria-hidden="true" />
+                  Discord
+                </ActionAnchor>
+              )}
             </div>
           </div>
         </div>
