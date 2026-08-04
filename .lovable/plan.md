@@ -1,38 +1,38 @@
 ---
-name: Correção de Tamanho e Enquadramento da Logo
-description: Plano para ajustar as dimensões da logo no cabeçalho, garantindo visibilidade e proporções corretas em diferentes dispositivos, lidando com margens excessivas do asset.
+name: Alteração de Favicon
+description: Plano para substituir a favicon atual pela nova imagem fornecida, otimizando as dimensões para preenchimento total e alta qualidade em múltiplos formatos.
 type: design
 ---
 
 ## Objetivo
-Ajustar o tamanho da logo no cabeçalho para que ela tenha presença visual adequada (legível e clara), respeitando as restrições de altura do header e corrigindo o impacto das margens internas do arquivo de imagem original.
+Substituir a favicon atual do projeto pela nova imagem do escudo "K" dourado enviada pelo usuário, garantindo que ela ocupe todo o espaço disponível e seja renderizada com clareza em todas as plataformas (browsers, bookmarks, mobile).
 
-## Análise do Estado Atual
-- A logo está sendo renderizada via componente `Logo.tsx` usando um asset PNG.
-- A altura atual está limitada por classes `max-h-12` ou `max-h-16`.
-- O usuário relata que a logo parece pequena devido a margens transparentes excessivas no próprio arquivo PNG.
+## Análise Técnica
+- O projeto atualmente usa uma URL externa para a favicon no `src/routes/__root.tsx`.
+- O arquivo físico `public/favicon.ico` existe no sistema de arquivos.
+- A imagem enviada pelo usuário (`user-uploads://ChatGPT_Image_4_de_ago._de_2026_20_19_56.png`) é o novo escudo oficial.
 
 ## Ações Propostas
 
-### 1. Ajuste Dimensional no Componente Logo (`src/components/layout/Logo.tsx`)
-- Remover limites restritivos genéricos (`max-h-12`, `max-h-16`).
-- Implementar classes responsivas específicas para a altura visual desejada, compensando as margens internas do asset:
-  - **Desktop (lg):** `h-[50px]` (para atingir visualmente 46px-50px).
-  - **Tablet (md):** `h-[44px]` (para atingir visualmente 40px-44px).
-  - **Mobile:** `h-[38px]` (para atingir visualmente 34px-38px).
-- Manter `w-auto` e `object-contain` para preservar a proporção.
-- Garantir alinhamento vertical centralizado.
+### 1. Processamento da Imagem
+- Copiar a imagem original para o diretório `public/` para processamento.
+- Gerar versões redimensionadas (16x16, 32x32, 180x180 para Apple Touch, e 192x192 para Android) a partir da imagem original.
+- Garantir que não haja margens transparentes excessivas no corte para que o escudo preencha o ícone.
 
-### 2. Ajuste de Layout no Header (`src/components/layout/Header.tsx`)
-- Garantir que o container da logo no header (`Link`) tenha a classe `shrink-0` para não ser espremido pelos itens de menu.
-- Verificar se há espaço suficiente no bloco esquerdo.
+### 2. Atualização dos Arquivos Estáticos (`public/`)
+- Substituir o arquivo `public/favicon.ico` (container multiresolução).
+- Adicionar `public/apple-touch-icon.png` (180x180).
+- Adicionar `public/favicon-32x32.png` e `public/favicon-16x16.png`.
 
-### 3. Testes de Responsividade
-- Validar visualmente nas resoluções especificadas:
-  - 320px, 375px (Mobile)
-  - 768px (Tablet)
-  - 1024px, 1366px, 1920px (Desktop)
+### 3. Ajuste no Root Route (`src/routes/__root.tsx`)
+- Remover o link da favicon que aponta para uma URL externa.
+- Implementar a nova estrutura de links apontando para os arquivos locais na pasta `public/`:
+  - `<link rel="icon" type="image/x-icon" href="/favicon.ico" />`
+  - `<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />`
+  - `<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />`
+  - `<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />`
 
-## Notas Técnicas
-- Não utilizaremos ferramentas de edição de imagem externas para "recortar" o asset, mas sim técnicas de dimensionamento CSS (`padding` negativo ou aumento proporcional de `height`) se o asset ainda apresentar margens internas que o tornem pequeno.
-- O objetivo é a legibilidade sem aumentar a altura total do cabeçalho (que hoje é `h-16`).
+## Validação
+- Verificar a renderização do ícone na aba do navegador.
+- Validar via DevTools se as diferentes resoluções estão sendo carregadas corretamente.
+- Garantir que o ícone do "escudo dourado" não apresente distorções ou cortes indevidos.
