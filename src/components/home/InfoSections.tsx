@@ -191,7 +191,7 @@ export function RatesSection() {
                           <X className="h-4 w-4 text-crimson" />
                         )
                       ) : (
-                        <span className="data-text text-sm text-bone">{item.value}</span>
+                        <span className="data-text text-sm text-bone">{String(item.value)}</span>
                       )}
                     </div>
                   </li>
@@ -251,7 +251,7 @@ export function DifferentialsSection() {
         ))}
       </ul>
       <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
-        Season {settings?.season ?? serverConfig.season} · status máximo {(settings?.maxStats ?? serverConfig.maxStats).toLocaleString("pt-BR")} ·{" "}
+        Season {settings?.season ?? server?.season ?? serverConfig.season} · status máximo {((settings?.maxStats ?? server?.maxStats ?? serverConfig.maxStats)).toLocaleString("pt-BR")} ·{" "}
         {serverConfig.classesCount} classes
       </p>
     </MaterialSection>
