@@ -232,6 +232,8 @@ export function RatesSection() {
 
 export function DifferentialsSection() {
   const { data: settings } = useSettings();
+  const { data: status } = useServerStatus();
+  const server = status?.server;
 
   return (
     <MaterialSection material="iron">
