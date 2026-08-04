@@ -34,8 +34,8 @@ const PROXY_PATH = "/api/public/mukame";
 /** Domínios em que a API oficial responde com `Access-Control-Allow-Origin`. */
 const CORS_ALLOWED_HOSTS = new Set(["novo.mukame.online", "mukame.online", "www.mukame.online"]);
 
-/** Timeout padrão das requisições públicas. */
-const REQUEST_TIMEOUT_MS = 8_000;
+/** Timeout padrão das requisições públicas. Aumentado para lidar com latência de rede. */
+const REQUEST_TIMEOUT_MS = 15_000;
 
 export type MuKameErrorKind = "timeout" | "network" | "http" | "payload";
 
