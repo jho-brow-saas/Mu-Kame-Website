@@ -30,7 +30,7 @@ const schema = z
     confirmGamePassword: z.string(),
     password: z
       .string()
-      .min(12, "A senha do portal precisa ter no mínimo 12 caracteres.")
+      .min(8, "A senha da Área do Jogador precisa ter no mínimo 8 caracteres.")
       .max(128),
     confirmPassword: z.string(),
     acceptRules: z.literal(true, { message: "É necessário aceitar as regras." }),
@@ -65,8 +65,8 @@ export const Route = createFileRoute("/criar-conta")({
 
 function passwordStrength(value: string) {
   let score = 0;
-  if (value.length >= 6) score += 1;
-  if (value.length >= 10) score += 1;
+  if (value.length >= 8) score += 1;
+  if (value.length >= 12) score += 1;
   if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score += 1;
   if (/\d/.test(value)) score += 1;
   return Math.min(score, 4);
@@ -159,7 +159,7 @@ function CadastroPage() {
             <div className="flex gap-3">
               <Info className="size-5 text-gold shrink-0 mt-0.5" />
               <p className="text-xs text-parchment/80 leading-relaxed italic">
-                “Sua senha do jogo possui limite de 10 caracteres e será usada no cliente do MU. A senha da Área do Jogador é separada e deve possuir no mínimo 12 caracteres.”
+                “Sua senha do jogo possui limite de 10 caracteres e será usada no cliente do MU. A senha da Área do Jogador deve possuir no mínimo 8 caracteres. Para maior segurança, recomendamos 12 ou mais.”
               </p>
             </div>
           </div>

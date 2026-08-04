@@ -35,8 +35,8 @@ function ResetPasswordPage() {
     e.preventDefault();
     if (!token || submitting) return;
 
-    if (password.length < 12) {
-      toast.error("A nova senha deve possuir no mínimo 12 caracteres.");
+    if (password.length < 8) {
+      toast.error("A senha da Área do Jogador deve possuir no mínimo 8 caracteres. Para maior segurança, recomendamos 12 ou mais.");
       return;
     }
 
@@ -116,7 +116,7 @@ function ResetPasswordPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={cn(fieldClass, "pr-12")}
-                placeholder="Mínimo 12 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 required
                 disabled={submitting}
               />
