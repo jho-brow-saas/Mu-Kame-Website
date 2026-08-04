@@ -69,7 +69,6 @@ export class MuKameApiError extends Error {
 export type QueryParams = Record<string, string | number | undefined>;
 
 /** No navegador: direto em produção oficial, proxy de mesma origem em qualquer outro host. */
-/** No navegador: direto em produção oficial, proxy de mesma origem em qualquer outro host. */
 export function useDevProxy(): boolean {
   if (typeof window === "undefined") return false;
   
@@ -78,6 +77,11 @@ export function useDevProxy(): boolean {
   // Se for um dos hosts oficiais de produção, usamos chamada DIRETA
   if (DIRECT_API_HOSTS.has(hostname)) {
     return false;
+  }
+
+  // Se o usuário explicitamente pediu para forçar o proxy via localStorage
+  if (localStorage.getItem("mukame_force_proxy") === "true") {
+    return true;
   }
 
   // Se for localhost, preview do Lovable ou qualquer outro subdomínio, usamos o PROXY
