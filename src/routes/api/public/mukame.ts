@@ -66,23 +66,36 @@ export const Route = createFileRoute("/api/public/mukame")({
         }
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8_000);
+        const timeout = setTimeout(() => controller.abort(), 12_000); // Aumentado para 12s no proxy
         try {
           const upstream = await fetch(target.toString(), {
             method: "GET",
-            headers: { Accept: "application/json" },
+            headers: { 
+              Accept: "application/json",
+              "User-Agent": "MU-Kame-Proxy/1.0",
+            },
             signal: controller.signal,
           });
+
+          if (!upstream.ok) {
+            return jsonError(`Erro na API original (${upstream.status})`, upstream.status);
+          }
+
           const body = await upstream.text();
           return new Response(body, {
-            status: upstream.status,
+            status: 200,
             headers: {
               "Content-Type": "application/json",
               "Cache-Control": "no-store",
+              "X-Proxy-Source": "MU-Kame-Gateway",
             },
           });
-        } catch {
-          return jsonError("Não foi possível alcançar a API do servidor.", 502);
+        } catch (error) {
+          const isTimeout = error instanceof Error && error.name === "AbortError";
+          return jsonError(
+            isTimeout ? "Tempo limite excedido na API (12s)." : "Não foi possível alcançar a API do servidor.",
+            502
+          );
         } finally {
           clearTimeout(timeout);
         }

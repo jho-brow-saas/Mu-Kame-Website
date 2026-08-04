@@ -128,7 +128,7 @@ export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSigna
       if (!signal?.aborted && currentAttempt < retries) {
         console.warn(`[MU Kame API] Tentativa ${currentAttempt + 1} falhou, tentando novamente...`, error);
         // Pequeno delay exponencial entre retries
-        await new Promise(resolve => setTimeout(resolve, 500 * (currentAttempt + 1)));
+        await new Promise(resolve => setTimeout(resolve, 800 * (currentAttempt + 1)));
         return attemptFetch(currentAttempt + 1);
       }
 
@@ -141,11 +141,13 @@ export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSigna
       const message = error instanceof Error ? error.message : "Desconhecido";
       console.error(`[MU Kame API] Erro de rede em ${JSON.stringify(params)}:`, error);
 
-      const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.endsWith(".lovableproject.com"));
+      const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+      const isLovable = hostname.endsWith(".lovableproject.com") || hostname.endsWith(".lovable.app");
       
       let userMessage = `Não foi possível alcançar a API do servidor (${message}).`;
-      if (isLocal && !useDevProxy()) {
-        userMessage += " Tente forçar o uso do proxy de desenvolvimento para contornar restrições de rede locais.";
+      
+      if (isLovable) {
+        userMessage += " Este erro é comum no ambiente de visualização devido a restrições de rede temporárias. Por favor, tente recarregar a página.";
       }
 
       throw new MuKameApiError("network", userMessage);
