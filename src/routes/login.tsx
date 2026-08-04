@@ -23,9 +23,9 @@ export const Route = createFileRoute("/login")({
       { name: "description", content: description },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
-      { property: "og:url", content: "https://novo.mukame.online/login" },
+      { property: "og:url", content: "https://novo.mukame.online/entrar" },
     ],
-    links: [{ rel: "canonical", href: "https://novo.mukame.online/login" }],
+    links: [{ rel: "canonical", href: "https://novo.mukame.online/entrar" }],
   }),
   component: LoginPage,
 });
@@ -131,15 +131,15 @@ function LoginPage() {
           <p className="text-sm text-mist text-center">
             <Link 
               to="/esqueci-minha-senha"
-              className="text-ash/60 hover:text-gold transition-colors text-xs"
+              className="inline-block py-2 px-4 text-ash/80 hover:text-gold focus-visible:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 transition-all text-xs font-medium tracking-wide"
             >
               Esqueci minha senha
             </Link>
           </p>
 
 
-          <p className="text-sm text-mist">
-            Ainda não tem conta? <Link to="/cadastro" className="text-gold hover:text-gold-soft">Criar conta</Link>
+          <p className="text-sm text-mist text-center border-t border-white/5 pt-4">
+            Ainda não tem conta? <Link to="/criar-conta" className="text-gold hover:text-gold-soft font-semibold">Criar conta</Link>
           </p>
         </form>
       </section>

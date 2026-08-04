@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { serverConfig } from "@/config/server";
-import { formatBrDateTime } from "@/lib/mukame-format";
+import { formatBrDateTime } from "@/lib/date-utils";
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number; done: boolean };
 
