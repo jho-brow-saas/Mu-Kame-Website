@@ -1,32 +1,50 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { ActionButton } from "@/components/ui-kit/Buttons";
-import { api } from "@/services/api";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { toast } from "sonner";
 
 const schema = z
   .object({
-    username: z
+    accountId: z
       .string()
       .trim()
-      .min(4, "O usuário precisa ter no mínimo 4 caracteres.")
-      .max(10, "O usuário precisa ter no máximo 10 caracteres.")
-      .regex(/^[a-zA-Z0-9]+$/, "Use apenas letras e números."),
-    email: z.string().trim().email("Informe um e-mail válido.").max(255),
-    password: z.string().min(6, "A senha precisa ter no mínimo 6 caracteres.").max(20),
+      .min(4, "O login precisa ter no mínimo 4 caracteres.")
+      .max(10, "O login precisa ter no máximo 10 caracteres.")
+      .regex(/^[a-z0-9_]+$/, "Use apenas minúsculas, números e underscore (_).")
+      .transform(v => v.toLowerCase()),
+    displayName: z
+      .string()
+      .trim()
+      .min(3, "O nome precisa ter no mínimo 3 caracteres.")
+      .max(10, "O nome precisa ter no máximo 10 caracteres."),
+    email: z.string().trim().email("Informe um e-mail válido.").max(50, "Máximo 50 caracteres."),
+    gamePassword: z
+      .string()
+      .min(4, "A senha do jogo precisa ter no mínimo 4 caracteres.")
+      .max(10, "A senha do jogo precisa ter no máximo 10 caracteres."),
+    confirmGamePassword: z.string(),
+    password: z
+      .string()
+      .min(12, "A senha do portal precisa ter no mínimo 12 caracteres.")
+      .max(128),
     confirmPassword: z.string(),
     acceptRules: z.literal(true, { message: "É necessário aceitar as regras." }),
   })
+  .refine((data) => data.gamePassword === data.confirmGamePassword, {
+    path: ["confirmGamePassword"],
+    message: "As senhas do jogo não coincidem.",
+  })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
-    message: "As senhas não coincidem.",
+    message: "As senhas do portal não coincidem.",
   });
 
-type Errors = Partial<Record<"username" | "email" | "password" | "confirmPassword" | "acceptRules", string>>;
+type Errors = Partial<Record<keyof z.infer<typeof schema>, string>>;
 
 const title = "Criar conta — MU Kame";
 const description = "Crie sua conta no MU Kame e prepare-se para o lançamento da Season 6.15 em 01/09/2026.";
@@ -57,18 +75,29 @@ function passwordStrength(value: string) {
 const strengthLabels = ["Muito fraca", "Fraca", "Razoável", "Boa", "Forte"];
 
 function CadastroPage() {
-  const [values, setValues] = useState({ username: "", email: "", password: "", confirmPassword: "", acceptRules: false });
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  const [values, setValues] = useState({ 
+    accountId: "", 
+    displayName: "",
+    email: "", 
+    gamePassword: "", 
+    confirmGamePassword: "",
+    password: "", 
+    confirmPassword: "", 
+    acceptRules: false 
+  });
   const [errors, setErrors] = useState<Errors>({});
-  const [showPassword, setShowPassword] = useState(false);
+  const [showGamePassword, setShowGamePassword] = useState(false);
+  const [showPortalPassword, setShowPortalPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: "ok" | "error"; message: string } | null>(null);
 
   const strength = passwordStrength(values.password);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (submitting) return;
-    setFeedback(null);
+    setErrors({});
     const parsed = schema.safeParse(values);
     if (!parsed.success) {
       const nextErrors: Errors = {};
@@ -79,25 +108,31 @@ function CadastroPage() {
       setErrors(nextErrors);
       return;
     }
-    setErrors({});
+    
     setSubmitting(true);
     try {
-      const result = await api.register({
-        username: parsed.data.username,
+      await register({
+        accountId: parsed.data.accountId,
+        displayName: parsed.data.displayName,
         email: parsed.data.email,
+        gamePassword: parsed.data.gamePassword,
         password: parsed.data.password,
       });
-      setFeedback({ type: "ok", message: result.message });
-      setValues({ username: "", email: "", password: "", confirmPassword: "", acceptRules: false });
-    } catch {
-      setFeedback({ type: "error", message: "Não foi possível concluir o cadastro. Tente novamente." });
+      toast.success("Conta criada com sucesso!");
+      navigate({ to: "/login" });
+    } catch (error: any) {
+      if (error.code === "REGISTRATION_FAILED") {
+        toast.error("Não foi possível criar a conta. O login ou e-mail pode já estar em uso.");
+      } else {
+        toast.error(error.message || "Não foi possível concluir o cadastro.");
+      }
     } finally {
       setSubmitting(false);
     }
   }
 
   const fieldClass =
-    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold";
+    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold disabled:opacity-50";
 
   return (
     <SiteLayout>
@@ -205,17 +240,8 @@ function CadastroPage() {
           </div>
 
           <ActionButton type="submit" disabled={submitting}>
-            {submitting ? "Enviando…" : "Criar conta"}
+            {submitting ? "Forjando conta…" : "Criar conta"}
           </ActionButton>
-
-          {feedback ? (
-            <p
-              role="status"
-              className={cn("text-sm", feedback.type === "ok" ? "text-success" : "text-danger")}
-            >
-              {feedback.message}
-            </p>
-          ) : null}
 
           <p className="text-sm text-mist">
             Já tem conta? <Link to="/login" className="text-gold hover:text-gold-soft">Entrar</Link>
