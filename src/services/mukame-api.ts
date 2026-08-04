@@ -12,6 +12,8 @@ import type {
   StatusPayload,
   VipPayload,
   RatesPayload,
+  RulesPayload,
+  FaqPayload,
 } from "@/types/mukame-api";
 import { normalizeRates } from "@/lib/normalize-rates";
 
@@ -194,6 +196,14 @@ export const muKameApi = {
   }),
   socials: (signal?: AbortSignal) => fetchMuKameApi<SocialsPayload>({ route: "socials" }, signal),
   rates: (signal?: AbortSignal) => fetchMuKameApi<unknown>({ route: "rates" }, signal).then(normalizeRates),
+  rules: (signal?: AbortSignal) => fetchMuKameApi<RulesPayload>({ route: "rules" }, signal).then(data => {
+    if (!data || !Array.isArray(data.items)) return { items: [] };
+    return data;
+  }),
+  faq: (signal?: AbortSignal) => fetchMuKameApi<FaqPayload>({ route: "faq" }, signal).then(data => {
+    if (!data || !Array.isArray(data.items)) return { items: [] };
+    return data;
+  }),
 } as const;
 
 /** Chaves de cache centralizadas (preparadas para a fase autenticada). */
@@ -209,4 +219,6 @@ export const muKameQueryKeys = {
   vip: ["mukame", "vip"] as const,
   socials: ["mukame", "socials"] as const,
   rates: ["mukame", "rates"] as const,
+  rules: ["mukame", "rules"] as const,
+  faq: ["mukame", "faq"] as const,
 };
