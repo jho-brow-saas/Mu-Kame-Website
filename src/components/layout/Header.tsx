@@ -7,10 +7,12 @@ import { ActionAnchor, ActionLink } from "@/components/ui-kit/Buttons";
 import { useSettings } from "@/hooks/use-settings";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { serverConfig } from "@/config/server";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { formatBrDateTime } from "@/lib/date-utils";
 
 const navItems = [
   { to: "/", label: "Início" },
-  { to: "/cadastro", label: "Cadastro" },
+  { to: "/criar-conta", label: "Cadastro" },
   { to: "/downloads", label: "Downloads" },
   { to: "/rankings", label: "Rankings" },
   { to: "/eventos", label: "Eventos" },
@@ -25,10 +27,12 @@ export function Header() {
   
   const { data: statusData } = useServerStatus();
   const { data: settingsData } = useSettings();
+  const { isAuthenticated } = useAuth();
   
   const server = statusData?.server;
   const settings = settingsData;
-  const launchLabel = settings?.launchDate ?? server?.launchDate ?? serverConfig.launchLabel;
+  const launchDate = settings?.launchDate ?? server?.launchDate;
+  const launchLabel = launchDate ? formatBrDateTime(launchDate) : serverConfig.launchLabel;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -97,9 +101,16 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <ActionLink to="/login" variant="ghost" className="min-h-[40px] px-4 py-2">
-              Entrar
-            </ActionLink>
+            {isAuthenticated ? (
+              <ActionLink to="/area-do-jogador" variant="ghost" className="min-h-[40px] px-4 py-2 flex items-center gap-2">
+                <span className="size-2 rounded-full bg-jade animate-pulse" aria-hidden="true" />
+                Área do Jogador
+              </ActionLink>
+            ) : (
+              <ActionLink to="/entrar" variant="ghost" className="min-h-[40px] px-4 py-2">
+                Entrar
+              </ActionLink>
+            )}
             <ActionAnchor href={serverConfig.pcDownloadUrl} className="min-h-[40px] px-5 py-2">
               Jogar agora
             </ActionAnchor>
@@ -117,12 +128,12 @@ export function Header() {
         <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-gold/45 to-transparent" />
       </div>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} isAuthenticated={isAuthenticated} />
     </header>
   );
 }
 
-function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+function MobileMenu({ open, onClose, isAuthenticated }: { open: boolean; onClose: () => void; isAuthenticated: boolean }) {
   return (
     <div
       className={cn("fixed inset-0 z-50 lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}
@@ -175,9 +186,16 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         </nav>
 
         <div className="relative mt-auto flex flex-col gap-3">
-          <ActionLink to="/login" variant="secondary" onClick={onClose}>
-            Entrar
-          </ActionLink>
+          {isAuthenticated ? (
+            <ActionLink to="/area-do-jogador" variant="secondary" onClick={onClose} className="flex items-center justify-center gap-2">
+              <span className="size-2 rounded-full bg-jade animate-pulse" aria-hidden="true" />
+              Área do Jogador
+            </ActionLink>
+          ) : (
+            <ActionLink to="/entrar" variant="secondary" onClick={onClose}>
+              Entrar
+            </ActionLink>
+          )}
           <ActionAnchor href={serverConfig.pcDownloadUrl}>Jogar agora</ActionAnchor>
         </div>
       </aside>

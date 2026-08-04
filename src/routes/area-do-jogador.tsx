@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { LoadingState, EmptyState } from "@/components/ui-kit/States";
@@ -25,6 +25,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { useAccountCharacters } from "@/hooks/use-auth-session";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { formatVipExpiration } from "@/lib/date-utils";
 
 const title = "Área do jogador — MU Kame";
 const description = "Consulte personagens, validade do VIP, status da conta e acessos recentes no MU Kame.";
@@ -52,7 +53,7 @@ function PlayerAreaPage() {
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate({ 
-        to: "/login", 
+        to: "/entrar", 
         search: { redirect: "/area-do-jogador" } 
       });
     }
@@ -142,16 +143,14 @@ function PlayerAreaPage() {
                     </span>
                     <TagBadge tone={vipTone}>{vipLabel}</TagBadge>
                   </li>
-                  {user?.AccountExpireDate && (
-                    <li className="flex items-center justify-between">
-                      <span className="flex items-center gap-2 text-xs text-parchment/60 font-ui uppercase tracking-wide">
-                        <Calendar className="size-3.5" /> Expira em
-                      </span>
-                      <span className="font-mono text-[0.7rem] text-gold-soft">
-                        {new Date(user.AccountExpireDate).toLocaleDateString("pt-BR")}
-                      </span>
-                    </li>
-                  )}
+                  <li className="flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-xs text-parchment/60 font-ui uppercase tracking-wide">
+                      <Calendar className="size-3.5" /> Expira em
+                    </span>
+                    <span className="font-mono text-[0.7rem] text-gold-soft">
+                      {formatVipExpiration(user?.AccountExpireDate, user?.AccountLevel)}
+                    </span>
+                  </li>
                   <li className="flex items-center justify-between">
                     <span className="flex items-center gap-2 text-xs text-parchment/60 font-ui uppercase tracking-wide">
                       <Activity className="size-3.5" /> Status
@@ -241,7 +240,9 @@ function PlayerAreaPage() {
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <FeatureCard title="Downloads" icon={Download} description="Baixe o cliente completo." />
-              <FeatureCard title="Segurança" icon={ShieldCheck} description="Trocar senha do portal." />
+              <Link to="/esqueci-minha-senha" title="Redefinir senha por e-mail">
+                <FeatureCard title="Segurança" icon={ShieldCheck} description="Redefinir senha por e-mail" />
+              </Link>
               <FeatureCard title="Ranking" icon={Trophy} description="Ver classificação global." />
             </div>
           </div>

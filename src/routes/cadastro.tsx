@@ -56,9 +56,9 @@ export const Route = createFileRoute("/cadastro")({
       { name: "description", content: description },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
-      { property: "og:url", content: "https://novo.mukame.online/cadastro" },
+      { property: "og:url", content: "https://novo.mukame.online/criar-conta" },
     ],
-    links: [{ rel: "canonical", href: "https://novo.mukame.online/cadastro" }],
+    links: [{ rel: "canonical", href: "https://novo.mukame.online/criar-conta" }],
   }),
   component: CadastroPage,
 });
@@ -129,7 +129,7 @@ function CadastroPage() {
         confirmPassword: "" 
       }));
       
-      navigate({ to: "/login" });
+      navigate({ to: "/entrar" });
     } catch (error: any) {
       if (error.code === "REGISTRATION_FAILED") {
         toast.error("Não foi possível criar a conta. O login ou e-mail pode já estar em uso.");
@@ -334,8 +334,8 @@ function CadastroPage() {
             {submitting ? "Forjando conta…" : "Criar conta"}
           </ActionButton>
 
-          <p className="text-sm text-mist">
-            Já tem conta? <Link to="/login" className="text-gold hover:text-gold-soft">Entrar</Link>
+          <p className="text-sm text-mist text-center border-t border-white/5 pt-4">
+            Já tem conta? <Link to="/entrar" className="text-gold hover:text-gold-soft font-semibold">Entrar</Link>
           </p>
         </form>
       </section>

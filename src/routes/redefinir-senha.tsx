@@ -49,7 +49,9 @@ function ResetPasswordPage() {
     try {
       await resetPassword({ token, password });
       setDone(true);
-      // Limpa token da URL sem recarregar
+      setPassword("");
+      setConfirmPassword("");
+      // Limpa token da URL sem recarregar apenas após o sucesso
       window.history.replaceState({}, "", window.location.pathname);
     } catch (error: any) {
       if (error.code === "INVALID_RESET_TOKEN") {

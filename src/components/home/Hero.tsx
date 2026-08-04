@@ -94,7 +94,7 @@ export function Hero() {
           </ul>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ActionLink to="/cadastro">
+            <ActionLink to="/criar-conta">
               <ShieldPlus className="size-4" aria-hidden="true" />
               Criar conta
             </ActionLink>
