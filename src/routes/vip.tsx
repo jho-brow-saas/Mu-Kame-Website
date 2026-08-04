@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { VipPlansGrid } from "@/components/vip/VipPlansGrid";
+import { RatesSection } from "@/components/home/InfoSections";
 import { SectionHeading } from "@/components/ui-kit/SectionHeading";
 import { whatsappLink } from "@/config/server";
 import { ActionAnchor } from "@/components/ui-kit/Buttons";
@@ -34,6 +35,7 @@ function VipPage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <VipPlansGrid />
       </section>
+      <RatesSection />
       <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6">
         <SectionHeading
           eyebrow="Contratação"

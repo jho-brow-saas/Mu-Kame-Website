@@ -18,6 +18,10 @@ const ALLOWED_ROUTES = new Set([
   "events",
   "castle-siege",
   "rankings",
+  "vip",
+  "socials",
+  "settings",
+  "rates",
 ]);
 
 const ALLOWED_RANKING_TYPES = new Set([

@@ -2,8 +2,10 @@ import { SectionHeading, MaterialSection } from "@/components/ui-kit/SectionHead
 import { StatCard, FeatureCard, PlateHeader } from "@/components/ui-kit/Cards";
 import { useSettings } from "@/hooks/use-settings";
 import { useServerStatus } from "@/hooks/use-server-status";
-import { serverConfig, serverHighlights, serverRates, differentials } from "@/config/server";
-import { Crown, Gem, History, Shield, Swords, Trophy, Users } from "lucide-react";
+import { useRates } from "@/hooks/use-rates";
+import { serverConfig, serverHighlights, differentials } from "@/config/server";
+import { Crown, Gem, History, Shield, Swords, Trophy, Users, Zap, Coins, Check, X } from "lucide-react";
+import { LoadingState, ErrorState } from "@/components/ui-kit/States";
 
 export function AboutSection() {
   const { data: settings } = useSettings();
@@ -62,41 +64,163 @@ export function QuickInfoSection() {
 }
 
 export function RatesSection() {
+  const { data, isPending, isError, refetch } = useRates();
+
+  const formatVal = (val: number | null | undefined, suffix: string = "") => {
+    if (val === null || val === undefined) return "Indisponível";
+    return `${val}${suffix}`;
+  };
+
+  const formatZen = (val: number | string | null | undefined) => {
+    if (val === null || val === undefined) return "Indisponível";
+    const num = typeof val === "string" ? parseFloat(val) : val;
+    return num.toLocaleString("pt-BR");
+  };
+
+  if (isPending) return (
+    <MaterialSection material="stone">
+      <LoadingState label="Carregando taxas do servidor..." />
+    </MaterialSection>
+  );
+
+  if (isError) return (
+    <MaterialSection material="stone">
+      <ErrorState description="Erro ao carregar taxas." onRetry={() => void refetch()} />
+    </MaterialSection>
+  );
+
+  const publicServers = data.servers.filter(s => 
+    !s.name.toLowerCase().includes("teste") && 
+    !s.name.toLowerCase().includes("gameservercs")
+  );
+
   return (
     <MaterialSection material="stone">
       <SectionHeading
         eyebrow="Transparência"
         title="Taxas do servidor"
-        description="A experiência de 1500x corresponde ao VIP Ouro. A conta normal roda em 900x."
+        description="Confira as taxas de experiência e drop configuradas em nossas salas oficiais."
         className="mb-8"
       />
-      <div className="plate plate-cut-slot overflow-hidden">
-        <PlateHeader right="exp / drop">Tabela de taxas</PlateHeader>
-        <table className="w-full text-left text-sm">
-          <caption className="sr-only">Comparativo de experiência e drop por tipo de conta</caption>
-          <thead>
-            <tr className="border-b border-gold/20 bg-obsidian/50">
-              <th scope="col" className="label-text px-4 py-3 text-ash">Conta</th>
-              <th scope="col" className="label-text px-4 py-3 text-ash">Experiência</th>
-              <th scope="col" className="label-text px-4 py-3 text-ash">Drop</th>
-            </tr>
-          </thead>
-          <tbody>
-            {serverRates.map((rate) => (
-              <tr key={rate.id} className="border-b border-white/5 last:border-0 hover:bg-bronze-dark/30">
-                <th scope="row" className="px-4 py-3 font-ui text-[0.95rem] font-600 uppercase tracking-[0.08em] text-bone">
-                  {rate.name}
-                </th>
-                <td className="data-text px-4 py-3 text-gold-soft">{rate.experience}</td>
-                <td className="data-text px-4 py-3 text-arcane">{rate.drop}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        {/* Tabela de Salas */}
+        <div className="flex flex-col gap-6">
+          {publicServers.map((server) => (
+            <div key={server.name} className="plate plate-cut-slot overflow-hidden">
+              <PlateHeader right="sala">{server.name}</PlateHeader>
+              <div className="grid grid-cols-2 gap-px bg-gold/10">
+                {[
+                  { label: "Experiência", value: formatVal(server.normalExp, "x") },
+                  { label: "Master EXP", value: formatVal(server.masterExp, "x") },
+                  { label: "Drop Itens", value: formatVal(server.itemDrop, "%") },
+                  { label: "Drop Zen", value: formatVal(server.zenDrop, "%") },
+                ].map((stat) => (
+                  <div key={stat.label} className="bg-obsidian/80 p-4">
+                    <span className="label-text block text-[0.65rem] text-ash">{stat.label}</span>
+                    <span className="data-text text-lg text-gold-soft">{stat.value}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="border-t border-gold/10 bg-obsidian/40 px-4 py-3">
+                <span className="label-text mb-2 block text-[0.65rem] text-ash">Bônus por Nível de Conta</span>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  {(["AL0", "AL1", "AL2", "AL3"] as const).map((level) => {
+                    const levelData = server.accountLevels[level];
+                    const isAvailable = server.name.toLowerCase().includes("vip") ? level !== "AL0" : true;
+                    
+                    return (
+                      <div key={level} className="flex flex-col gap-1">
+                        <span className="font-mono text-[0.6rem] text-bone/60">{data.accountLevels[level]}</span>
+                        <span className="data-text text-[0.75rem] text-gold">
+                          {isAvailable ? formatVal(levelData?.experience, "x") : "Indisponível"}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Reset e Pontos */}
+        <div className="flex flex-col gap-6">
+          {/* Reset Info */}
+          <div className="plate plate-cut-slot overflow-hidden">
+            <PlateHeader right="/reset">Sistema de Reset</PlateHeader>
+            <div className="p-5">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center bg-gold/10">
+                    <Zap className="h-5 w-5 text-gold" />
+                  </div>
+                  <div>
+                    <span className="label-text block text-ash">Comando</span>
+                    <span className="data-text text-lg text-bone">{data.reset.command}</span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="label-text block text-ash">Custo</span>
+                  <span className="data-text text-lg text-gold-soft">{formatZen(data.reset.zenCost)} Zen</span>
+                </div>
+              </div>
+
+              <ul className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Level Necessário", value: data.reset.requiredLevel, icon: Trophy },
+                  { label: "Level Pós Reset", value: data.reset.levelAfterReset, icon: History },
+                  { label: "Auto Reset", value: data.reset.autoReset, type: "boolean" },
+                  { label: "Mantém Skills", value: data.reset.skillsPreserved, type: "boolean" },
+                  { label: "Mantém Inventário", value: data.reset.inventoryPreserved, type: "boolean" },
+                  { label: "Exige Quest", value: data.reset.questRequired, type: "boolean" },
+                ].map((item) => (
+                  <li key={item.label} className="flex flex-col gap-1 border-b border-gold/5 pb-2">
+                    <span className="label-text text-[0.65rem] text-ash">{item.label}</span>
+                    <div className="flex items-center gap-2">
+                      {item.type === "boolean" ? (
+                        item.value ? (
+                          <Check className="h-4 w-4 text-jade" />
+                        ) : (
+                          <X className="h-4 w-4 text-crimson" />
+                        )
+                      ) : (
+                        <span className="data-text text-sm text-bone">{item.value}</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Points Info */}
+          <div className="plate plate-cut-slot overflow-hidden">
+            <PlateHeader right="points">Pontos por Level</PlateHeader>
+            <div className="p-4">
+              <div className="grid grid-cols-2 gap-px bg-gold/10">
+                {data.levelUpPoints.map((cls) => (
+                  <div key={cls.className} className="flex items-center justify-between bg-obsidian/80 px-4 py-3">
+                    <span className="label-text text-[0.7rem] text-ash">{cls.className}</span>
+                    <span className="data-text text-gold-soft">+{cls.pointsPerLevel}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
-        &gt; taxas podem variar conforme sala, evento ou sistema ativo
-      </p>
+
+      {data.notes.length > 0 && (
+        <div className="mt-6 space-y-2">
+          {data.notes.map((note, idx) => (
+            <p key={idx} className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
+              &gt; {note}
+            </p>
+          ))}
+        </div>
+      )}
     </MaterialSection>
   );
 }

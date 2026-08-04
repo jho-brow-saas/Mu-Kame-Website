@@ -11,6 +11,7 @@ import type {
   SocialsPayload,
   StatusPayload,
   VipPayload,
+  RatesPayload,
 } from "@/types/mukame-api";
 
 /**
@@ -146,6 +147,7 @@ export const muKameApi = {
   vip: (signal?: AbortSignal) => fetchMuKameApi<VipPayload>({ route: "vip" }, signal),
 
   socials: (signal?: AbortSignal) => fetchMuKameApi<SocialsPayload>({ route: "socials" }, signal),
+  rates: (signal?: AbortSignal) => fetchMuKameApi<RatesPayload>({ route: "rates" }, signal),
 } as const;
 
 /** Chaves de cache centralizadas (preparadas para a fase autenticada). */
@@ -160,4 +162,5 @@ export const muKameQueryKeys = {
   rankings: (type: RankingType, limit: number) => ["mukame", "rankings", type, limit] as const,
   vip: ["mukame", "vip"] as const,
   socials: ["mukame", "socials"] as const,
+  rates: ["mukame", "rates"] as const,
 };
