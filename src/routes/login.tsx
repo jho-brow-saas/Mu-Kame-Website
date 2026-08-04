@@ -129,14 +129,14 @@ function LoginPage() {
           </ActionButton>
 
           <p className="text-sm text-mist text-center">
-            <button 
-              type="button"
+            <Link 
+              to="/esqueci-minha-senha"
               className="text-ash/60 hover:text-gold transition-colors text-xs"
-              onClick={() => toast.info("Recuperação por e-mail em configuração.")}
             >
               Esqueci minha senha
-            </button>
+            </Link>
           </p>
+
 
           <p className="text-sm text-mist">
             Ainda não tem conta? <Link to="/cadastro" className="text-gold hover:text-gold-soft">Criar conta</Link>

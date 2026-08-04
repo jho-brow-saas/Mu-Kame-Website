@@ -190,17 +190,20 @@ function PlayerAreaPage() {
               </div>
             ) : characters && characters.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2">
-                {characters.map((char) => (
-                  <div key={char.Name} className="plate plate-cut-slot overflow-hidden bg-obsidian/60 group hover:border-gold/40 transition-all">
-                    <PlateHeader right={`Level ${char.Level}`}>
-                      {char.Name}
-                    </PlateHeader>
-                    <div className="p-4 grid grid-cols-2 gap-4">
-                      <div className="space-y-3">
-                        <div className="flex flex-col">
-                          <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Classe</span>
-                          <span className="text-sm text-bone font-medium">Classe ID: {char.Class}</span>
-                        </div>
+                {characters.map((char) => {
+                  const ClassLabel = (window as any).CLASS_LABELS?.[char.Class] || `Classe ${char.Class}`;
+                  return (
+                    <div key={char.Name} className="plate plate-cut-slot overflow-hidden bg-obsidian/60 group hover:border-gold/40 transition-all">
+                      <PlateHeader right={`Level ${char.Level}`}>
+                        {char.Name}
+                      </PlateHeader>
+                      <div className="p-4 grid grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="flex flex-col">
+                            <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Classe</span>
+                            <span className="text-sm text-bone font-medium">{ClassLabel}</span>
+                          </div>
+
                         <div className="flex flex-col">
                           <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Resets</span>
                           <span className="text-sm text-gold-soft font-bold">{char.Resets}</span>

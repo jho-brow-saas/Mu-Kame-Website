@@ -1,5 +1,12 @@
-import React, { createContext, useContext, ReactNode, useEffect } from "react";
-import { useAuthSession, useLogin, useRegister, useLogout } from "@/hooks/use-auth-session";
+import React, { createContext, useContext, ReactNode } from "react";
+import { 
+  useAuthSession, 
+  useLogin, 
+  useRegister, 
+  useLogout, 
+  useForgotPassword, 
+  useResetPassword 
+} from "@/hooks/use-auth-session";
 import type { AuthSession } from "@/types/mukame-auth";
 
 interface AuthContextType {
@@ -9,6 +16,8 @@ interface AuthContextType {
   login: ReturnType<typeof useLogin>["mutateAsync"];
   register: ReturnType<typeof useRegister>["mutateAsync"];
   logout: ReturnType<typeof useLogout>["mutateAsync"];
+  forgotPassword: ReturnType<typeof useForgotPassword>["mutateAsync"];
+  resetPassword: ReturnType<typeof useResetPassword>["mutateAsync"];
   refreshSession: () => void;
 }
 
@@ -19,6 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
+  const forgotPasswordMutation = useForgotPassword();
+  const resetPasswordMutation = useResetPassword();
 
   const user = sessionData?.data?.session ?? null;
   const isAuthenticated = !!user;
@@ -36,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login: loginMutation.mutateAsync,
         register: registerMutation.mutateAsync,
         logout: logoutMutation.mutateAsync,
+        forgotPassword: forgotPasswordMutation.mutateAsync,
+        resetPassword: resetPasswordMutation.mutateAsync,
         refreshSession,
       }}
     >

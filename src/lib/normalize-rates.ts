@@ -81,3 +81,9 @@ export const CLASS_LABELS: Record<string, string> = {
   summoner: "Summoner",
   rageFighter: "Rage Fighter",
 };
+
+// Torna global para reuso simples em componentes sem import circular se necessário
+if (typeof window !== "undefined") {
+  (window as any).CLASS_LABELS = CLASS_LABELS;
+}
+
