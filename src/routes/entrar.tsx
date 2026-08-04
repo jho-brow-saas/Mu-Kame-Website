@@ -16,7 +16,7 @@ const schema = z.object({
 const title = "Entrar — MU Kame";
 const description = "Acesse sua conta do MU Kame para consultar personagens, VIP e downloads.";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/entrar")({
   head: () => ({
     meta: [
       { title },
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const search = useSearch({ from: "/login" }) as { redirect?: string };
+  const search = useSearch({ from: "/entrar" }) as { redirect?: string };
   const { login, isAuthenticated, isLoading: authLoading } = useAuth();
   
   const [values, setValues] = useState({ accountId: "", password: "" });

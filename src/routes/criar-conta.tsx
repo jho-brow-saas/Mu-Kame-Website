@@ -49,7 +49,7 @@ type Errors = Partial<Record<keyof z.input<typeof schema>, string>>;
 const title = "Criar conta — MU Kame";
 const description = "Crie sua conta no MU Kame e prepare-se para o lançamento da Season 6.15 em 01/09/2026.";
 
-export const Route = createFileRoute("/cadastro")({
+export const Route = createFileRoute("/criar-conta")({
   head: () => ({
     meta: [
       { title },
