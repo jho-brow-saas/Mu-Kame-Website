@@ -46,7 +46,7 @@ export function VipPlansGrid() {
 
           <div className="flex items-baseline gap-2 border-y border-gold/20 py-3">
             <span className="data-text text-2xl text-bone">
-              {new Intl.NumberFormat("pt-BR", { style: "currency", currency: plan.currency || "BRL" }).format(plan.price)}
+              {new Intl.NumberFormat("pt-BR", { style: "currency", currency: String(plan.currency || "BRL") }).format(plan.price)}
             </span>
             <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
               / {plan.durationDays} dias

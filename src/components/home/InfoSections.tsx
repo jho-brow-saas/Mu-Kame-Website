@@ -3,6 +3,7 @@ import { StatCard, FeatureCard, PlateHeader } from "@/components/ui-kit/Cards";
 import { useSettings } from "@/hooks/use-settings";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { useRates } from "@/hooks/use-rates";
+import { CLASS_LABELS } from "@/lib/normalize-rates";
 import { serverConfig, serverHighlights, differentials } from "@/config/server";
 import { Crown, Gem, History, Shield, Swords, Trophy, Users, Zap, Coins, Check, X } from "lucide-react";
 import { LoadingState, ErrorState } from "@/components/ui-kit/States";
@@ -127,22 +128,16 @@ export function RatesSection() {
                 <span className="label-text mb-2 block text-[0.65rem] text-ash">Bônus por Nível de Conta</span>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {(["AL0", "AL1", "AL2", "AL3"] as const).map((level) => {
-                    const accountLevels = 
-                      (data?.accountLevels && typeof data.accountLevels === "object"
-                        ? data.accountLevels
-                        : {}) as Record<string, string>;
-                    
-                    const serverAccountLevels =
-                      (server?.accountLevels && typeof server.accountLevels === "object"
-                        ? server.accountLevels
-                        : {}) as Record<string, any>;
+                    const accountLevels = data?.accountLevels || {};
+                    const serverAccountLevels = server?.accountLevels || {};
 
-                    const levelData = serverAccountLevels[level];
+                    const levelData = (serverAccountLevels as any)?.[level];
+                    const label = (accountLevels as any)?.[level] ?? level;
                     const isAvailable = server.name?.toLowerCase().includes("vip") ? level !== "AL0" : true;
                     
                     return (
                       <div key={level} className="flex flex-col gap-1">
-                        <span className="font-mono text-[0.6rem] text-bone/60">{accountLevels[level] ?? level}</span>
+                        <span className="font-mono text-[0.6rem] text-bone/60">{String(label)}</span>
                         <span className="data-text text-[0.75rem] text-gold">
                           {isAvailable ? formatVal(levelData?.experience, "x") : "Indisponível"}
                         </span>
@@ -196,7 +191,7 @@ export function RatesSection() {
                           <X className="h-4 w-4 text-crimson" />
                         )
                       ) : (
-                        <span className="data-text text-sm text-bone">{item.value}</span>
+                        <span className="data-text text-sm text-bone">{String(item.value)}</span>
                       )}
                     </div>
                   </li>
@@ -210,10 +205,10 @@ export function RatesSection() {
             <PlateHeader right="points">Pontos por Level</PlateHeader>
             <div className="p-4">
               <div className="grid grid-cols-2 gap-px bg-gold/10">
-                {data.levelUpPoints.map((cls) => (
-                  <div key={cls.className} className="flex items-center justify-between bg-obsidian/80 px-4 py-3">
-                    <span className="label-text text-[0.7rem] text-ash">{cls.className}</span>
-                    <span className="data-text text-gold-soft">+{cls.pointsPerLevel}</span>
+                {Object.entries(data.levelUpPoints).map(([className, points]) => (
+                  <div key={className} className="flex items-center justify-between bg-obsidian/80 px-4 py-3">
+                    <span className="label-text text-[0.7rem] text-ash">{CLASS_LABELS[className] || className}</span>
+                    <span className="data-text text-gold-soft">+{points}</span>
                   </div>
                 ))}
               </div>
@@ -237,6 +232,8 @@ export function RatesSection() {
 
 export function DifferentialsSection() {
   const { data: settings } = useSettings();
+  const { data: status } = useServerStatus();
+  const server = status?.server;
 
   return (
     <MaterialSection material="iron">
@@ -256,7 +253,7 @@ export function DifferentialsSection() {
         ))}
       </ul>
       <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
-        Season {settings?.season ?? serverConfig.season} · status máximo {(settings?.maxStats ?? serverConfig.maxStats).toLocaleString("pt-BR")} ·{" "}
+        Season {settings?.season ?? server?.season ?? serverConfig.season} · status máximo {((settings?.maxStats ?? server?.maxStats ?? serverConfig.maxStats)).toLocaleString("pt-BR")} ·{" "}
         {serverConfig.classesCount} classes
       </p>
     </MaterialSection>
