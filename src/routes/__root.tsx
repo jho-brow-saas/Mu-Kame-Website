@@ -133,6 +133,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "MU Kame — Season 6.15 Medium" },
+      { name: "twitter:title", content: "MU Kame — Season 6.15 Medium" },
+      { property: "og:description", content: "Reviva a era de ouro do MU Online no MU Kame. Season 6.15, progressão Medium, eventos clássicos, rankings, guilds e Castle Siege." },
+      { name: "twitter:description", content: "Reviva a era de ouro do MU Online no MU Kame. Season 6.15, progressão Medium, eventos clássicos, rankings, guilds e Castle Siege." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe805b42-9558-4637-8ed2-517032c0952e/id-preview-5df42730--00ddf391-00e2-4e98-98d4-318eb4868405.lovable.app-1785884752038.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe805b42-9558-4637-8ed2-517032c0952e/id-preview-5df42730--00ddf391-00e2-4e98-98d4-318eb4868405.lovable.app-1785884752038.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -142,7 +148,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
     scripts: [
       {
