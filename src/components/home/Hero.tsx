@@ -14,11 +14,31 @@ export function Hero() {
   const settings = settingsData;
   const placeholder = (isStatusPending || isSettingsPending) ? "···" : "—";
 
+  const platformsData =
+    settings?.platforms &&
+    typeof settings.platforms === "object" &&
+    !Array.isArray(settings.platforms)
+      ? settings.platforms
+      : {};
+
+  const availablePlatforms = Object.entries(platformsData)
+    .filter(([, enabled]) => enabled === true)
+    .map(([platform]) => {
+      if (platform === "pc") return "PC";
+      if (platform === "android") return "Android";
+      return platform;
+    });
+
+  const platformsLabel =
+    availablePlatforms.length > 0
+      ? availablePlatforms.join(" e ")
+      : (server?.platform ?? placeholder);
+
   const specs = [
     { label: "Season", value: settings?.season ?? server?.season ?? placeholder },
     { label: "Progressão", value: settings?.mode ?? server?.mode ?? placeholder },
     { label: "Master Level", value: settings ? String(settings.masterLevel) : (server ? String(server.masterLevel) : placeholder) },
-    { label: "Plataforma", value: settings?.platforms?.join(" / ") ?? server?.platform ?? placeholder },
+    { label: "Plataforma", value: platformsLabel },
   ];
 
   return (
