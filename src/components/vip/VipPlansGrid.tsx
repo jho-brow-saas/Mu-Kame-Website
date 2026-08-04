@@ -14,6 +14,8 @@ const sheets: Record<string, string> = {
 /** Insígnias metálicas: placas cravadas em bronze, prata e ouro em vez de cards SaaS. */
 export function VipPlansGrid() {
   const { data, isPending, isError, refetch } = useVip();
+  
+  // O hook retorna MuKameEnvelope<VipPayload>, o fetchMuKameApi desembrulha o envelope e retorna o .data (VipPayload)
   const plans = data?.plans ?? [];
 
   if (isPending) return <LoadingState label="Carregando planos VIP…" />;
