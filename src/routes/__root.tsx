@@ -44,7 +44,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
-  const isApiError = error.name === "MuKameApiError";
+  const isApiError = error.name === "MuKameApiError" || error.name === "MukameAuthError";
+  const isNetworkError = error.message.includes("Failed to fetch") || error.message.includes("Não foi possível alcançar a API");
+
+  const toggleProxy = () => {
+    const current = localStorage.getItem("mukame_force_proxy") === "true";
+    localStorage.setItem("mukame_force_proxy", current ? "false" : "true");
+    window.location.reload();
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian text-stone-100 selection:bg-gold/30">
@@ -88,6 +95,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Tentar Restaurar
           </button>
+
+          {isNetworkError && (
+            <button
+              onClick={toggleProxy}
+              className="inline-flex min-h-[48px] items-center justify-center border border-ruby/30 bg-ruby/10 px-8 text-sm font-semibold text-ruby-soft hover:bg-ruby/20 transition-colors uppercase tracking-wider"
+            >
+              Alternar Modo de Conexão
+            </button>
+          )}
           
           <Link
             to="/"

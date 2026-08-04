@@ -21,10 +21,11 @@ export async function authRequest<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const isDevProxy = 
+    localStorage.getItem("mukame_force_proxy") === "true" || (
     window.location.hostname !== "novo.mukame.online" && 
     window.location.hostname !== "mu-kame-teste.lovable.app" &&
     window.location.hostname !== "mukame.online" &&
-    window.location.hostname !== "www.mukame.online";
+    window.location.hostname !== "www.mukame.online");
 
   // Em produção, as chamadas vão direto para o domínio da API
   // No preview do Lovable, usamos o proxy local devido ao CORS
