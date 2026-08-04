@@ -15,7 +15,9 @@ import { Route as AreaDoJogadorRouteImport } from './routes/area-do-jogador'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CastleSiegeRouteImport } from './routes/castle-siege'
 import { Route as ContaRouteImport } from './routes/conta'
+import { Route as CriarContaRouteImport } from './routes/criar-conta'
 import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as EsqueciMinhaSenhaRouteImport } from './routes/esqueci-minha-senha'
 import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
@@ -92,9 +94,19 @@ const ContaRoute = ContaRouteImport.update({
   path: '/conta',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CriarContaRoute = CriarContaRouteImport.update({
+  id: '/criar-conta',
+  path: '/criar-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DownloadsRoute = DownloadsRouteImport.update({
   id: '/downloads',
   path: '/downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EsqueciMinhaSenhaRoute = EsqueciMinhaSenhaRouteImport.update({
@@ -330,7 +342,9 @@ export interface FileRoutesByFullPath {
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
   '/conta': typeof ContaRouteWithChildren
+  '/criar-conta': typeof CriarContaRoute
   '/downloads': typeof DownloadsRoute
+  '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -382,7 +396,9 @@ export interface FileRoutesByTo {
   '/area-do-jogador': typeof AreaDoJogadorRoute
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
+  '/criar-conta': typeof CriarContaRoute
   '/downloads': typeof DownloadsRoute
+  '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -435,7 +451,9 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
   '/conta': typeof ContaRouteWithChildren
+  '/criar-conta': typeof CriarContaRoute
   '/downloads': typeof DownloadsRoute
+  '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
@@ -491,7 +509,9 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/castle-siege'
     | '/conta'
+    | '/criar-conta'
     | '/downloads'
+    | '/entrar'
     | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
@@ -543,7 +563,9 @@ export interface FileRouteTypes {
     | '/area-do-jogador'
     | '/cadastro'
     | '/castle-siege'
+    | '/criar-conta'
     | '/downloads'
+    | '/entrar'
     | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
@@ -595,7 +617,9 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/castle-siege'
     | '/conta'
+    | '/criar-conta'
     | '/downloads'
+    | '/entrar'
     | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
@@ -650,7 +674,9 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   CastleSiegeRoute: typeof CastleSiegeRoute
   ContaRoute: typeof ContaRouteWithChildren
+  CriarContaRoute: typeof CriarContaRoute
   DownloadsRoute: typeof DownloadsRoute
+  EntrarRoute: typeof EntrarRoute
   EsqueciMinhaSenhaRoute: typeof EsqueciMinhaSenhaRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
@@ -707,11 +733,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/criar-conta': {
+      id: '/criar-conta'
+      path: '/criar-conta'
+      fullPath: '/criar-conta'
+      preLoaderRoute: typeof CriarContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/downloads': {
       id: '/downloads'
       path: '/downloads'
       fullPath: '/downloads'
       preLoaderRoute: typeof DownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/esqueci-minha-senha': {
@@ -1145,7 +1185,9 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroRoute: CadastroRoute,
   CastleSiegeRoute: CastleSiegeRoute,
   ContaRoute: ContaRouteWithChildren,
+  CriarContaRoute: CriarContaRoute,
   DownloadsRoute: DownloadsRoute,
+  EntrarRoute: EntrarRoute,
   EsqueciMinhaSenhaRoute: EsqueciMinhaSenhaRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
@@ -1160,3 +1202,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
