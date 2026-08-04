@@ -26,6 +26,14 @@ const ALLOWED_ROUTES = new Set([
   "faq",
 ]);
 
+const BLOCKED_AUTH_ROUTES = new Set([
+  "auth/register",
+  "auth/login",
+  "auth/logout",
+  "auth/me",
+  "account/characters",
+]);
+
 const ALLOWED_RANKING_TYPES = new Set([
   "reset",
   "master-reset",
@@ -51,6 +59,11 @@ export const Route = createFileRoute("/api/public/mukame")({
       GET: async ({ request }) => {
         const incoming = new URL(request.url);
         const route = incoming.searchParams.get("route") ?? "";
+
+        if (BLOCKED_AUTH_ROUTES.has(route)) {
+          return jsonError("Rota de autenticação não permitida via proxy.", 403);
+        }
+
         if (!ALLOWED_ROUTES.has(route)) return jsonError("Rota não suportada.", 400);
 
         const target = new URL(UPSTREAM);
