@@ -39,7 +39,10 @@ export type SettingsPayload = {
   slogan: string;
   season: string;
   mode: string;
-  platforms: string[];
+  platforms: {
+    pc: boolean;
+    android: boolean;
+  };
   launchDate: string;
   masterLevel: number;
   maxStats: number;
