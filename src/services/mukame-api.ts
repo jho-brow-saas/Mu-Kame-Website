@@ -188,8 +188,10 @@ export const muKameApi = {
   rankings: (type: RankingType, limit = 10, signal?: AbortSignal) =>
     fetchMuKameApi<RankingPayload>({ route: "rankings", type, limit }, signal),
 
-  vip: (signal?: AbortSignal) => fetchMuKameApi<VipPayload>({ route: "vip" }, signal),
-
+  vip: (signal?: AbortSignal) => fetchMuKameApi<VipPayload>({ route: "vip" }, signal).then(data => {
+    if (!data || !Array.isArray(data.plans)) return { plans: [] };
+    return data;
+  }),
   socials: (signal?: AbortSignal) => fetchMuKameApi<SocialsPayload>({ route: "socials" }, signal),
   rates: (signal?: AbortSignal) => fetchMuKameApi<unknown>({ route: "rates" }, signal).then(normalizeRates),
 } as const;
