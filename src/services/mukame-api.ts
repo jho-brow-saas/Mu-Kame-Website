@@ -116,7 +116,15 @@ export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSigna
       if (signal?.aborted) throw error;
       throw new MuKameApiError("timeout", "A API demorou demais para responder.");
     }
-    throw new MuKameApiError("network", "Não foi possível alcançar a API do servidor.");
+
+    // Diagnóstico mais informativo sobre o erro de rede
+    const message = error instanceof Error ? error.message : "Desconhecido";
+    console.error(`[MU Kame API] Erro de rede em ${JSON.stringify(params)}:`, error);
+
+    throw new MuKameApiError(
+      "network",
+      `Não foi possível alcançar a API do servidor (${message}).`
+    );
   } finally {
     clearTimeout(timeout);
     if (signal) signal.removeEventListener("abort", onExternalAbort);

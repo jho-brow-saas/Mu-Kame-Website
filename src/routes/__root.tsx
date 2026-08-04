@@ -41,12 +41,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
+  const isApiError = error.name === "MuKameApiError";
+
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-xl text-ivory">Esta página não carregou</h1>
-        <p className="mt-2 text-sm text-mist">
-          Algo falhou do nosso lado. Você pode tentar novamente ou voltar ao início.
+    <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian">
+      <div className="max-w-lg text-center stone-sheet p-8 border border-gold/20 plate-cut relative overflow-hidden">
+        <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0 opacity-20" />
+        <h1 className="font-display text-xl text-gold uppercase tracking-widest">
+          {isApiError ? "Erro de Conexão com o Reino" : "Esta página não carregou"}
+        </h1>
+        <div className="mt-4 p-4 metal-sheet border border-gold/10 font-mono text-xs text-ash text-left overflow-auto max-h-48">
+          <p className="text-gold-soft mb-2">&gt; DETALHES DO ERRO:</p>
+          <pre className="whitespace-pre-wrap break-all">{error.message}</pre>
+          {error.stack && (
+            <details className="mt-4 cursor-pointer">
+              <summary className="text-bronze hover:text-gold-soft transition-colors underline">Ver rastreio técnico</summary>
+              <pre className="mt-2 text-[10px] opacity-60 leading-relaxed">{error.stack}</pre>
+            </details>
+          )}
+        </div>
+        <p className="mt-6 text-sm text-mist leading-relaxed italic">
+          {isApiError 
+            ? "Parece que nosso portal de dados está enfrentando instabilidades mágicas ou bloqueios de rede. Verifique sua conexão ou tente novamente."
+            : "Algo falhou do nosso lado durante a forja desta página."}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
