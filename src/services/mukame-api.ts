@@ -54,18 +54,19 @@ export class MuKameApiError extends Error {
 
 export type QueryParams = Record<string, string | number | undefined>;
 
-/** No navegador: direto em produção, proxy de mesma origem apenas em dev/prévia. */
+/** No navegador: direto em produção oficial, proxy de mesma origem em qualquer outro host. */
 function useDevProxy(): boolean {
   if (typeof window === "undefined") return false;
   
-  // Permite forçar o proxy via query string ?proxy=true ou via localStorage
-  const forceProxy = 
-    new URLSearchParams(window.location.search).get("proxy") === "true" ||
-    window.localStorage.getItem("mukame_force_proxy") === "true";
-  
-  if (forceProxy) return true;
+  // Lista rigorosa de hosts que suportam chamadas diretas (CORS liberado)
+  const DIRECT_API_HOSTS = new Set([
+    "novo.mukame.online",
+    "mukame.online",
+    "www.mukame.online",
+  ]);
 
-  return !CORS_ALLOWED_HOSTS.has(window.location.hostname);
+  // Se NÃO for um dos hosts oficiais, usamos obrigatoriamente o proxy interno
+  return !DIRECT_API_HOSTS.has(window.location.hostname);
 }
 
 function buildUrl(params: QueryParams): string {
