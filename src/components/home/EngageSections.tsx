@@ -9,10 +9,11 @@ import { useNews } from "@/hooks/use-news";
 import { useDownloads } from "@/hooks/use-downloads";
 import { useSocials } from "@/hooks/use-socials";
 import { useSettings } from "@/hooks/use-settings";
+import { useFaq } from "@/hooks/use-faq";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { excerpt, formatBrDate, formatWhatsappLabel, isSafeExternalUrl, whatsappUrl } from "@/lib/mukame-format";
-import { serverConfig, whatsappLink, faqItems } from "@/config/server";
-import { Download, Instagram, MessageCircle, Music2, Smartphone, Send } from "lucide-react";
+import { serverConfig, whatsappLink } from "@/config/server";
+import { Download, Instagram, MessageCircle, Music2, Smartphone, Send, ChevronDown } from "lucide-react";
 
 export function VipSection() {
   return (
@@ -209,21 +210,44 @@ export function CommunitySection() {
 }
 
 export function FaqSection() {
+  const { faqs, isPending, isError, refetch } = useFaq();
+
   return (
     <MaterialSection material="iron">
       <div className="mx-auto max-w-4xl">
         <SectionHeading eyebrow="FAQ" title="Perguntas frequentes" align="center" className="mb-8" />
+        
+        {isPending ? <LoadingState label="Carregando perguntas frequentes..." /> : null}
+        
+        {isError ? (
+          <ErrorState 
+            description="Não foi possível carregar o FAQ agora." 
+            onRetry={() => void refetch()} 
+          />
+        ) : null}
+
+        {!isPending && !isError && faqs.length === 0 ? (
+          <EmptyState 
+            title="Nenhuma pergunta encontrada" 
+            description="As perguntas frequentes serão listadas em breve." 
+          />
+        ) : null}
+
         <div className="flex flex-col gap-2">
-          {faqItems.map((item, index) => (
-            <details key={item.q} className="plate plate-cut-soft group px-5 py-4">
+          {faqs.map((item, index) => (
+            <details key={item.id} className="plate plate-cut-soft group px-5 py-4">
               <summary className="flex cursor-pointer list-none items-center gap-3 font-ui text-[0.95rem] font-600 uppercase tracking-[0.06em] text-bone marker:hidden">
                 <span aria-hidden="true" className="data-text text-[0.7rem] text-bronze">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span aria-hidden="true" className="h-4 w-px bg-gold/25" />
-                {item.q}
+                <span className="flex-1">{item.question}</span>
+                <ChevronDown className="size-4 text-ash transition-transform duration-300 group-open:rotate-180" />
               </summary>
-              <p className="mt-3 border-t border-gold/15 pt-3 text-sm leading-relaxed text-parchment/85">{item.a}</p>
+              <div className="mt-3 border-t border-gold/15 pt-3 text-sm leading-relaxed text-parchment/85">
+                <p className="mb-2 italic text-gold-soft/70 text-[0.7rem] uppercase tracking-wider">{item.category}</p>
+                {item.answer}
+              </div>
             </details>
           ))}
         </div>

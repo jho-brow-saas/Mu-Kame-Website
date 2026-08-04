@@ -5,7 +5,8 @@ import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { SectionHeading } from "@/components/ui-kit/SectionHeading";
 import { ActionAnchor, ActionButton } from "@/components/ui-kit/Buttons";
 import { useSocials } from "@/hooks/use-socials";
-import { faqItems, serverConfig, whatsappLink } from "@/config/server";
+import { useFaq } from "@/hooks/use-faq";
+import { serverConfig, whatsappLink } from "@/config/server";
 import { cn } from "@/lib/utils";
 import { MessageCircle, Instagram, Music2, Youtube, Music, Send } from "lucide-react";
 
@@ -31,20 +32,7 @@ export const Route = createFileRoute("/suporte")({
       { property: "og:url", content: "https://novo.mukame.online/suporte" },
     ],
     links: [{ rel: "canonical", href: "https://novo.mukame.online/suporte" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faqItems.map((item) => ({
-            "@type": "Question",
-            name: item.q,
-            acceptedAnswer: { "@type": "Answer", text: item.a },
-          })),
-        }),
-      },
-    ],
+    scripts: [],
   }),
   component: SuportePage,
 });
@@ -53,6 +41,7 @@ const emptyValues = { name: "", email: "", subject: "", message: "" };
 
 function SuportePage() {
   const { data: socials } = useSocials();
+  const { faqs, categories, selectedCategory, setSelectedCategory, isPending } = useFaq();
   const [values, setValues] = useState(emptyValues);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
@@ -182,13 +171,49 @@ function SuportePage() {
 
       <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6">
         <SectionHeading eyebrow="FAQ" title="Perguntas frequentes" className="mb-6" />
+        
+        {categories.length > 0 && (
+          <div className="mb-6 flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={cn(
+                "border px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider transition-colors",
+                !selectedCategory 
+                  ? "border-gold bg-gold/10 text-gold" 
+                  : "border-bronze/30 text-ash hover:border-bronze"
+              )}
+            >
+              Todos
+            </button>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={cn(
+                  "border px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider transition-colors",
+                  selectedCategory === cat
+                    ? "border-gold bg-gold/10 text-gold" 
+                    : "border-bronze/30 text-ash hover:border-bronze"
+                )}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
+
         <ul className="flex flex-col gap-3">
-          {faqItems.map((item) => (
-            <li key={item.q} className="surface-card px-5 py-4">
-              <h3 className="mb-1 text-sm font-semibold text-ivory">{item.q}</h3>
-              <p className="text-sm leading-relaxed text-mist">{item.a}</p>
+          {isPending && <li className="text-center py-8 text-ash animate-pulse">Consultando oráculo...</li>}
+          {faqs.map((item) => (
+            <li key={item.id} className="surface-card px-5 py-4">
+              <p className="mb-1 italic text-gold-soft/70 text-[0.6rem] uppercase tracking-widest">{item.category}</p>
+              <h3 className="mb-1 text-sm font-semibold text-ivory">{item.question}</h3>
+              <p className="text-sm leading-relaxed text-mist">{item.answer}</p>
             </li>
           ))}
+          {!isPending && faqs.length === 0 && (
+            <li className="text-center py-8 text-ash">Nenhuma pergunta encontrada nesta categoria.</li>
+          )}
         </ul>
       </section>
     </SiteLayout>
