@@ -1,5 +1,7 @@
 import { SectionHeading, MaterialSection } from "@/components/ui-kit/SectionHeading";
 import { StatCard, FeatureCard, PlateHeader } from "@/components/ui-kit/Cards";
+import { useSettings } from "@/hooks/use-settings";
+import { useServerStatus } from "@/hooks/use-server-status";
 import { serverConfig, serverHighlights, serverRates, differentials } from "@/config/server";
 import { Crown, Gem, History, Shield, Swords, Trophy, Users } from "lucide-react";
 
@@ -18,7 +20,7 @@ export function AboutSection() {
             description="MU Kame nasce para recuperar a sensação das antigas Lan Houses, das primeiras guilds e das batalhas que atravessavam a madrugada — agora com uma experiência mais organizada e preparada para uma comunidade competitiva."
           />
           <p className="ceremonial max-w-md text-[1.05rem] leading-relaxed text-gold-soft">
-            “{serverConfig.slogan}”
+            “{settings?.slogan ?? serverConfig.slogan}”
           </p>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
@@ -39,10 +41,15 @@ export function AboutSection() {
 }
 
 export function QuickInfoSection() {
+  const { data: settings } = useSettings();
+  const { data: status } = useServerStatus();
+  
   const icons = [Gem, Shield, Crown, Swords, Users, History];
+  const serverName = settings?.serverName ?? status?.server?.name ?? serverConfig.name;
+
   return (
     <MaterialSection material="iron">
-      <SectionHeading eyebrow="Informações rápidas" title="O essencial do MU Kame" className="mb-8" />
+      <SectionHeading eyebrow="Informações rápidas" title={`O essencial do ${serverName}`} className="mb-8" />
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
         {serverHighlights.map((item, index) => (
           <li key={item.label}>
@@ -113,7 +120,7 @@ export function DifferentialsSection() {
         ))}
       </ul>
       <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ash">
-        Season {serverConfig.season} · status máximo {serverConfig.maxStats.toLocaleString("pt-BR")} ·{" "}
+        Season {settings?.season ?? serverConfig.season} · status máximo {(settings?.maxStats ?? serverConfig.maxStats).toLocaleString("pt-BR")} ·{" "}
         {serverConfig.classesCount} classes
       </p>
     </MaterialSection>
