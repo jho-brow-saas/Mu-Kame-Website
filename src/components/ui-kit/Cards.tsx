@@ -63,7 +63,13 @@ export function FeatureCard({
   );
 }
 
-export function TagBadge({ children, tone = "jade" }: { children: string; tone?: "jade" | "gold" | "muted" }) {
+export function TagBadge({
+  children,
+  tone = "jade",
+}: {
+  children: string;
+  tone?: "jade" | "gold" | "muted" | "warning" | "danger" | "primary";
+}) {
   return (
     <span
       className={cn(
@@ -71,6 +77,9 @@ export function TagBadge({ children, tone = "jade" }: { children: string; tone?:
         tone === "jade" && "border-mana/70 bg-mana/25 text-arcane",
         tone === "gold" && "border-gold/45 bg-bronze-dark/60 text-gold-soft",
         tone === "muted" && "border-stone/50 bg-obsidian/60 text-ash",
+        tone === "warning" && "border-orange-500/50 bg-orange-950/40 text-orange-200",
+        tone === "danger" && "border-red-500/50 bg-red-950/40 text-red-200",
+        tone === "primary" && "border-blue-500/50 bg-blue-950/40 text-blue-200",
       )}
     >
       {children}
