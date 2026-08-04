@@ -75,7 +75,7 @@ function PlayerAreaPage() {
     try {
       await logout();
       toast.success("Você saiu da conta.");
-      navigate({ to: "/login" });
+      navigate({ to: "/entrar" });
     } catch {
       toast.error("Erro ao encerrar sessão.");
     }
