@@ -150,8 +150,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "icon",
+        type: "image/x-icon",
+        href: "/favicon.ico"
+      },
+      {
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/apple-touch-icon.png"
+      },
+      {
+        rel: "icon",
         type: "image/png",
-        href: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe805b42-9558-4637-8ed2-517032c0952e/logo-mukame.png"
+        sizes: "32x32",
+        href: "/favicon-32x32.png"
+      },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "16x16",
+        href: "/favicon-16x16.png"
       },
     ],
     scripts: [
