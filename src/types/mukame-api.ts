@@ -3,7 +3,6 @@
  *
  * Base: https://api.mukame.online/index.php
  * O frontend nunca fala com o SQL Server: apenas com esta API HTTPS.
- * Nenhum segredo, credencial ou token vive nesta camada.
  */
 
 export type MuKameEnvelope<T> = {
@@ -31,6 +30,23 @@ export type HealthPayload = {
   version: string;
   php?: string;
   readOnly?: boolean;
+};
+
+/* -------------------------------- settings ------------------------------- */
+
+export type SettingsPayload = {
+  serverName: string;
+  slogan: string;
+  season: string;
+  mode: string;
+  platforms: string[];
+  launchDate: string;
+  masterLevel: number;
+  maxStats: number;
+  language: string;
+  timezone: string;
+  castleSiegeSchedule: string | null;
+  android: boolean;
 };
 
 /* --------------------------------- status -------------------------------- */
@@ -139,10 +155,6 @@ export const RANKING_TYPES = [
 
 export type RankingType = (typeof RANKING_TYPES)[number];
 
-/**
- * Enquanto `publicDataEnabled` é false a API devolve `items: []`, então a forma
- * exata dos registros é tolerante: renderizamos apenas o que existir.
- */
 export type RankingApiItem = {
   position?: number | null;
   rank?: number | null;
@@ -167,4 +179,43 @@ export type RankingPayload = {
   items: RankingApiItem[];
   publicDataEnabled: boolean;
   message?: string | null;
+};
+
+/* ----------------------------------- vip ---------------------------------- */
+
+export type VipBenefit = {
+  id: string;
+  label: string;
+  value: string | number | boolean;
+};
+
+export type VipPlan = {
+  id: string;
+  name: string;
+  price: number;
+  currency: string;
+  durationDays: number;
+  available: boolean;
+  benefits?: VipBenefit[];
+};
+
+export type VipPayload = {
+  plans: VipPlan[];
+};
+
+/* --------------------------------- socials -------------------------------- */
+
+export type SocialChannel = {
+  id: string;
+  label: string;
+  url: string;
+  handle: string;
+  available: boolean;
+};
+
+export type SocialsPayload = {
+  whatsapp: SocialChannel;
+  instagram: SocialChannel;
+  tiktok: SocialChannel;
+  discord: SocialChannel;
 };
