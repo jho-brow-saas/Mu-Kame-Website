@@ -257,3 +257,32 @@ export type RatesPayload = {
   levelUpPoints: Record<string, number>;
   notes: string[];
 };
+
+/* --------------------------------- rules ---------------------------------- */
+
+export type RuleSeverity = "critical" | "high" | "medium" | "info";
+
+export type RuleApiItem = {
+  id: string;
+  title: string;
+  summary: string;
+  details: string[];
+  severity: RuleSeverity;
+};
+
+export type RulesPayload = {
+  items: RuleApiItem[];
+};
+
+/* ---------------------------------- faq ----------------------------------- */
+
+export type FaqApiItem = {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+};
+
+export type FaqPayload = {
+  items: FaqApiItem[];
+};

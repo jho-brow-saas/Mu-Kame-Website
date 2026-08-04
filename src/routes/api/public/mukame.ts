@@ -22,6 +22,8 @@ const ALLOWED_ROUTES = new Set([
   "socials",
   "settings",
   "rates",
+  "rules",
+  "faq",
 ]);
 
 const ALLOWED_RANKING_TYPES = new Set([
