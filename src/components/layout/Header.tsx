@@ -111,9 +111,12 @@ export function Header() {
                 Entrar
               </ActionLink>
             )}
-            <ActionAnchor href={serverConfig.pcDownloadUrl} className="min-h-[40px] px-5 py-2">
+            <ActionLink 
+              to={isAuthenticated ? "/downloads" : "/criar-conta"} 
+              className="min-h-[40px] px-5 py-2"
+            >
               Jogar agora
-            </ActionAnchor>
+            </ActionLink>
           </div>
 
           <button
@@ -196,7 +199,12 @@ function MobileMenu({ open, onClose, isAuthenticated }: { open: boolean; onClose
               Entrar
             </ActionLink>
           )}
-          <ActionAnchor href={serverConfig.pcDownloadUrl}>Jogar agora</ActionAnchor>
+          <ActionLink 
+            to={isAuthenticated ? "/downloads" : "/criar-conta"}
+            onClick={onClose}
+          >
+            Jogar agora
+          </ActionLink>
         </div>
       </aside>
     </div>

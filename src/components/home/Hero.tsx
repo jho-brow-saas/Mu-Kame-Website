@@ -98,10 +98,10 @@ export function Hero() {
               <ShieldPlus className="size-4" aria-hidden="true" />
               Criar conta
             </ActionLink>
-            <ActionAnchor href={serverConfig.pcDownloadUrl} variant="secondary">
+            <ActionLink to="/downloads" variant="secondary">
               <Download className="size-4" aria-hidden="true" />
-              Baixar cliente
-            </ActionAnchor>
+              Downloads
+            </ActionLink>
             <ActionLink to="/rankings" variant="ghost">
               <Compass className="size-4" aria-hidden="true" />
               Explorar o servidor
