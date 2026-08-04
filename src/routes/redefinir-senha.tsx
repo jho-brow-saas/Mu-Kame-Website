@@ -92,7 +92,7 @@ function ResetPasswordPage() {
               <h3 className="text-xl font-display text-bone">Tudo pronto!</h3>
               <p className="text-sm text-mist">Sua senha foi atualizada e todas as sessões anteriores foram encerradas por segurança.</p>
             </div>
-            <Link to="/login" className="w-full">
+            <Link to="/entrar" className="w-full">
               <ActionButton className="w-full">Entrar agora</ActionButton>
             </Link>
           </div>
