@@ -128,14 +128,14 @@ export function RatesSection() {
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {(["AL0", "AL1", "AL2", "AL3"] as const).map((level) => {
                     const accountLevels = 
-                      data?.accountLevels && typeof data.accountLevels === "object"
+                      (data?.accountLevels && typeof data.accountLevels === "object"
                         ? data.accountLevels
-                        : {};
+                        : {}) as Record<string, string>;
                     
                     const serverAccountLevels =
-                      server?.accountLevels && typeof server.accountLevels === "object"
+                      (server?.accountLevels && typeof server.accountLevels === "object"
                         ? server.accountLevels
-                        : {};
+                        : {}) as Record<string, any>;
 
                     const levelData = serverAccountLevels[level];
                     const isAvailable = server.name?.toLowerCase().includes("vip") ? level !== "AL0" : true;
