@@ -31,8 +31,7 @@ const ALLOWED_ROUTES = new Set([
   "account/characters",
 ]);
 
-const BLOCKED_AUTH_ROUTES = new Set([
-]);
+const BLOCKED_AUTH_ROUTES = new Set<string>([]);
 
 const ALLOWED_RANKING_TYPES = new Set([
   "reset",
