@@ -1,15 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { ActionButton } from "@/components/ui-kit/Buttons";
-import { api } from "@/services/api";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { toast } from "sonner";
 
 const schema = z.object({
-  username: z.string().trim().min(4, "Informe seu usuário.").max(10),
-  password: z.string().min(6, "Informe sua senha.").max(20),
+  accountId: z.string().trim().min(4, "Informe seu usuário.").max(10),
+  password: z.string().min(12, "Informe sua senha da Área do Jogador."),
 });
 
 const title = "Entrar — MU Kame";
@@ -30,36 +31,48 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
-  const [values, setValues] = useState({ username: "", password: "" });
-  const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
+  const navigate = useNavigate();
+  const search = useSearch({ from: "/login" }) as { redirect?: string };
+  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  
+  const [values, setValues] = useState({ accountId: "", password: "" });
+  const [errors, setErrors] = useState<{ accountId?: string; password?: string }>({});
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: "ok" | "error"; message: string } | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate({ to: search.redirect || "/area-do-jogador" });
+    }
+  }, [isAuthenticated, navigate, search.redirect]);
 
   const fieldClass =
-    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold";
+    "min-h-[46px] w-full border border-bronze/60 bg-obsidian/70 px-4 font-mono text-[0.9rem] text-bone placeholder:text-ash focus-visible:border-gold disabled:opacity-50";
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (submitting) return;
-    setFeedback(null);
+    
     const parsed = schema.safeParse(values);
     if (!parsed.success) {
-      const next: { username?: string; password?: string } = {};
+      const next: { accountId?: string; password?: string } = {};
       for (const issue of parsed.error.issues) {
-        const key = issue.path[0] as "username" | "password";
+        const key = issue.path[0] as "accountId" | "password";
         if (key && !next[key]) next[key] = issue.message;
       }
       setErrors(next);
       return;
     }
+    
     setErrors({});
     setSubmitting(true);
+    
     try {
-      const result = await api.login(parsed.data);
-      setFeedback({ type: "ok", message: result.message });
-    } catch {
-      setFeedback({ type: "error", message: "Login ou senha inválidos." });
+      await login(parsed.data);
+      toast.success("Bem-vindo de volta!");
+      navigate({ to: search.redirect || "/area-do-jogador" });
+    } catch (error: any) {
+      toast.error(error.message || "Login ou senha inválidos.");
     } finally {
       setSubmitting(false);
     }
@@ -71,17 +84,18 @@ function LoginPage() {
       <section className="mx-auto max-w-md px-4 py-12 sm:px-6">
         <form onSubmit={handleSubmit} noValidate className="surface-card flex flex-col gap-5 p-6 sm:p-8">
           <div className="flex flex-col gap-1">
-            <label htmlFor="login-user" className="text-sm font-medium text-ivory">Usuário</label>
+            <label htmlFor="login-user" className="text-sm font-medium text-ivory">Login</label>
             <input
               id="login-user"
-              value={values.username}
-              onChange={(e) => setValues((v) => ({ ...v, username: e.target.value }))}
-              aria-invalid={Boolean(errors.username)}
-              aria-describedby={errors.username ? "login-user-error" : undefined}
+              value={values.accountId}
+              onChange={(e) => setValues((v) => ({ ...v, accountId: e.target.value.toLowerCase() }))}
+              aria-invalid={Boolean(errors.accountId)}
+              aria-describedby={errors.accountId ? "login-user-error" : undefined}
               className={fieldClass}
               autoComplete="username"
+              disabled={submitting}
             />
-            {errors.username ? <p id="login-user-error" className="text-xs text-danger">{errors.username}</p> : null}
+            {errors.accountId ? <p id="login-user-error" className="text-xs text-danger">{errors.accountId}</p> : null}
           </div>
 
           <div className="flex flex-col gap-1">
@@ -96,6 +110,7 @@ function LoginPage() {
                 aria-describedby={errors.password ? "login-password-error" : undefined}
                 className={cn(fieldClass, "pr-14")}
                 autoComplete="current-password"
+                disabled={submitting}
               />
               <button
                 type="button"
@@ -110,14 +125,18 @@ function LoginPage() {
           </div>
 
           <ActionButton type="submit" disabled={submitting}>
-            {submitting ? "Entrando…" : "Entrar"}
+            {submitting ? "Autenticando…" : "Entrar"}
           </ActionButton>
 
-          {feedback ? (
-            <p role="status" className={cn("text-sm", feedback.type === "ok" ? "text-success" : "text-danger")}>
-              {feedback.message}
-            </p>
-          ) : null}
+          <p className="text-sm text-mist text-center">
+            <button 
+              type="button"
+              className="text-ash/60 hover:text-gold transition-colors text-xs"
+              onClick={() => toast.info("Recuperação por e-mail em configuração.")}
+            >
+              Esqueci minha senha
+            </button>
+          </p>
 
           <p className="text-sm text-mist">
             Ainda não tem conta? <Link to="/cadastro" className="text-gold hover:text-gold-soft">Criar conta</Link>

@@ -42,6 +42,12 @@ const DIRECT_API_HOSTS = new Set([
   "mu-kame-teste.lovable.app", // Domínio de produção do Lovable (se houver)
 ]);
 
+/**
+ * A API de autenticação sempre é chamada diretamente em produção, mas usa um proxy de
+ * desenvolvimento para ambientes como localhost e preview do Lovable.
+ */
+export const AUTH_API_HOST = "https://api.mukame.online";
+
 /** Timeout padrão das requisições públicas. Aumentado para lidar com latência de rede. */
 const REQUEST_TIMEOUT_MS = 15_000;
 
@@ -63,7 +69,8 @@ export class MuKameApiError extends Error {
 export type QueryParams = Record<string, string | number | undefined>;
 
 /** No navegador: direto em produção oficial, proxy de mesma origem em qualquer outro host. */
-function useDevProxy(): boolean {
+/** No navegador: direto em produção oficial, proxy de mesma origem em qualquer outro host. */
+export function useDevProxy(): boolean {
   if (typeof window === "undefined") return false;
   
   const hostname = window.location.hostname;
