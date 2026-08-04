@@ -13,6 +13,7 @@ import type {
   VipPayload,
   RatesPayload,
 } from "@/types/mukame-api";
+import { normalizeRates } from "@/lib/normalize-rates";
 
 /**
  * Camada única de acesso à API pública do MU Kame.
@@ -190,7 +191,7 @@ export const muKameApi = {
   vip: (signal?: AbortSignal) => fetchMuKameApi<VipPayload>({ route: "vip" }, signal),
 
   socials: (signal?: AbortSignal) => fetchMuKameApi<SocialsPayload>({ route: "socials" }, signal),
-  rates: (signal?: AbortSignal) => fetchMuKameApi<RatesPayload>({ route: "rates" }, signal),
+  rates: (signal?: AbortSignal) => fetchMuKameApi<unknown>({ route: "rates" }, signal).then(normalizeRates),
 } as const;
 
 /** Chaves de cache centralizadas (preparadas para a fase autenticada). */

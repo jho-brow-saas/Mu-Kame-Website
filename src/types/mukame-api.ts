@@ -250,15 +250,10 @@ export type ResetSettings = {
   questRequired: boolean;
 };
 
-export type ClassPoints = {
-  className: string;
-  pointsPerLevel: number;
-};
-
 export type RatesPayload = {
   accountLevels: Record<AccountLevel, string>;
   servers: RateServer[];
   reset: ResetSettings;
-  levelUpPoints: ClassPoints[];
+  levelUpPoints: Record<string, number>;
   notes: string[];
 };
