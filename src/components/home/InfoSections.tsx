@@ -102,6 +102,8 @@ export function RatesSection() {
 }
 
 export function DifferentialsSection() {
+  const { data: settings } = useSettings();
+
   return (
     <MaterialSection material="iron">
       <SectionHeading eyebrow="Diferenciais" title="O que está confirmado no lançamento" className="mb-8" />
