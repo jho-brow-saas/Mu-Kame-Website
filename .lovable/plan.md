@@ -1,56 +1,73 @@
-# Plano de Implementação - Novo Website Oficial MU Kame
+# Plano de Implementação Final da Autenticação — MU Kame API 2.1.1
 
-O usuário solicitou a criação do website oficial para o "MU Kame", com uma estética inspirada na era de ouro do MU Online (anos 2000) mas com uma roupagem moderna e profissional. O desenvolvimento será focado apenas no frontend com dados demonstrativos, mantendo a integração atual com o GitHub.
+Este plano detalha as etapas para a transição completa do sistema de autenticação para a versão 2.1.1 da API oficial, garantindo segurança máxima (HttpOnly cookies), persistência de sessão e novas funcionalidades como recuperação de senha.
 
-## Visão Geral do Design (Mega-skill: frontend-mega)
-- **Estética**: "Dark Fantasy" Medieval com toques sutis de anime dos anos 2000.
-- **Paleta de Cores**: Tons profundos (preto, cinza grafite) com destaques em dourado, rubi ou ciano (remetendo a itens excelentes/joias).
-- **Tipografia**: Fontes fortes e legíveis, possivelmente uma mistura de serifadas clássicas para títulos e sans-serif modernas para conteúdo.
-- **Elementos**: Texturas de metal, pedra e brilhos sutis ("glow" de itens +13).
+## 1. Definições de Tipos e Contratos (`src/types/mukame-auth.ts`)
+- [ ] Atualizar `AuthAccount` e `AuthSession` para refletir exatamente o payload da API 2.1.1.
+- [ ] Adicionar interfaces para `ForgotPasswordResponse` e `ResetPasswordResponse`.
+- [ ] Mapear todos os códigos de erro listados (ex: `INVALID_RESET_TOKEN`, `AUTH_DATABASE_UNAVAILABLE`).
 
-## Arquitetura de Rotas (Mega-skill: architecture-mega)
-- `/` - Landing Page (Início)
-- `/cadastro` - Formulário de criação de conta
-- `/login` - Acesso à conta
-- `/downloads` - Links para o cliente do jogo
-- `/rankings` - Tabelas de classificação (Reset, PK, Guilds)
-- `/personagens` - Wiki/Informações de classes
-- `/vip` - Vantagens e planos
-- `/suporte` - Central de ajuda
+## 2. Camada de Serviço e Segurança (`src/services/mukame-auth-api.ts`)
+- [ ] Refatorar `authRequest` para ser a função central definitiva.
+- [ ] Garantir `credentials: "include"` em todas as chamadas.
+- [ ] Implementar tratamento rigoroso de respostas (verificar `ok: true` no payload).
+- [ ] Adicionar exportação da classe `MukameAuthError` com suporte a códigos específicos.
+- [ ] Remover qualquer lógica de proxy em produção; chamar `https://api.mukame.online/index.php`.
 
-## Componentes a Desenvolver
-- **Navbar & Footer**: Navegação responsiva com estética medieval.
-- **Hero Section**: CTA principal (Jogar/Download), status do servidor (Online/Offline) e contador de jogadores.
-- **Sidebar (Desktop)**: Rankings rápidos, notícias e widgets de redes sociais.
-- **Grid de Notícias**: Layout de cards para eventos e atualizações.
-- **Tabelas de Ranking**: Estilizadas e responsivas.
+## 3. Gestão de Estado Global (`src/components/auth/AuthProvider.tsx`)
+- [ ] Adicionar `forgotPassword` e `resetPassword` ao contexto.
+- [ ] Garantir que `isLoading` reflita o estado de verificação inicial da sessão (`auth/me`).
+- [ ] Implementar `refreshSession` chamando `refetch()` da query de sessão.
+- [ ] Validar que nenhum dado de sessão seja persistido no `localStorage`.
 
-## Plano de Ação
+## 4. Hooks de Autenticação e TanStack Query (`src/hooks/use-auth-session.ts`)
+- [ ] Centralizar as keys `["auth", "me"]` e `["account", "characters"]`.
+- [ ] Configurar `retry: false` para erros 401.
+- [ ] Criar novos hooks:
+    - `useForgotPassword()`
+    - `useResetPassword()`
+- [ ] Garantir que `useAccountCharacters` tenha `enabled: isAuthenticated`.
+- [ ] Normalizar personagens usando `Array.isArray` como medida defensiva.
 
-### Fase 1: Fundação e Layout Base
-1. Configurar o `src/routes/__root.tsx` com o layout global (Navbar, Sidebar, Footer).
-2. Criar os tokens de design (cores e fontes) no `src/styles.css` usando variáveis do Tailwind v4.
+## 5. Fluxos de Interface (UI/UX)
 
-### Fase 2: Roteamento
-1. Criar os arquivos de rota para todas as páginas solicitadas.
-2. Implementar o `head()` em cada rota com SEO otimizado.
+### Cadastro (`/criar-conta`)
+- [ ] Adicionar campos `confirmGamePassword` e `confirmPassword`.
+- [ ] Implementar medidor de requisitos de senha para a Área do Jogador (mínimo 12 chars).
+- [ ] Adicionar botões mostrar/ocultar senha.
+- [ ] Melhorar mensagens de erro específicas para cada campo.
+- [ ] Redirecionar para `/entrar` após sucesso, sem login automático.
 
-### Fase 3: Landing Page (Home)
-1. Desenvolver a Hero Section com o status do servidor em tempo real (simulado).
-2. Implementar seções de Notícias e Rankings demonstrativos.
+### Login (`/entrar`)
+- [ ] Adicionar link "Esqueci minha senha" redirecionando para `/esqueci-minha-senha`.
+- [ ] Garantir `autocomplete` correto nos campos.
+- [ ] Manter mensagem de erro genérica ("Login ou senha inválidos").
 
-### Fase 4: Páginas de Conteúdo
-1. Criar o formulário de Cadastro/Login com validação Zod.
-2. Desenvolver a página de Downloads com guias de instalação.
-3. Criar as páginas de VIP, Personagens e Suporte com conteúdo estático de alta qualidade.
+### Recuperação de Senha (`/esqueci-minha-senha` e `/redefinir-senha`)
+- [ ] Criar rota `/esqueci-minha-senha` com formulário de envio de e-mail.
+- [ ] Criar rota `/redefinir-senha` que lê o `token` da URL.
+- [ ] Implementar validação de token hexadecimal de 64 caracteres.
+- [ ] Exibir mensagem de sucesso orientando o login manual após a troca.
 
-### Fase 5: Polimento e Responsividade
-1. Garantir que o layout "Mobile-first" esteja impecável.
-2. Adicionar animações sutis (Framer Motion ou CSS Transitions) para a sensação "Premium".
+### Área do Jogador (`/area-do-jogador`)
+- [ ] Garantir proteção da rota (redirecionar se deslogado).
+- [ ] Exibir lista de personagens real mapeando IDs de classe para nomes usando `CLASS_LABELS`.
+- [ ] Mascarar e-mail exibido.
+- [ ] Remover qualquer exibição de dados técnicos sensíveis.
 
-## Verificação Técnica
-- Validar se todos os links internos estão funcionando.
-- Garantir que não há referências a marcas protegidas (Webzen, etc).
-- Testar a performance (LCP e CLS).
+## 6. Verificação e Build
+- [ ] Rodar `bun run typecheck` para garantir integridade dos tipos.
+- [ ] Rodar `bun run build` para validar bundle de produção.
+- [ ] Instruir teste manual no domínio `novo.mukame.online`.
 
-Confirmar se a direção visual de "Dark Fantasy Medieval + 2000s Anime" está correta para iniciarmos a codificação.
+## Arquivos Afetados:
+- `src/types/mukame-auth.ts`
+- `src/services/mukame-auth-api.ts`
+- `src/hooks/use-auth-session.ts`
+- `src/components/auth/AuthProvider.tsx`
+- `src/routes/cadastro.tsx`
+- `src/routes/login.tsx`
+- `src/routes/area-do-jogador.tsx`
+- `src/routes/esqueci-minha-senha.tsx` (Novo)
+- `src/routes/redefinir-senha.tsx` (Novo)
+- `src/routes/__root.tsx` (Injeção de Toaster/AuthProvider se necessário)
