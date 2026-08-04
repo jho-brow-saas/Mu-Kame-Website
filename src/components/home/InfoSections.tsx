@@ -127,12 +127,22 @@ export function RatesSection() {
                 <span className="label-text mb-2 block text-[0.65rem] text-ash">Bônus por Nível de Conta</span>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {(["AL0", "AL1", "AL2", "AL3"] as const).map((level) => {
-                    const levelData = server.accountLevels[level];
-                    const isAvailable = server.name.toLowerCase().includes("vip") ? level !== "AL0" : true;
+                    const accountLevels = 
+                      data?.accountLevels && typeof data.accountLevels === "object"
+                        ? data.accountLevels
+                        : {};
+                    
+                    const serverAccountLevels =
+                      server?.accountLevels && typeof server.accountLevels === "object"
+                        ? server.accountLevels
+                        : {};
+
+                    const levelData = serverAccountLevels[level];
+                    const isAvailable = server.name?.toLowerCase().includes("vip") ? level !== "AL0" : true;
                     
                     return (
                       <div key={level} className="flex flex-col gap-1">
-                        <span className="font-mono text-[0.6rem] text-bone/60">{data.accountLevels[level]}</span>
+                        <span className="font-mono text-[0.6rem] text-bone/60">{accountLevels[level] ?? level}</span>
                         <span className="data-text text-[0.75rem] text-gold">
                           {isAvailable ? formatVal(levelData?.experience, "x") : "Indisponível"}
                         </span>
