@@ -89,17 +89,6 @@ export function Header() {
                       "data-[status=active]:bg-bronze-dark/60 data-[status=active]:text-gold",
                     )}
                   >
-              {navItems.map((item) => (
-                <li key={item.to} className="border-l border-white/5 last:border-r">
-                  <Link
-                    to={item.to}
-                    activeOptions={{ exact: item.to === "/" }}
-                    className={cn(
-                      "group relative inline-flex min-h-[44px] items-center px-4 font-ui text-[0.82rem] font-600 uppercase tracking-[0.14em] text-parchment/80 transition-colors",
-                      "hover:bg-bronze-dark/40 hover:text-gold-soft",
-                      "data-[status=active]:bg-bronze-dark/60 data-[status=active]:text-gold",
-                    )}
-                  >
                     {item.label}
                     <span
                       aria-hidden="true"
