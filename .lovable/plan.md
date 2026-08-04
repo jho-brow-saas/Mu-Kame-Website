@@ -1,39 +1,38 @@
 ---
-name: Correção Final Baseada em Teste Real no Domínio Publicado
-description: Plano para eliminar chamadas duplicadas de autenticação, corrigir erro de hidratação no contador e ajustar redirecionamentos canônicos.
-type: feature
+name: Correção de Tamanho e Enquadramento da Logo
+description: Plano para ajustar as dimensões da logo no cabeçalho, garantindo visibilidade e proporções corretas em diferentes dispositivos, lidando com margens excessivas do asset.
+type: design
 ---
 
-## 1. Eliminar Chamadas Duplicadas para auth/me
-- **Problema**: Foram observadas 6 chamadas simultâneas para `auth/me` em páginas públicas.
-- **Causa provável**: `AuthProvider` ou instâncias do `QueryClient` sendo recriadas ou disparadas por múltiplos hooks sem cache/debounce adequado.
-- **Lógica de Correção**:
-  - Em `src/router.tsx`, garantir que `QueryClient` seja estável (embora `getRouter` pareça ok, vamos verificar se é chamado múltiplas vezes).
-  - Em `src/hooks/use-auth-session.ts`, configurar `retry: false`, `refetchOnWindowFocus: false`, `refetchOnMount: false`, e `staleTime: 1000 * 60 * 5` (5 minutos).
-  - Em `src/components/auth/AuthProvider.tsx`, garantir que o estado `isAuthenticated` seja derivado apenas da `queryData` estável.
-  - Verificar se componentes como `Header` ou `ProtectedRoute` estão disparando `refetch` manuais desnecessários.
+## Objetivo
+Ajustar o tamanho da logo no cabeçalho para que ela tenha presença visual adequada (legível e clara), respeitando as restrições de altura do header e corrigindo o impacto das margens internas do arquivo de imagem original.
 
-## 2. Corrigir React Error #418 (Hydration Mismatch)
-- **Problema**: Hydration mismatch na Home, provavelmente no `Countdown`.
-- **Causa**: `Date.now()` sendo usado no render inicial ou durante a definição do estado inicial, o que difere entre Servidor (SSR) e Cliente.
-- **Lógica de Correção**:
-  - Em `src/components/common/Countdown.tsx`, implementar um estado `mounted` via `useEffect`.
-  - Enquanto `!mounted`, renderizar um placeholder estável (ex: "--").
-  - Iniciar o `setInterval` e o cálculo de tempo real apenas após a montagem no cliente.
-  - Garantir que `formatBrDateTime` e outros utilitários de data sejam consistentes (America/Sao_Paulo).
+## Análise do Estado Atual
+- A logo está sendo renderizada via componente `Logo.tsx` usando um asset PNG.
+- A altura atual está limitada por classes `max-h-12` ou `max-h-16`.
+- O usuário relata que a logo parece pequena devido a margens transparentes excessivas no próprio arquivo PNG.
 
-## 3. Redirecionamentos Canônicos Reais
-- **Problema**: `/cadastro` e `/login` apenas renderizam o componente, mas não alteram a URL para a versão canônica (`/criar-conta` e `/entrar`).
-- **Lógica de Correção**:
-  - Modificar `src/routes/cadastro.tsx` e `src/routes/login.tsx` para usar `loader` com `redirect({ to: '...', replace: true })` apontando para as rotas canônicas.
-  - Garantir que `src/routes/entrar.tsx` e `src/routes/criar-conta.tsx` contenham os componentes reais da página.
-  - **Nota**: Inverter a lógica atual se necessário para que `/entrar` e `/criar-conta` sejam as rotas que contém o código, e `/login`/`/cadastro` sejam os aliases de redirecionamento.
+## Ações Propostas
 
-## 4. Validação e Segurança
-- **Ação**: Garantir que erros 401 em `auth/me` não gerem logs de erro ou toasts, tratando-os como estado "desconectado" padrão.
-- **Ação**: Limpeza de tokens na URL em `redefinir-senha.tsx` após sucesso.
-- **Ação**: Executar `bun run build` para validar a ausência de erros de compilação.
+### 1. Ajuste Dimensional no Componente Logo (`src/components/layout/Logo.tsx`)
+- Remover limites restritivos genéricos (`max-h-12`, `max-h-16`).
+- Implementar classes responsivas específicas para a altura visual desejada, compensando as margens internas do asset:
+  - **Desktop (lg):** `h-[50px]` (para atingir visualmente 46px-50px).
+  - **Tablet (md):** `h-[44px]` (para atingir visualmente 40px-44px).
+  - **Mobile:** `h-[38px]` (para atingir visualmente 34px-38px).
+- Manter `w-auto` e `object-contain` para preservar a proporção.
+- Garantir alinhamento vertical centralizado.
 
-## 5. Testes Manuais (Simulados via Código)
-- **Ação**: Validar a quantidade de requests no console/network simulado.
-- **Ação**: Verificar a estabilidade do HTML gerado pelo SSR vs Cliente no Countdown.
+### 2. Ajuste de Layout no Header (`src/components/layout/Header.tsx`)
+- Garantir que o container da logo no header (`Link`) tenha a classe `shrink-0` para não ser espremido pelos itens de menu.
+- Verificar se há espaço suficiente no bloco esquerdo.
+
+### 3. Testes de Responsividade
+- Validar visualmente nas resoluções especificadas:
+  - 320px, 375px (Mobile)
+  - 768px (Tablet)
+  - 1024px, 1366px, 1920px (Desktop)
+
+## Notas Técnicas
+- Não utilizaremos ferramentas de edição de imagem externas para "recortar" o asset, mas sim técnicas de dimensionamento CSS (`padding` negativo ou aumento proporcional de `height`) se o asset ainda apresentar margens internas que o tornem pequeno.
+- O objetivo é a legibilidade sem aumentar a altura total do cabeçalho (que hoje é `h-16`).
