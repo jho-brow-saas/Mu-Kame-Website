@@ -1,4 +1,5 @@
 import type { AuthErrorPayload } from "@/types/mukame-auth";
+import { useDevProxy } from "./mukame-api";
 
 export class MukameAuthError extends Error {
   readonly code: string;
@@ -22,7 +23,10 @@ export async function authRequest<T>(
 ): Promise<T> {
   // Em produção, as chamadas de autenticação vão direto para o domínio da API
   // O navegador gerencia o cookie via credentials: "include"
-  const url = `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`;
+  const viaProxy = useDevProxy();
+  const url = viaProxy 
+    ? `/api/public/mukame?route=${encodeURIComponent(route)}` 
+    : `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`;
 
   const response = await fetch(url, {
     ...options,

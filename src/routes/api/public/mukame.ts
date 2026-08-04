@@ -24,14 +24,14 @@ const ALLOWED_ROUTES = new Set([
   "rates",
   "rules",
   "faq",
-]);
-
-const BLOCKED_AUTH_ROUTES = new Set([
   "auth/register",
   "auth/login",
   "auth/logout",
   "auth/me",
   "account/characters",
+]);
+
+const BLOCKED_AUTH_ROUTES = new Set([
 ]);
 
 const ALLOWED_RANKING_TYPES = new Set([
