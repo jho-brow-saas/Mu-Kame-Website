@@ -119,6 +119,16 @@ function CadastroPage() {
         password: parsed.data.password,
       });
       toast.success("Conta criada com sucesso!");
+      
+      // Limpa campos sensíveis e redireciona
+      setValues(v => ({ 
+        ...v, 
+        gamePassword: "", 
+        confirmGamePassword: "", 
+        password: "", 
+        confirmPassword: "" 
+      }));
+      
       navigate({ to: "/login" });
     } catch (error: any) {
       if (error.code === "REGISTRATION_FAILED") {
@@ -129,6 +139,7 @@ function CadastroPage() {
     } finally {
       setSubmitting(false);
     }
+
   }
 
   const fieldClass =

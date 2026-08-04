@@ -1,5 +1,5 @@
 /**
- * Contratos de Autenticação e Conta do MU Kame API 2.0.
+ * Contratos de Autenticação e Conta do MU Kame API 2.1.1.
  */
 
 export interface AuthAccount {
@@ -54,6 +54,20 @@ export interface RegisterResponse {
   };
 }
 
+export interface ForgotPasswordResponse {
+  ok: boolean;
+  data: {
+    message: string;
+  };
+}
+
+export interface ResetPasswordResponse {
+  ok: boolean;
+  data: {
+    message: string;
+  };
+}
+
 export interface CharacterItem {
   Name: string;
   Class: number;
@@ -96,3 +110,28 @@ export interface AuthErrorPayload {
     message: string;
   };
 }
+
+/**
+ * Mapeamento de códigos de erro da API 2.1.1
+ */
+export const AUTH_ERROR_CODES = {
+  INVALID_ACCOUNT_ID: "INVALID_ACCOUNT_ID",
+  INVALID_GAME_PASSWORD: "INVALID_GAME_PASSWORD",
+  INVALID_DISPLAY_NAME: "INVALID_DISPLAY_NAME",
+  INVALID_EMAIL: "INVALID_EMAIL",
+  INVALID_PORTAL_PASSWORD: "INVALID_PORTAL_PASSWORD",
+  REGISTRATION_FAILED: "REGISTRATION_FAILED",
+  INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
+  UNAUTHENTICATED: "UNAUTHENTICATED",
+  ORIGIN_NOT_ALLOWED: "ORIGIN_NOT_ALLOWED",
+  METHOD_NOT_ALLOWED: "METHOD_NOT_ALLOWED",
+  PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
+  AUTH_DATABASE_UNAVAILABLE: "AUTH_DATABASE_UNAVAILABLE",
+  AUTHENTICATION_UNAVAILABLE: "AUTHENTICATION_UNAVAILABLE",
+  SESSION_CREATION_FAILED: "SESSION_CREATION_FAILED",
+  CHARACTERS_QUERY_FAILED: "CHARACTERS_QUERY_FAILED",
+  INVALID_RESET_TOKEN: "INVALID_RESET_TOKEN",
+  RESET_PASSWORD_FAILED: "RESET_PASSWORD_FAILED",
+  PASSWORD_HASH_FAILED: "PASSWORD_HASH_FAILED",
+  INVALID_API_RESPONSE: "INVALID_API_RESPONSE",
+} as const;

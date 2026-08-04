@@ -190,44 +190,48 @@ function PlayerAreaPage() {
               </div>
             ) : characters && characters.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2">
-                {characters.map((char) => (
-                  <div key={char.Name} className="plate plate-cut-slot overflow-hidden bg-obsidian/60 group hover:border-gold/40 transition-all">
-                    <PlateHeader right={`Level ${char.Level}`}>
-                      {char.Name}
-                    </PlateHeader>
-                    <div className="p-4 grid grid-cols-2 gap-4">
-                      <div className="space-y-3">
-                        <div className="flex flex-col">
-                          <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Classe</span>
-                          <span className="text-sm text-bone font-medium">Classe ID: {char.Class}</span>
+                {characters.map((char) => {
+                  const ClassLabel = (window as any).CLASS_LABELS?.[char.Class] || `Classe ${char.Class}`;
+                  return (
+                    <div key={char.Name} className="plate plate-cut-slot overflow-hidden bg-obsidian/60 group hover:border-gold/40 transition-all">
+                      <PlateHeader right={`Level ${char.Level}`}>
+                        {char.Name}
+                      </PlateHeader>
+                      <div className="p-4 grid grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="flex flex-col">
+                            <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Classe</span>
+                            <span className="text-sm text-bone font-medium">{ClassLabel}</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Resets</span>
+                            <span className="text-sm text-gold-soft font-bold">{char.Resets}</span>
+                          </div>
                         </div>
-                        <div className="flex flex-col">
-                          <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Resets</span>
-                          <span className="text-sm text-gold-soft font-bold">{char.Resets}</span>
+                        <div className="space-y-3">
+                          <div className="flex flex-col">
+                            <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Localização</span>
+                            <span className="text-xs text-bone/80 flex items-center gap-1">
+                              <MapPin className="size-3 text-bronze" /> Mapa {char.MapNumber}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Master Reset</span>
+                            <span className="text-sm text-parchment">{char.MasterResetCount}</span>
+                          </div>
                         </div>
                       </div>
-                      <div className="space-y-3">
-                        <div className="flex flex-col">
-                          <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Localização</span>
-                          <span className="text-xs text-bone/80 flex items-center gap-1">
-                            <MapPin className="size-3 text-bronze" /> Mapa {char.MapNumber}
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[0.6rem] text-ash uppercase tracking-tighter">Master Reset</span>
-                          <span className="text-sm text-parchment">{char.MasterResetCount}</span>
-                        </div>
+                      <div className="border-t border-gold/5 bg-gold/5 px-4 py-2 flex justify-between items-center">
+                        <span className="text-[0.6rem] text-ash/60 uppercase">Último Acesso</span>
+                        <span className="text-[0.65rem] font-mono text-bone/50">
+                          {char.LastLoginAt ? new Date(char.LastLoginAt).toLocaleDateString("pt-BR") : "Nunca"}
+                        </span>
                       </div>
                     </div>
-                    <div className="border-t border-gold/5 bg-gold/5 px-4 py-2 flex justify-between items-center">
-                      <span className="text-[0.6rem] text-ash/60 uppercase">Último Acesso</span>
-                      <span className="text-[0.65rem] font-mono text-bone/50">
-                        {char.LastLoginAt ? new Date(char.LastLoginAt).toLocaleDateString("pt-BR") : "Nunca"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+
             ) : (
               <EmptyState 
                 title="Nenhum herói encontrado" 

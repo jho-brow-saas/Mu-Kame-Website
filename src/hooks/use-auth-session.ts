@@ -1,33 +1,31 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authRequest } from "@/services/mukame-auth-api";
-import type { AuthMeResponse, LoginResponse, RegisterResponse, CharactersResponse } from "@/types/mukame-auth";
+import type { 
+  AuthMeResponse, 
+  LoginResponse, 
+  RegisterResponse, 
+  CharactersResponse,
+  ForgotPasswordResponse,
+  ResetPasswordResponse
+} from "@/types/mukame-auth";
 
 export const authQueryKeys = {
   me: ["auth", "me"] as const,
   characters: ["account", "characters"] as const,
 };
 
-/**
- * Hook para consultar a sessão atual (auth/me).
- * Não exibe toast de erro no 401 inicial.
- */
 export function useAuthSession() {
   return useQuery({
     queryKey: authQueryKeys.me,
     queryFn: () => authRequest<AuthMeResponse>("auth/me"),
     retry: (failureCount, error: any) => {
-      // Não tenta novamente em caso de 401 (não autenticado)
       if (error?.status === 401) return false;
       return failureCount < 2;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutos
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-/**
- * Hook para login.
- * Invalida a query auth/me após sucesso.
- */
 export function useLogin() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -42,9 +40,6 @@ export function useLogin() {
   });
 }
 
-/**
- * Hook para cadastro.
- */
 export function useRegister() {
   return useMutation({
     mutationFn: (data: any) =>
@@ -55,10 +50,6 @@ export function useRegister() {
   });
 }
 
-/**
- * Hook para logout.
- * Limpa cache e estado.
- */
 export function useLogout() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -74,14 +65,37 @@ export function useLogout() {
   });
 }
 
-/**
- * Hook para buscar personagens da conta.
- */
 export function useAccountCharacters(enabled: boolean) {
   return useQuery({
     queryKey: authQueryKeys.characters,
     queryFn: () => authRequest<CharactersResponse>("account/characters"),
     enabled,
     select: (data) => (Array.isArray(data?.data?.items) ? data.data.items : []),
+    retry: false,
   });
 }
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (data: { loginOrEmail: string }) =>
+      authRequest<ForgotPasswordResponse>("auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+  });
+}
+
+export function useResetPassword() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { token: string; password: string }) =>
+      authRequest<ResetPasswordResponse>("auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => {
+      queryClient.removeQueries(); // Limpa queries privadas
+    },
+  });
+}
+
