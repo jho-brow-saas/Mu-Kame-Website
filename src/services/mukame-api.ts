@@ -57,6 +57,14 @@ export type QueryParams = Record<string, string | number | undefined>;
 /** No navegador: direto em produção, proxy de mesma origem apenas em dev/prévia. */
 function useDevProxy(): boolean {
   if (typeof window === "undefined") return false;
+  
+  // Permite forçar o proxy via query string ?proxy=true ou via localStorage
+  const forceProxy = 
+    new URLSearchParams(window.location.search).get("proxy") === "true" ||
+    window.localStorage.getItem("mukame_force_proxy") === "true";
+  
+  if (forceProxy) return true;
+
   return !CORS_ALLOWED_HOSTS.has(window.location.hostname);
 }
 
@@ -121,10 +129,16 @@ export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSigna
     const message = error instanceof Error ? error.message : "Desconhecido";
     console.error(`[MU Kame API] Erro de rede em ${JSON.stringify(params)}:`, error);
 
-    throw new MuKameApiError(
-      "network",
-      `Não foi possível alcançar a API do servidor (${message}).`
-    );
+    // No ambiente Lovable, se o fetch falhar e estivermos tentando chamar a API oficial diretamente,
+    // pode ser um bloqueio de rede/DNS do ambiente sandbox em direção ao domínio .online.
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.endsWith(".lovableproject.com"));
+    
+    let userMessage = `Não foi possível alcançar a API do servidor (${message}).`;
+    if (isLocal && !useDevProxy()) {
+      userMessage += " Tente forçar o uso do proxy de desenvolvimento para contornar restrições de rede locais.";
+    }
+
+    throw new MuKameApiError("network", userMessage);
   } finally {
     clearTimeout(timeout);
     if (signal) signal.removeEventListener("abort", onExternalAbort);
