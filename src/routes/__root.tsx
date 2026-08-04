@@ -42,6 +42,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   const isApiError = error.name === "MuKameApiError";
+  const isNetworkError = isApiError && (error as any).kind === "network";
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian">
@@ -75,6 +76,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Tentar novamente
           </button>
+          
+          {isNetworkError && (
+            <button
+              onClick={() => {
+                window.localStorage.setItem("mukame_force_proxy", "true");
+                window.location.reload();
+              }}
+              className="inline-flex min-h-[44px] items-center justify-center border border-blue-500/30 bg-blue-900/10 px-5 text-sm font-semibold text-blue-400 hover:bg-blue-900/20 transition-colors"
+            >
+              Usar Proxy de Emergência
+            </button>
+          )}
+
           <a
             href="/"
             className="inline-flex min-h-[44px] items-center justify-center border border-white/15 px-5 text-sm font-semibold text-ivory"
