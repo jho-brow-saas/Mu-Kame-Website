@@ -30,8 +30,10 @@ export function Countdown({ launchDate }: CountdownProps) {
   }, [launchDate]);
 
   const [remaining, setRemaining] = useState<Remaining | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (target === null) {
       setRemaining(null);
       return;
@@ -81,7 +83,7 @@ export function Countdown({ launchDate }: CountdownProps) {
                 className="flex flex-col items-center gap-1 border border-gold/20 bg-obsidian/60 py-3"
               >
                 <span className="data-text text-2xl text-gold-soft sm:text-4xl">
-                  {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
+                  {!mounted || unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
                 </span>
                 <span className="label-text text-[0.58rem] text-ash">{unit.label}</span>
               </li>

@@ -18,11 +18,11 @@ export function useAuthSession() {
   return useQuery({
     queryKey: authQueryKeys.me,
     queryFn: () => authRequest<AuthMeResponse>("auth/me"),
-    retry: (failureCount, error: any) => {
-      if (error?.status === 401) return false;
-      return failureCount < 2;
-    },
-    staleTime: 1000 * 60 * 5,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    staleTime: 1000 * 60 * 5, // 5 minutos
   });
 }
 
