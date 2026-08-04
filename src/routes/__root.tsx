@@ -43,8 +43,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   const isApiError = error.name === "MuKameApiError";
-  const isLovable = typeof window !== "undefined" && 
-    (window.location.hostname.endsWith(".lovableproject.com") || window.location.hostname.endsWith(".lovable.app"));
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian text-stone-100 selection:bg-gold/30">
@@ -70,11 +68,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             <p>&gt; REGISTRO DE FALHA CRÍTICA:</p>
           </div>
           <pre className="whitespace-pre-wrap break-all leading-relaxed">{error.message}</pre>
-          {isLovable && isApiError && (
-            <div className="mt-3 pt-3 border-t border-white/5 text-mist/60 italic">
-              * Nota: Ambientes de visualização podem enfrentar bloqueios temporários de rede externa.
-            </div>
-          )}
         </div>
 
         <p className="mt-6 text-sm text-mist/80 leading-relaxed italic font-serif">
