@@ -131,12 +131,13 @@ export function RatesSection() {
                     const accountLevels = data?.accountLevels || {};
                     const serverAccountLevels = server?.accountLevels || {};
 
-                    const levelData = (serverAccountLevels as any)[level];
+                    const levelData = (serverAccountLevels as any)?.[level];
+                    const label = (accountLevels as any)?.[level] ?? level;
                     const isAvailable = server.name?.toLowerCase().includes("vip") ? level !== "AL0" : true;
                     
                     return (
                       <div key={level} className="flex flex-col gap-1">
-                        <span className="font-mono text-[0.6rem] text-bone/60">{(accountLevels as any)[level] ?? level}</span>
+                        <span className="font-mono text-[0.6rem] text-bone/60">{String(label)}</span>
                         <span className="data-text text-[0.75rem] text-gold">
                           {isAvailable ? formatVal(levelData?.experience, "x") : "Indisponível"}
                         </span>
