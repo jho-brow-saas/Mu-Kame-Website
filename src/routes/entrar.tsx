@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 const schema = z.object({
   accountId: z.string().trim().min(4, "Informe seu usuário.").max(10),
-  password: z.string().min(12, "Informe sua senha da Área do Jogador."),
+  password: z.string().min(8, "Informe sua senha da Área do Jogador (mínimo 8 caracteres)."),
 });
 
 const title = "Entrar — MU Kame";
