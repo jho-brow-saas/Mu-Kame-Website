@@ -1,73 +1,42 @@
-# Plano de Implementação Final da Autenticação — MU Kame API 2.1.1
+---
+name: Correção e Validação Final da Autenticação
+description: Plano para corrigir expiração VIP, formatação de data de lançamento, cabeçalho autenticado e melhorias de UX/Segurança.
+type: feature
+---
 
-Este plano detalha as etapas para a transição completa do sistema de autenticação para a versão 2.1.1 da API oficial, garantindo segurança máxima (HttpOnly cookies), persistência de sessão e novas funcionalidades como recuperação de senha.
+## 1. Correção de Expiração VIP (31/12/1899)
+- **Local**: `src/routes/area-do-jogador.tsx`
+- **Lógica**: Adicionar função helper para validar a data. Se `AccountLevel === 0`, `AccountExpireDate === null`, data inválida ou ano <= 1900, exibir "Não se aplica". Caso contrário, formatar via `Intl.DateTimeFormat`.
 
-## 1. Definições de Tipos e Contratos (`src/types/mukame-auth.ts`)
-- [ ] Atualizar `AuthAccount` e `AuthSession` para refletir exatamente o payload da API 2.1.1.
-- [ ] Adicionar interfaces para `ForgotPasswordResponse` e `ResetPasswordResponse`.
-- [ ] Mapear todos os códigos de erro listados (ex: `INVALID_RESET_TOKEN`, `AUTH_DATABASE_UNAVAILABLE`).
+## 2. Formatação da Data de Lançamento
+- **Local**: `src/components/layout/Header.tsx` e `src/components/common/Countdown.tsx`
+- **Lógica**: Criar utilitário `src/lib/date-utils.ts` para centralizar a formatação pt-BR usando `Intl.DateTimeFormat` (ex: `01/09/2026 às 00:00`). Substituir o uso de `launchLabel` bruto.
 
-## 2. Camada de Serviço e Segurança (`src/services/mukame-auth-api.ts`)
-- [ ] Refatorar `authRequest` para ser a função central definitiva.
-- [ ] Garantir `credentials: "include"` em todas as chamadas.
-- [ ] Implementar tratamento rigoroso de respostas (verificar `ok: true` no payload).
-- [ ] Adicionar exportação da classe `MukameAuthError` com suporte a códigos específicos.
-- [ ] Remover qualquer lógica de proxy em produção; chamar `https://api.mukame.online/index.php`.
+## 3. Cabeçalho Autenticado
+- **Local**: `src/components/layout/Header.tsx`
+- **Ação**: Consumir `useAuth` no Header. Se `isAuthenticated` for true, substituir o botão "Entrar" por "Área do Jogador" apontando para `/area-do-jogador`. Adicionar um pequeno indicador visual (dot de status ou ícone).
 
-## 3. Gestão de Estado Global (`src/components/auth/AuthProvider.tsx`)
-- [ ] Adicionar `forgotPassword` e `resetPassword` ao contexto.
-- [ ] Garantir que `isLoading` reflita o estado de verificação inicial da sessão (`auth/me`).
-- [ ] Implementar `refreshSession` chamando `refetch()` da query de sessão.
-- [ ] Validar que nenhum dado de sessão seja persistido no `localStorage`.
+## 4. Aliases de Rotas
+- **Local**: Criar `src/routes/entrar.tsx` e `src/routes/criar-conta.tsx`.
+- **Ação**: Usar `redirect` do TanStack Router para encaminhar `/entrar` -> `/login` e `/criar-conta` -> `/cadastro`. Atualizar todos os `ActionLink` e `Link` no projeto para usar as rotas canônicas (entrar/criar-conta).
 
-## 4. Hooks de Autenticação e TanStack Query (`src/hooks/use-auth-session.ts`)
-- [ ] Centralizar as keys `["auth", "me"]` e `["account", "characters"]`.
-- [ ] Configurar `retry: false` para erros 401.
-- [ ] Criar novos hooks:
-    - `useForgotPassword()`
-    - `useResetPassword()`
-- [ ] Garantir que `useAccountCharacters` tenha `enabled: isAuthenticated`.
-- [ ] Normalizar personagens usando `Array.isArray` como medida defensiva.
+## 5. Melhoria do Link "Esqueci minha senha"
+- **Local**: `src/routes/login.tsx`
+- **Ação**: Ajustar classes Tailwind para melhorar contraste, hover, focus e área clicável. Garantir suporte a teclado.
 
-## 5. Fluxos de Interface (UI/UX)
+## 6. Área do Jogador (Refinamento)
+- **Local**: `src/routes/area-do-jogador.tsx`
+- **Ação**: 
+  - Validar e-mail mascarado.
+  - Atualizar card "Segurança" para apontar para `/esqueci-minha-senha` com label "Redefinir senha por e-mail".
+  - Garantir que o card "Moedas" não exiba saldos fictícios (manter como acesso futuro/placeholder sem valores).
 
-### Cadastro (`/criar-conta`)
-- [ ] Adicionar campos `confirmGamePassword` e `confirmPassword`.
-- [ ] Implementar medidor de requisitos de senha para a Área do Jogador (mínimo 12 chars).
-- [ ] Adicionar botões mostrar/ocultar senha.
-- [ ] Melhorar mensagens de erro específicas para cada campo.
-- [ ] Redirecionar para `/entrar` após sucesso, sem login automático.
+## 7. Token de Redefinição
+- **Local**: `src/routes/redefinir-senha.tsx`
+- **Ação**: Garantir que o token seja removido da URL via `history.replaceState` apenas após a chamada de sucesso da API. Limpar campos.
 
-### Login (`/entrar`)
-- [ ] Adicionar link "Esqueci minha senha" redirecionando para `/esqueci-minha-senha`.
-- [ ] Garantir `autocomplete` correto nos campos.
-- [ ] Manter mensagem de erro genérica ("Login ou senha inválidos").
+## 8. Verificação do Selo Lovable
+- **Ação**: Orientar o usuário a verificar em aba anônima (como o selo é injetado pela plataforma para editores, ele não aparece na versão publicada para visitantes externos).
 
-### Recuperação de Senha (`/esqueci-minha-senha` e `/redefinir-senha`)
-- [ ] Criar rota `/esqueci-minha-senha` com formulário de envio de e-mail.
-- [ ] Criar rota `/redefinir-senha` que lê o `token` da URL.
-- [ ] Implementar validação de token hexadecimal de 64 caracteres.
-- [ ] Exibir mensagem de sucesso orientando o login manual após a troca.
-
-### Área do Jogador (`/area-do-jogador`)
-- [ ] Garantir proteção da rota (redirecionar se deslogado).
-- [ ] Exibir lista de personagens real mapeando IDs de classe para nomes usando `CLASS_LABELS`.
-- [ ] Mascarar e-mail exibido.
-- [ ] Remover qualquer exibição de dados técnicos sensíveis.
-
-## 6. Verificação e Build
-- [ ] Rodar `bun run typecheck` para garantir integridade dos tipos.
-- [ ] Rodar `bun run build` para validar bundle de produção.
-- [ ] Instruir teste manual no domínio `novo.mukame.online`.
-
-## Arquivos Afetados:
-- `src/types/mukame-auth.ts`
-- `src/services/mukame-auth-api.ts`
-- `src/hooks/use-auth-session.ts`
-- `src/components/auth/AuthProvider.tsx`
-- `src/routes/cadastro.tsx`
-- `src/routes/login.tsx`
-- `src/routes/area-do-jogador.tsx`
-- `src/routes/esqueci-minha-senha.tsx` (Novo)
-- `src/routes/redefinir-senha.tsx` (Novo)
-- `src/routes/__root.tsx` (Injeção de Toaster/AuthProvider se necessário)
+## 9. Testes e Relatório Final
+- **Ação**: Executar `typecheck`, `build` e fornecer o relatório detalhado solicitado.
