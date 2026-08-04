@@ -128,12 +128,12 @@ export function Header() {
         <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-gold/45 to-transparent" />
       </div>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} isAuthenticated={isAuthenticated} />
     </header>
   );
 }
 
-function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+function MobileMenu({ open, onClose, isAuthenticated }: { open: boolean; onClose: () => void; isAuthenticated: boolean }) {
   return (
     <div
       className={cn("fixed inset-0 z-50 lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}
