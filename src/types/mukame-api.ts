@@ -219,3 +219,43 @@ export type SocialsPayload = {
   tiktok: SocialChannel;
   discord: SocialChannel;
 };
+
+/* ---------------------------------- rates --------------------------------- */
+
+export type AccountLevel = "AL0" | "AL1" | "AL2" | "AL3";
+
+export type RateServer = {
+  name: string;
+  normalExp: number | null;
+  masterExp: number | null;
+  itemDrop: number | null;
+  zenDrop: number | null;
+  accountLevels: Record<AccountLevel, {
+    experience: number | null;
+    drop: number | null;
+  }>;
+};
+
+export type ResetSettings = {
+  command: string;
+  requiredLevel: number;
+  zenCost: number | string;
+  autoReset: boolean;
+  levelAfterReset: number;
+  inventoryPreserved: boolean;
+  skillsPreserved: boolean;
+  questRequired: boolean;
+};
+
+export type ClassPoints = {
+  className: string;
+  pointsPerLevel: number;
+};
+
+export type RatesPayload = {
+  accountLevels: Record<AccountLevel, string>;
+  servers: RateServer[];
+  reset: ResetSettings;
+  levelUpPoints: ClassPoints[];
+  notes: string[];
+};
