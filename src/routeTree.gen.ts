@@ -16,10 +16,12 @@ import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CastleSiegeRouteImport } from './routes/castle-siege'
 import { Route as ContaRouteImport } from './routes/conta'
 import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as EsqueciMinhaSenhaRouteImport } from './routes/esqueci-minha-senha'
 import { Route as EventosRouteImport } from './routes/eventos'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as RegrasRouteImport } from './routes/regras'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as VipRouteImport } from './routes/vip'
@@ -95,6 +97,11 @@ const DownloadsRoute = DownloadsRouteImport.update({
   path: '/downloads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EsqueciMinhaSenhaRoute = EsqueciMinhaSenhaRouteImport.update({
+  id: '/esqueci-minha-senha',
+  path: '/esqueci-minha-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventosRoute = EventosRouteImport.update({
   id: '/eventos',
   path: '/eventos',
@@ -113,6 +120,11 @@ const NoticiasRoute = NoticiasRouteImport.update({
 const RankingsRoute = RankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegrasRoute = RegrasRouteImport.update({
@@ -319,10 +331,12 @@ export interface FileRoutesByFullPath {
   '/castle-siege': typeof CastleSiegeRoute
   '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
@@ -369,8 +383,10 @@ export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/castle-siege': typeof CastleSiegeRoute
   '/downloads': typeof DownloadsRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
@@ -420,10 +436,12 @@ export interface FileRoutesById {
   '/castle-siege': typeof CastleSiegeRoute
   '/conta': typeof ContaRouteWithChildren
   '/downloads': typeof DownloadsRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/eventos': typeof EventosRoute
   '/login': typeof LoginRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/rankings': typeof RankingsRouteWithChildren
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/regras': typeof RegrasRoute
   '/suporte': typeof SuporteRoute
   '/vip': typeof VipRoute
@@ -474,10 +492,12 @@ export interface FileRouteTypes {
     | '/castle-siege'
     | '/conta'
     | '/downloads'
+    | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
     | '/noticias'
     | '/rankings'
+    | '/redefinir-senha'
     | '/regras'
     | '/suporte'
     | '/vip'
@@ -524,8 +544,10 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/castle-siege'
     | '/downloads'
+    | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
+    | '/redefinir-senha'
     | '/regras'
     | '/suporte'
     | '/vip'
@@ -574,10 +596,12 @@ export interface FileRouteTypes {
     | '/castle-siege'
     | '/conta'
     | '/downloads'
+    | '/esqueci-minha-senha'
     | '/eventos'
     | '/login'
     | '/noticias'
     | '/rankings'
+    | '/redefinir-senha'
     | '/regras'
     | '/suporte'
     | '/vip'
@@ -627,10 +651,12 @@ export interface RootRouteChildren {
   CastleSiegeRoute: typeof CastleSiegeRoute
   ContaRoute: typeof ContaRouteWithChildren
   DownloadsRoute: typeof DownloadsRoute
+  EsqueciMinhaSenhaRoute: typeof EsqueciMinhaSenhaRoute
   EventosRoute: typeof EventosRoute
   LoginRoute: typeof LoginRoute
   NoticiasRoute: typeof NoticiasRouteWithChildren
   RankingsRoute: typeof RankingsRouteWithChildren
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   RegrasRoute: typeof RegrasRoute
   SuporteRoute: typeof SuporteRoute
   VipRoute: typeof VipRoute
@@ -688,6 +714,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DownloadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/esqueci-minha-senha': {
+      id: '/esqueci-minha-senha'
+      path: '/esqueci-minha-senha'
+      fullPath: '/esqueci-minha-senha'
+      preLoaderRoute: typeof EsqueciMinhaSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/eventos': {
       id: '/eventos'
       path: '/eventos'
@@ -714,6 +747,13 @@ declare module '@tanstack/react-router' {
       path: '/rankings'
       fullPath: '/rankings'
       preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/regras': {
@@ -1106,10 +1146,12 @@ const rootRouteChildren: RootRouteChildren = {
   CastleSiegeRoute: CastleSiegeRoute,
   ContaRoute: ContaRouteWithChildren,
   DownloadsRoute: DownloadsRoute,
+  EsqueciMinhaSenhaRoute: EsqueciMinhaSenhaRoute,
   EventosRoute: EventosRoute,
   LoginRoute: LoginRoute,
   NoticiasRoute: NoticiasRouteWithChildren,
   RankingsRoute: RankingsRouteWithChildren,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
   RegrasRoute: RegrasRoute,
   SuporteRoute: SuporteRoute,
   VipRoute: VipRoute,
@@ -1118,3 +1160,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
