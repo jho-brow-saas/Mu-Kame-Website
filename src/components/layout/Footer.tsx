@@ -1,6 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, MessageCircle, Music2 } from "lucide-react";
+import { Instagram, MessageCircle, Music2, Youtube, Music, Send } from "lucide-react";
 import { Logo } from "./Logo";
+import { useSocials } from "@/hooks/use-socials";
+import { useSettings } from "@/hooks/use-settings";
+import { useServerStatus } from "@/hooks/use-server-status";
 import { serverConfig, whatsappLink } from "@/config/server";
 
 const columns = [
@@ -33,13 +36,41 @@ const columns = [
   },
 ] as const;
 
-const socials = [
-  { href: whatsappLink, label: "Suporte no WhatsApp", icon: MessageCircle },
-  { href: serverConfig.instagramUrl, label: "Instagram do MU Kame", icon: Instagram },
-  { href: serverConfig.tiktokUrl, label: "TikTok do MU Kame", icon: Music2 },
-];
-
 export function Footer() {
+  const { data: socialsData } = useSocials();
+  const { data: settingsData } = useSettings();
+  const { data: statusData } = useServerStatus();
+
+  const server = statusData?.server;
+  const settings = settingsData;
+  
+  const socials = [
+    { 
+      href: socialsData?.whatsapp.url ?? whatsappLink, 
+      label: "Suporte no WhatsApp", 
+      icon: MessageCircle,
+      available: socialsData?.whatsapp.available ?? true 
+    },
+    { 
+      href: socialsData?.instagram.url ?? serverConfig.instagramUrl, 
+      label: "Instagram do MU Kame", 
+      icon: Instagram,
+      available: socialsData?.instagram.available ?? true 
+    },
+    { 
+      href: socialsData?.tiktok.url ?? serverConfig.tiktokUrl, 
+      label: "TikTok do MU Kame", 
+      icon: Music2,
+      available: socialsData?.tiktok.available ?? true 
+    },
+    { 
+      href: socialsData?.discord.url, 
+      label: "Discord Oficial", 
+      icon: Send, // Using Send as a placeholder for Discord if needed, or keeping it consistent
+      available: socialsData?.discord.available ?? false 
+    },
+  ].filter(s => s.available && s.href);
+
   return (
     <footer className="stone-sheet relative isolate overflow-hidden edge-rule-top">
       <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
@@ -47,7 +78,7 @@ export function Footer() {
         <div className="flex flex-col gap-4">
           <Logo />
           <p className="max-w-xs text-sm leading-relaxed text-parchment/80">
-            {serverConfig.slogan} Season {serverConfig.season}, progressão {serverConfig.mode} e uma comunidade
+            {settings?.slogan ?? serverConfig.slogan} Season {settings?.season ?? server?.season ?? serverConfig.season}, progressão {settings?.mode ?? server?.mode ?? serverConfig.mode} e uma comunidade
             brasileira construída para durar.
           </p>
           <div className="flex gap-2">

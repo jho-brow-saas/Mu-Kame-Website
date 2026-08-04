@@ -1,20 +1,24 @@
 import { Countdown } from "@/components/common/Countdown";
 import { ActionAnchor, ActionLink } from "@/components/ui-kit/Buttons";
+import { useSettings } from "@/hooks/use-settings";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { serverConfig } from "@/config/server";
 import { Download, ShieldPlus, Compass } from "lucide-react";
 import heroImage from "@/assets/hero-realm.jpg";
 
 export function Hero() {
-  const { data, isPending } = useServerStatus();
-  const server = data?.server;
-  const placeholder = isPending ? "···" : "—";
+  const { data: statusData, isPending: isStatusPending } = useServerStatus();
+  const { data: settingsData, isPending: isSettingsPending } = useSettings();
+  
+  const server = statusData?.server;
+  const settings = settingsData;
+  const placeholder = (isStatusPending || isSettingsPending) ? "···" : "—";
 
   const specs = [
-    { label: "Season", value: server?.season ?? placeholder },
-    { label: "Progressão", value: server?.mode ?? placeholder },
-    { label: "Master Level", value: server ? String(server.masterLevel) : placeholder },
-    { label: "Plataforma", value: server?.platform ?? placeholder },
+    { label: "Season", value: settings?.season ?? server?.season ?? placeholder },
+    { label: "Progressão", value: settings?.mode ?? server?.mode ?? placeholder },
+    { label: "Master Level", value: settings ? String(settings.masterLevel) : (server ? String(server.masterLevel) : placeholder) },
+    { label: "Plataforma", value: settings?.platforms?.join(" / ") ?? server?.platform ?? placeholder },
   ];
 
   return (
@@ -51,7 +55,7 @@ export function Hero() {
           <div className="flex flex-col gap-3">
             <span className="flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.4em] text-bronze">
               <span aria-hidden="true" className="h-px w-10 bg-bronze" />
-              {server?.name ?? "MU KAME"}
+              {settings?.serverName ?? server?.name ?? "MU KAME"}
             </span>
             <h1 className="hero-title text-bone">
               Reviva a lenda.
@@ -85,7 +89,7 @@ export function Hero() {
           </div>
         </div>
 
-        <Countdown launchDate={server?.launchDate ?? null} />
+        <Countdown launchDate={settings?.launchDate ?? server?.launchDate ?? null} />
       </div>
     </section>
   );

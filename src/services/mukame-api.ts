@@ -7,7 +7,10 @@ import type {
   NewsPayload,
   RankingPayload,
   RankingType,
+  SettingsPayload,
+  SocialsPayload,
   StatusPayload,
+  VipPayload,
 } from "@/types/mukame-api";
 
 /**
@@ -124,6 +127,8 @@ export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSigna
 export const muKameApi = {
   health: (signal?: AbortSignal) => fetchMuKameApi<HealthPayload>({ route: "health" }, signal),
 
+  settings: (signal?: AbortSignal) => fetchMuKameApi<SettingsPayload>({ route: "settings" }, signal),
+
   status: (signal?: AbortSignal) => fetchMuKameApi<StatusPayload>({ route: "status" }, signal),
 
   news: (limit = 6, signal?: AbortSignal) => fetchMuKameApi<NewsPayload>({ route: "news", limit }, signal),
@@ -137,15 +142,22 @@ export const muKameApi = {
 
   rankings: (type: RankingType, limit = 10, signal?: AbortSignal) =>
     fetchMuKameApi<RankingPayload>({ route: "rankings", type, limit }, signal),
+
+  vip: (signal?: AbortSignal) => fetchMuKameApi<VipPayload>({ route: "vip" }, signal),
+
+  socials: (signal?: AbortSignal) => fetchMuKameApi<SocialsPayload>({ route: "socials" }, signal),
 } as const;
 
 /** Chaves de cache centralizadas (preparadas para a fase autenticada). */
 export const muKameQueryKeys = {
   health: ["mukame", "health"] as const,
+  settings: ["mukame", "settings"] as const,
   status: ["mukame", "status"] as const,
   news: (limit: number) => ["mukame", "news", limit] as const,
   downloads: ["mukame", "downloads"] as const,
   events: ["mukame", "events"] as const,
   castleSiege: ["mukame", "castle-siege"] as const,
   rankings: (type: RankingType, limit: number) => ["mukame", "rankings", type, limit] as const,
+  vip: ["mukame", "vip"] as const,
+  socials: ["mukame", "socials"] as const,
 };

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { ActionAnchor, ActionLink } from "@/components/ui-kit/Buttons";
+import { useSettings } from "@/hooks/use-settings";
+import { useServerStatus } from "@/hooks/use-server-status";
 import { serverConfig } from "@/config/server";
 
 const navItems = [
@@ -20,6 +22,13 @@ const navItems = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  const { data: statusData } = useServerStatus();
+  const { data: settingsData } = useSettings();
+  
+  const server = statusData?.server;
+  const settings = settingsData;
+  const launchLabel = settings?.launchDate ?? server?.launchDate ?? serverConfig.launchLabel;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,10 +51,10 @@ export function Header() {
         <div className="mx-auto flex h-8 max-w-7xl items-center justify-between gap-6 px-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ash sm:px-6 lg:px-8">
           <span className="flex items-center gap-2">
             <span aria-hidden="true" className="size-1.5 rotate-45 bg-gold" />
-            Season {serverConfig.season} · {serverConfig.mode} · ML {serverConfig.masterLevel}
+            Season {settings?.season ?? server?.season ?? serverConfig.season} · {settings?.mode ?? server?.mode ?? serverConfig.mode} · ML {settings?.masterLevel ?? server?.masterLevel ?? serverConfig.masterLevel}
           </span>
           <span className="text-bronze">
-            Lançamento {serverConfig.launchLabel}
+            Lançamento {launchLabel}
             <span className="caret-blink ml-1 text-gold">_</span>
           </span>
         </div>

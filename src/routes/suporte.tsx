@@ -4,9 +4,10 @@ import { z } from "zod";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { SectionHeading } from "@/components/ui-kit/SectionHeading";
 import { ActionAnchor, ActionButton } from "@/components/ui-kit/Buttons";
+import { useSocials } from "@/hooks/use-socials";
 import { faqItems, serverConfig, whatsappLink } from "@/config/server";
 import { cn } from "@/lib/utils";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Instagram, Music2, Youtube, Music, Send } from "lucide-react";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Informe seu nome.").max(60),
@@ -51,6 +52,7 @@ export const Route = createFileRoute("/suporte")({
 const emptyValues = { name: "", email: "", subject: "", message: "" };
 
 function SuportePage() {
+  const { data: socials } = useSocials();
   const [values, setValues] = useState(emptyValues);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
@@ -81,7 +83,7 @@ function SuportePage() {
       <PageHero
         eyebrow="Ajuda"
         title="Suporte MU Kame"
-        description={`Atendimento oficial pelo WhatsApp ${serverConfig.supportWhatsAppLabel}.`}
+        description={`Atendimento oficial pelo WhatsApp ${socials?.whatsapp.handle ?? serverConfig.supportWhatsAppLabel}.`}
       />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -92,10 +94,30 @@ function SuportePage() {
               O WhatsApp é o canal mais rápido para dúvidas sobre conta, VIP, downloads e denúncias. Nunca informe sua
               senha para ninguém — a equipe jamais solicita.
             </p>
-            <ActionAnchor href={whatsappLink} target="_blank" rel="noreferrer" className="mt-auto self-start">
+            <ActionAnchor href={socials?.whatsapp.url ?? whatsappLink} target="_blank" rel="noreferrer" className="mt-auto self-start">
               <MessageCircle className="size-4" aria-hidden="true" />
-              {serverConfig.supportWhatsAppLabel}
+              {socials?.whatsapp.handle ?? serverConfig.supportWhatsAppLabel}
             </ActionAnchor>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {socials?.instagram.available && (
+                <ActionAnchor href={socials.instagram.url} target="_blank" rel="noreferrer" variant="ghost" className="flex-1">
+                  <Instagram className="size-4" aria-hidden="true" />
+                  Instagram
+                </ActionAnchor>
+              )}
+              {socials?.tiktok.available && (
+                <ActionAnchor href={socials.tiktok.url} target="_blank" rel="noreferrer" variant="ghost" className="flex-1">
+                  <Music2 className="size-4" aria-hidden="true" />
+                  TikTok
+                </ActionAnchor>
+              )}
+              {socials?.discord.available && (
+                <ActionAnchor href={socials.discord.url} target="_blank" rel="noreferrer" variant="ghost" className="flex-1">
+                  <Send className="size-4" aria-hidden="true" />
+                  Discord
+                </ActionAnchor>
+              )}
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} noValidate className="surface-card flex flex-col gap-4 p-6">
