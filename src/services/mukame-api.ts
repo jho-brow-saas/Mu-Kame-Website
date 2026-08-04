@@ -32,7 +32,12 @@ export const API_BASE_URL = "https://api.mukame.online/index.php";
 const PROXY_PATH = "/api/public/mukame";
 
 /** Domínios em que a API oficial responde com `Access-Control-Allow-Origin`. */
-const CORS_ALLOWED_HOSTS = new Set(["novo.mukame.online", "mukame.online", "www.mukame.online"]);
+const DIRECT_API_HOSTS = new Set([
+  "novo.mukame.online",
+  "mukame.online",
+  "www.mukame.online",
+  "mu-kame-teste.lovable.app", // Domínio de produção do Lovable (se houver)
+]);
 
 /** Timeout padrão das requisições públicas. Aumentado para lidar com latência de rede. */
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -58,15 +63,16 @@ export type QueryParams = Record<string, string | number | undefined>;
 function useDevProxy(): boolean {
   if (typeof window === "undefined") return false;
   
-  // Lista rigorosa de hosts que suportam chamadas diretas (CORS liberado)
-  const DIRECT_API_HOSTS = new Set([
-    "novo.mukame.online",
-    "mukame.online",
-    "www.mukame.online",
-  ]);
+  const hostname = window.location.hostname;
 
-  // Se NÃO for um dos hosts oficiais, usamos obrigatoriamente o proxy interno
-  return !DIRECT_API_HOSTS.has(window.location.hostname);
+  // Se for um dos hosts oficiais de produção, usamos chamada DIRETA
+  if (DIRECT_API_HOSTS.has(hostname)) {
+    return false;
+  }
+
+  // Se for localhost, preview do Lovable ou qualquer outro subdomínio, usamos o PROXY
+  // Isso centraliza o tratamento para evitar erros de CORS em qualquer ambiente de desenvolvimento
+  return true;
 }
 
 function buildUrl(params: QueryParams): string {
