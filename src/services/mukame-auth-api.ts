@@ -20,25 +20,28 @@ export async function authRequest<T>(
   route: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const isProduction = 
-    window.location.hostname === "novo.mukame.online" || 
-    window.location.hostname === "mu-kame-teste.lovable.app";
+  const isDevProxy = 
+    window.location.hostname !== "novo.mukame.online" && 
+    window.location.hostname !== "mu-kame-teste.lovable.app" &&
+    window.location.hostname !== "mukame.online" &&
+    window.location.hostname !== "www.mukame.online";
 
   // Em produção, as chamadas vão direto para o domínio da API
   // No preview do Lovable, usamos o proxy local devido ao CORS
-  const url = isProduction
-    ? `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`
-    : `/api/public/mukame?route=${encodeURIComponent(route)}`;
+  const url = isDevProxy
+    ? `/api/public/mukame?route=${encodeURIComponent(route)}`
+    : `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`;
 
-  const response = await fetch(url, {
-    ...options,
-    credentials: "include", // OBRIGATÓRIO para cookies HttpOnly
-    headers: {
-      Accept: "application/json",
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      credentials: "include", // OBRIGATÓRIO para cookies HttpOnly
+      headers: {
+        Accept: "application/json",
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+        ...options.headers,
+      },
+    });
 
   let payload: any;
   try {
@@ -60,5 +63,19 @@ export async function authRequest<T>(
     );
   }
 
-  return payload as T;
+    return payload as T;
+  } catch (err) {
+    if (err instanceof MukameAuthError) throw err;
+
+    const message = err instanceof Error ? err.message : "Erro desconhecido";
+    const hostname = window.location.hostname;
+    const isLovable = hostname.endsWith(".lovableproject.com") || hostname.endsWith(".lovable.app");
+
+    let userMessage = `Não foi possível alcançar a API do servidor (${message}).`;
+    if (isLovable) {
+      userMessage += " Este erro é comum no ambiente de visualização devido a restrições de rede temporárias. Por favor, tente recarregar a página.";
+    }
+
+    throw new MukameAuthError("NETWORK_ERROR", userMessage, 502);
+  }
 }
