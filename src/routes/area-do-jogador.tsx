@@ -98,7 +98,7 @@ function PlayerAreaPage() {
       >
         <div className="mt-4 flex flex-wrap gap-4">
           <ActionButton 
-            variant="outline" 
+            variant="ghost" 
             size="sm" 
             className="border-gold/30 hover:bg-gold/10"
             onClick={handleLogout}
@@ -232,7 +232,6 @@ function PlayerAreaPage() {
               <EmptyState 
                 title="Nenhum herói encontrado" 
                 description="Você ainda não criou personagens nesta conta. Entre no jogo para iniciar sua jornada."
-                icon={ShieldAlert}
               />
             )}
 
