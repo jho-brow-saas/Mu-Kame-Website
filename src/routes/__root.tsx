@@ -42,59 +42,40 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   const isApiError = error.name === "MuKameApiError";
-  const isNetworkError = isApiError && (error as any).kind === "network";
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian">
-      <div className="max-w-lg text-center stone-sheet p-8 border border-gold/20 plate-cut relative overflow-hidden">
+    <div className="flex min-h-screen items-center justify-center px-4 bg-obsidian text-stone-100">
+      <div className="max-w-lg text-center stone-sheet p-8 border border-gold/20 plate-cut relative overflow-hidden shadow-2xl">
         <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0 opacity-20" />
         <h1 className="font-display text-xl text-gold uppercase tracking-widest">
-          {isApiError ? "Erro de Conexão com o Reino" : "Esta página não carregou"}
+          {isApiError ? "Portal de Dados Instável" : "Falha na Forja da Página"}
         </h1>
         <div className="mt-4 p-4 metal-sheet border border-gold/10 font-mono text-xs text-ash text-left overflow-auto max-h-48">
-          <p className="text-gold-soft mb-2">&gt; DETALHES DO ERRO:</p>
+          <p className="text-gold-soft mb-2">&gt; REGISTRO DE FALHA:</p>
           <pre className="whitespace-pre-wrap break-all">{error.message}</pre>
-          {error.stack && (
-            <details className="mt-4 cursor-pointer">
-              <summary className="text-bronze hover:text-gold-soft transition-colors underline">Ver rastreio técnico</summary>
-              <pre className="mt-2 text-[10px] opacity-60 leading-relaxed">{error.stack}</pre>
-            </details>
-          )}
         </div>
         <p className="mt-6 text-sm text-mist leading-relaxed italic">
           {isApiError 
-            ? "Parece que nosso portal de dados está enfrentando instabilidades mágicas ou bloqueios de rede. Verifique sua conexão ou tente novamente."
-            : "Algo falhou do nosso lado durante a forja desta página."}
+            ? "O portal de dados não respondeu a tempo. Isso pode ser uma instabilidade momentânea no servidor da API ou na sua conexão."
+            : "Um erro inesperado ocorreu durante a renderização deste componente."}
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex min-h-[44px] items-center justify-center bg-gold px-5 text-sm font-semibold text-[color:var(--primary-foreground)]"
+            className="inline-flex min-h-[44px] items-center justify-center bg-gold px-6 text-sm font-bold uppercase tracking-tighter text-obsidian hover:brightness-110 active:scale-95 transition-all"
           >
-            Tentar novamente
+            Tentar Restaurar
           </button>
           
-          {isNetworkError && (
-            <button
-              onClick={() => {
-                window.localStorage.setItem("mukame_force_proxy", "true");
-                window.location.reload();
-              }}
-              className="inline-flex min-h-[44px] items-center justify-center border border-blue-500/30 bg-blue-900/10 px-5 text-sm font-semibold text-blue-400 hover:bg-blue-900/20 transition-colors"
-            >
-              Usar Proxy de Emergência
-            </button>
-          )}
-
-          <a
-            href="/"
-            className="inline-flex min-h-[44px] items-center justify-center border border-white/15 px-5 text-sm font-semibold text-ivory"
+          <Link
+            to="/"
+            className="inline-flex min-h-[44px] items-center justify-center border border-white/10 bg-white/5 px-6 text-sm font-semibold text-ivory hover:bg-white/10 transition-colors"
           >
-            Início
-          </a>
+            Voltar ao Início
+          </Link>
         </div>
       </div>
     </div>
