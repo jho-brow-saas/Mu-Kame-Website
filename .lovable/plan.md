@@ -1,42 +1,39 @@
 ---
-name: Correção e Validação Final da Autenticação
-description: Plano para corrigir expiração VIP, formatação de data de lançamento, cabeçalho autenticado e melhorias de UX/Segurança.
+name: Correção Final Baseada em Teste Real no Domínio Publicado
+description: Plano para eliminar chamadas duplicadas de autenticação, corrigir erro de hidratação no contador e ajustar redirecionamentos canônicos.
 type: feature
 ---
 
-## 1. Correção de Expiração VIP (31/12/1899)
-- **Local**: `src/routes/area-do-jogador.tsx`
-- **Lógica**: Adicionar função helper para validar a data. Se `AccountLevel === 0`, `AccountExpireDate === null`, data inválida ou ano <= 1900, exibir "Não se aplica". Caso contrário, formatar via `Intl.DateTimeFormat`.
+## 1. Eliminar Chamadas Duplicadas para auth/me
+- **Problema**: Foram observadas 6 chamadas simultâneas para `auth/me` em páginas públicas.
+- **Causa provável**: `AuthProvider` ou instâncias do `QueryClient` sendo recriadas ou disparadas por múltiplos hooks sem cache/debounce adequado.
+- **Lógica de Correção**:
+  - Em `src/router.tsx`, garantir que `QueryClient` seja estável (embora `getRouter` pareça ok, vamos verificar se é chamado múltiplas vezes).
+  - Em `src/hooks/use-auth-session.ts`, configurar `retry: false`, `refetchOnWindowFocus: false`, `refetchOnMount: false`, e `staleTime: 1000 * 60 * 5` (5 minutos).
+  - Em `src/components/auth/AuthProvider.tsx`, garantir que o estado `isAuthenticated` seja derivado apenas da `queryData` estável.
+  - Verificar se componentes como `Header` ou `ProtectedRoute` estão disparando `refetch` manuais desnecessários.
 
-## 2. Formatação da Data de Lançamento
-- **Local**: `src/components/layout/Header.tsx` e `src/components/common/Countdown.tsx`
-- **Lógica**: Criar utilitário `src/lib/date-utils.ts` para centralizar a formatação pt-BR usando `Intl.DateTimeFormat` (ex: `01/09/2026 às 00:00`). Substituir o uso de `launchLabel` bruto.
+## 2. Corrigir React Error #418 (Hydration Mismatch)
+- **Problema**: Hydration mismatch na Home, provavelmente no `Countdown`.
+- **Causa**: `Date.now()` sendo usado no render inicial ou durante a definição do estado inicial, o que difere entre Servidor (SSR) e Cliente.
+- **Lógica de Correção**:
+  - Em `src/components/common/Countdown.tsx`, implementar um estado `mounted` via `useEffect`.
+  - Enquanto `!mounted`, renderizar um placeholder estável (ex: "--").
+  - Iniciar o `setInterval` e o cálculo de tempo real apenas após a montagem no cliente.
+  - Garantir que `formatBrDateTime` e outros utilitários de data sejam consistentes (America/Sao_Paulo).
 
-## 3. Cabeçalho Autenticado
-- **Local**: `src/components/layout/Header.tsx`
-- **Ação**: Consumir `useAuth` no Header. Se `isAuthenticated` for true, substituir o botão "Entrar" por "Área do Jogador" apontando para `/area-do-jogador`. Adicionar um pequeno indicador visual (dot de status ou ícone).
+## 3. Redirecionamentos Canônicos Reais
+- **Problema**: `/cadastro` e `/login` apenas renderizam o componente, mas não alteram a URL para a versão canônica (`/criar-conta` e `/entrar`).
+- **Lógica de Correção**:
+  - Modificar `src/routes/cadastro.tsx` e `src/routes/login.tsx` para usar `loader` com `redirect({ to: '...', replace: true })` apontando para as rotas canônicas.
+  - Garantir que `src/routes/entrar.tsx` e `src/routes/criar-conta.tsx` contenham os componentes reais da página.
+  - **Nota**: Inverter a lógica atual se necessário para que `/entrar` e `/criar-conta` sejam as rotas que contém o código, e `/login`/`/cadastro` sejam os aliases de redirecionamento.
 
-## 4. Aliases de Rotas
-- **Local**: Criar `src/routes/entrar.tsx` e `src/routes/criar-conta.tsx`.
-- **Ação**: Usar `redirect` do TanStack Router para encaminhar `/entrar` -> `/login` e `/criar-conta` -> `/cadastro`. Atualizar todos os `ActionLink` e `Link` no projeto para usar as rotas canônicas (entrar/criar-conta).
+## 4. Validação e Segurança
+- **Ação**: Garantir que erros 401 em `auth/me` não gerem logs de erro ou toasts, tratando-os como estado "desconectado" padrão.
+- **Ação**: Limpeza de tokens na URL em `redefinir-senha.tsx` após sucesso.
+- **Ação**: Executar `bun run build` para validar a ausência de erros de compilação.
 
-## 5. Melhoria do Link "Esqueci minha senha"
-- **Local**: `src/routes/login.tsx`
-- **Ação**: Ajustar classes Tailwind para melhorar contraste, hover, focus e área clicável. Garantir suporte a teclado.
-
-## 6. Área do Jogador (Refinamento)
-- **Local**: `src/routes/area-do-jogador.tsx`
-- **Ação**: 
-  - Validar e-mail mascarado.
-  - Atualizar card "Segurança" para apontar para `/esqueci-minha-senha` com label "Redefinir senha por e-mail".
-  - Garantir que o card "Moedas" não exiba saldos fictícios (manter como acesso futuro/placeholder sem valores).
-
-## 7. Token de Redefinição
-- **Local**: `src/routes/redefinir-senha.tsx`
-- **Ação**: Garantir que o token seja removido da URL via `history.replaceState` apenas após a chamada de sucesso da API. Limpar campos.
-
-## 8. Verificação do Selo Lovable
-- **Ação**: Orientar o usuário a verificar em aba anônima (como o selo é injetado pela plataforma para editores, ele não aparece na versão publicada para visitantes externos).
-
-## 9. Testes e Relatório Final
-- **Ação**: Executar `typecheck`, `build` e fornecer o relatório detalhado solicitado.
+## 5. Testes Manuais (Simulados via Código)
+- **Ação**: Validar a quantidade de requests no console/network simulado.
+- **Ação**: Verificar a estabilidade do HTML gerado pelo SSR vs Cliente no Countdown.
