@@ -148,8 +148,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe805b42-9558-4637-8ed2-517032c0952e/logo-mukame.png"
+      },
     ],
     scripts: [
+
       {
         type: "application/ld+json",
         children: JSON.stringify({
