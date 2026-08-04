@@ -72,7 +72,7 @@ export function Header() {
       >
         <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
         <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-          <Link to="/" aria-label="MU Kame — página inicial" className="shrink-0 flex items-center">
+          <Link to="/" aria-label="MU Kame — página inicial" className="shrink-0 flex items-center min-w-[190px] lg:min-w-[230px]">
             <Logo />
           </Link>
 
