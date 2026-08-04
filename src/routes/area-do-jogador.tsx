@@ -99,8 +99,8 @@ function PlayerAreaPage() {
         <div className="mt-4 flex flex-wrap gap-4">
           <ActionButton 
             variant="ghost" 
-            size="sm" 
             className="border-gold/30 hover:bg-gold/10"
+
             onClick={handleLogout}
           >
             <LogOut className="mr-2 size-4" />
