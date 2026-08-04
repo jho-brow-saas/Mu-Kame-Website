@@ -71,13 +71,24 @@ export function Header() {
         )}
       >
         <span aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-          <Link to="/" aria-label="MU Kame — página inicial" className="shrink-0 flex items-center min-w-[190px] lg:min-w-[230px]">
+        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 md:gap-4 lg:px-8">
+          <Link to="/" aria-label="MU Kame — página inicial" className="shrink-0 flex items-center min-w-[190px] lg:min-w-[210px] xl:min-w-[230px]">
             <Logo />
           </Link>
 
-          <nav aria-label="Navegação principal" className="hidden lg:block">
+          <nav aria-label="Navegação principal" className="hidden lg:block overflow-hidden">
             <ul className="flex items-stretch">
+              {navItems.map((item) => (
+                <li key={item.to} className="border-l border-white/5 last:border-r">
+                  <Link
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/" }}
+                    className={cn(
+                      "group relative inline-flex min-h-[44px] items-center px-2 xl:px-4 font-ui text-[0.8rem] xl:text-[0.82rem] font-600 uppercase tracking-[0.1em] xl:tracking-[0.14em] text-parchment/80 transition-colors whitespace-nowrap",
+                      "hover:bg-bronze-dark/40 hover:text-gold-soft",
+                      "data-[status=active]:bg-bronze-dark/60 data-[status=active]:text-gold",
+                    )}
+                  >
               {navItems.map((item) => (
                 <li key={item.to} className="border-l border-white/5 last:border-r">
                   <Link
@@ -100,20 +111,20 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-2 lg:flex shrink-0">
             {isAuthenticated ? (
-              <ActionLink to="/area-do-jogador" variant="ghost" className="min-h-[40px] px-4 py-2 flex items-center gap-2">
+              <ActionLink to="/area-do-jogador" variant="ghost" className="min-h-[40px] px-3 xl:px-4 py-2 flex items-center gap-2 whitespace-nowrap shrink-0">
                 <span className="size-2 rounded-full bg-jade animate-pulse" aria-hidden="true" />
                 Área do Jogador
               </ActionLink>
             ) : (
-              <ActionLink to="/entrar" variant="ghost" className="min-h-[40px] px-4 py-2">
+              <ActionLink to="/entrar" variant="ghost" className="min-h-[40px] px-3 xl:px-4 py-2 whitespace-nowrap shrink-0">
                 Entrar
               </ActionLink>
             )}
             <ActionLink 
               to={isAuthenticated ? "/downloads" : "/criar-conta"} 
-              className="min-h-[40px] px-5 py-2"
+              className="min-h-[40px] px-5 py-2 w-auto min-w-max shrink-0 whitespace-nowrap"
             >
               Jogar agora
             </ActionLink>
