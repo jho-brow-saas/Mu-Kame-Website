@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { LoadingState, EmptyState } from "@/components/ui-kit/States";
