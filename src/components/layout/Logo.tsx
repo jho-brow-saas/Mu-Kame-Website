@@ -9,9 +9,9 @@ export function Logo({ className, compact = false }: { className?: string; compa
         alt="MU Kame" 
         className={cn(
           "w-auto object-contain transition-transform duration-300 hover:scale-105",
-          // Alturas aumentadas para compensar margens internas do asset e atingir altura visual desejada
-          "h-[48px] md:h-[58px] lg:h-[72px]",
-          compact && "h-[40px] md:h-[48px] lg:h-[56px]"
+          // Alturas agressivamente aumentadas para compensar as grandes margens internas do asset PNG
+          "h-[70px] md:h-[85px] lg:h-[100px]",
+          compact && "h-[50px] md:h-[65px] lg:h-[75px]"
         )}
       />
     </div>
