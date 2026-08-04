@@ -1,5 +1,4 @@
 import type { AuthErrorPayload } from "@/types/mukame-auth";
-import { useDevProxy } from "./mukame-api";
 
 export class MukameAuthError extends Error {
   readonly code: string;
@@ -14,23 +13,26 @@ export class MukameAuthError extends Error {
 }
 
 /**
- * Camada central de autenticação do MU Kame API 2.0.
- * Baseada em cookies seguros (HttpOnly, Secure, Lax).
+ * Camada central de autenticação do MU Kame API 2.1.1.
+ * O navegador gerencia o cookie via credentials: "include".
  */
 export async function authRequest<T>(
   route: string,
   options: RequestInit = {}
 ): Promise<T> {
-  // Em produção, as chamadas de autenticação vão direto para o domínio da API
-  // O navegador gerencia o cookie via credentials: "include"
-  const viaProxy = useDevProxy();
-  const url = viaProxy 
-    ? `/api/public/mukame?route=${encodeURIComponent(route)}` 
-    : `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`;
+  const isProduction = 
+    window.location.hostname === "novo.mukame.online" || 
+    window.location.hostname === "mu-kame-teste.lovable.app";
+
+  // Em produção, as chamadas vão direto para o domínio da API
+  // No preview do Lovable, usamos o proxy local devido ao CORS
+  const url = isProduction
+    ? `https://api.mukame.online/index.php?route=${encodeURIComponent(route)}`
+    : `/api/public/mukame?route=${encodeURIComponent(route)}`;
 
   const response = await fetch(url, {
     ...options,
-    credentials: "include", // OBRIGATÓRIO para cookies
+    credentials: "include", // OBRIGATÓRIO para cookies HttpOnly
     headers: {
       Accept: "application/json",
       ...(options.body ? { "Content-Type": "application/json" } : {}),
@@ -38,7 +40,16 @@ export async function authRequest<T>(
     },
   });
 
-  const payload = await response.json();
+  let payload: any;
+  try {
+    payload = await response.json();
+  } catch (err) {
+    throw new MukameAuthError(
+      "INVALID_API_RESPONSE",
+      "O servidor retornou uma resposta inválida.",
+      response.status
+    );
+  }
 
   if (!response.ok || payload?.ok !== true) {
     const errorPayload = payload as AuthErrorPayload;
@@ -49,5 +60,5 @@ export async function authRequest<T>(
     );
   }
 
-  return payload;
+  return payload as T;
 }
