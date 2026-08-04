@@ -29,6 +29,8 @@ const ALLOWED_ROUTES = new Set([
   "auth/logout",
   "auth/me",
   "account/characters",
+  "auth/recover",
+  "auth/reset",
 ]);
 
 const BLOCKED_AUTH_ROUTES = new Set<string>([]);
