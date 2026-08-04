@@ -44,7 +44,7 @@ const schema = z
     message: "As senhas do portal não coincidem.",
   });
 
-type Errors = Partial<Record<keyof z.infer<typeof schema>, string>>;
+type Errors = Partial<Record<keyof z.input<typeof schema>, string>>;
 
 const title = "Criar conta — MU Kame";
 const description = "Crie sua conta no MU Kame e prepare-se para o lançamento da Season 6.15 em 01/09/2026.";
@@ -143,18 +143,45 @@ function CadastroPage() {
       />
       <section className="mx-auto max-w-xl px-4 py-12 sm:px-6">
         <form onSubmit={handleSubmit} noValidate className="surface-card flex flex-col gap-5 p-6 sm:p-8">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="username" className="text-sm font-medium text-ivory">Usuário</label>
-            <input
-              id="username"
-              value={values.username}
-              onChange={(e) => setValues((v) => ({ ...v, username: e.target.value }))}
-              aria-invalid={Boolean(errors.username)}
-              aria-describedby={errors.username ? "username-error" : undefined}
-              className={fieldClass}
-              autoComplete="username"
-            />
-            {errors.username ? <p id="username-error" className="text-xs text-danger">{errors.username}</p> : null}
+          
+          <div className="flex flex-col gap-4 p-4 border border-gold/10 bg-gold/5 plate-cut-soft mb-2">
+            <div className="flex gap-3">
+              <Info className="size-5 text-gold shrink-0 mt-0.5" />
+              <p className="text-xs text-parchment/80 leading-relaxed italic">
+                “Sua senha do jogo possui limite de 10 caracteres e será usada no cliente do MU. A senha da Área do Jogador é separada e deve possuir no mínimo 12 caracteres.”
+              </p>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="accountId" className="text-sm font-medium text-ivory">Login</label>
+              <input
+                id="accountId"
+                value={values.accountId}
+                onChange={(e) => setValues((v) => ({ ...v, accountId: e.target.value.toLowerCase() }))}
+                aria-invalid={Boolean(errors.accountId)}
+                aria-describedby={errors.accountId ? "accountId-error" : undefined}
+                className={fieldClass}
+                autoComplete="username"
+                disabled={submitting}
+              />
+              {errors.accountId ? <p id="accountId-error" className="text-xs text-danger">{errors.accountId}</p> : null}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="displayName" className="text-sm font-medium text-ivory">Nome Exibido</label>
+              <input
+                id="displayName"
+                value={values.displayName}
+                onChange={(e) => setValues((v) => ({ ...v, displayName: e.target.value }))}
+                aria-invalid={Boolean(errors.displayName)}
+                aria-describedby={errors.displayName ? "displayName-error" : undefined}
+                className={fieldClass}
+                disabled={submitting}
+              />
+              {errors.displayName ? <p id="displayName-error" className="text-xs text-danger">{errors.displayName}</p> : null}
+            </div>
           </div>
 
           <div className="flex flex-col gap-1">
@@ -168,59 +195,112 @@ function CadastroPage() {
               aria-describedby={errors.email ? "email-error" : undefined}
               className={fieldClass}
               autoComplete="email"
+              disabled={submitting}
             />
             {errors.email ? <p id="email-error" className="text-xs text-danger">{errors.email}</p> : null}
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium text-ivory">Senha</label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={(e) => setValues((v) => ({ ...v, password: e.target.value }))}
-                aria-invalid={Boolean(errors.password)}
-                aria-describedby={errors.password ? "password-error" : "password-strength"}
-                className={cn(fieldClass, "pr-14")}
-                autoComplete="new-password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((s) => !s)}
-                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-mist"
-              >
-                {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
-              </button>
-            </div>
-            <p id="password-strength" className="text-xs text-graylight">
-              Força da senha: {strengthLabels[strength]}
-            </p>
-            <div className="flex gap-1" aria-hidden="true">
-              {[0, 1, 2, 3].map((index) => (
-                <span
-                  key={index}
-                  className={cn("h-1 flex-1", index < strength ? "bg-gold" : "bg-white/10")}
+          <div className="rule-draw h-px w-full bg-gold/10 my-2" />
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="gamePassword" className="text-sm font-medium text-gold-soft">Senha do Jogo (MU)</label>
+              <div className="relative">
+                <input
+                  id="gamePassword"
+                  type={showGamePassword ? "text" : "password"}
+                  value={values.gamePassword}
+                  onChange={(e) => setValues((v) => ({ ...v, gamePassword: e.target.value }))}
+                  aria-invalid={Boolean(errors.gamePassword)}
+                  aria-describedby={errors.gamePassword ? "gamePassword-error" : undefined}
+                  className={cn(fieldClass, "pr-14")}
+                  autoComplete="new-password"
+                  disabled={submitting}
                 />
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setShowGamePassword((s) => !s)}
+                  aria-label={showGamePassword ? "Ocultar senha" : "Mostrar senha"}
+                  className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-mist"
+                >
+                  {showGamePassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
+                </button>
+              </div>
+              {errors.gamePassword ? <p id="gamePassword-error" className="text-xs text-danger">{errors.gamePassword}</p> : null}
             </div>
-            {errors.password ? <p id="password-error" className="text-xs text-danger">{errors.password}</p> : null}
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="confirmGamePassword" className="text-sm font-medium text-gold-soft">Confirmar Senha do Jogo</label>
+              <input
+                id="confirmGamePassword"
+                type={showGamePassword ? "text" : "password"}
+                value={values.confirmGamePassword}
+                onChange={(e) => setValues((v) => ({ ...v, confirmGamePassword: e.target.value }))}
+                aria-invalid={Boolean(errors.confirmGamePassword)}
+                aria-describedby={errors.confirmGamePassword ? "confirmGame-error" : undefined}
+                className={fieldClass}
+                autoComplete="new-password"
+                disabled={submitting}
+              />
+              {errors.confirmGamePassword ? <p id="confirmGame-error" className="text-xs text-danger">{errors.confirmGamePassword}</p> : null}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="confirmPassword" className="text-sm font-medium text-ivory">Confirmar senha</label>
-            <input
-              id="confirmPassword"
-              type={showPassword ? "text" : "password"}
-              value={values.confirmPassword}
-              onChange={(e) => setValues((v) => ({ ...v, confirmPassword: e.target.value }))}
-              aria-invalid={Boolean(errors.confirmPassword)}
-              aria-describedby={errors.confirmPassword ? "confirm-error" : undefined}
-              className={fieldClass}
-              autoComplete="new-password"
-            />
-            {errors.confirmPassword ? <p id="confirm-error" className="text-xs text-danger">{errors.confirmPassword}</p> : null}
+          <div className="rule-draw h-px w-full bg-gold/10 my-2" />
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="password" className="text-sm font-medium text-ivory">Senha da Área do Jogador</label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPortalPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={(e) => setValues((v) => ({ ...v, password: e.target.value }))}
+                  aria-invalid={Boolean(errors.password)}
+                  aria-describedby={errors.password ? "password-error" : "password-strength"}
+                  className={cn(fieldClass, "pr-14")}
+                  autoComplete="new-password"
+                  disabled={submitting}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPortalPassword((s) => !s)}
+                  aria-label={showPortalPassword ? "Ocultar senha" : "Mostrar senha"}
+                  className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-mist"
+                >
+                  {showPortalPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
+                </button>
+              </div>
+              <p id="password-strength" className="text-[10px] text-graylight uppercase tracking-wider">
+                Força da Área: {strengthLabels[strength]}
+              </p>
+              <div className="flex gap-1" aria-hidden="true">
+                {[0, 1, 2, 3].map((index) => (
+                  <span
+                    key={index}
+                    className={cn("h-0.5 flex-1", index < strength ? "bg-gold" : "bg-white/10")}
+                  />
+                ))}
+              </div>
+              {errors.password ? <p id="password-error" className="text-xs text-danger">{errors.password}</p> : null}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-ivory">Confirmar Senha da Área</label>
+              <input
+                id="confirmPassword"
+                type={showPortalPassword ? "text" : "password"}
+                value={values.confirmPassword}
+                onChange={(e) => setValues((v) => ({ ...v, confirmPassword: e.target.value }))}
+                aria-invalid={Boolean(errors.confirmPassword)}
+                aria-describedby={errors.confirmPassword ? "confirm-error" : undefined}
+                className={fieldClass}
+                autoComplete="new-password"
+                disabled={submitting}
+              />
+              {errors.confirmPassword ? <p id="confirm-error" className="text-xs text-danger">{errors.confirmPassword}</p> : null}
+            </div>
           </div>
 
           <div className="flex flex-col gap-1">
