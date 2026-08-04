@@ -82,67 +82,79 @@ function buildUrl(params: QueryParams): string {
 
 
 
-/** Requisição GET genérica com timeout, validação de HTTP e do envelope `ok`. */
-export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSignal): Promise<T> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+/** Requisição GET genérica com retries, timeout, validação de HTTP e do envelope `ok`. */
+export async function fetchMuKameApi<T>(params: QueryParams, signal?: AbortSignal, retries = 2): Promise<T> {
+  const attemptFetch = async (currentAttempt: number): Promise<T> => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-  const onExternalAbort = () => controller.abort();
-  if (signal) {
-    if (signal.aborted) controller.abort();
-    else signal.addEventListener("abort", onExternalAbort, { once: true });
-  }
-
-  try {
-    const response = await fetch(buildUrl(params), {
-      method: "GET",
-      cache: "no-store",
-      credentials: "omit",
-      headers: { Accept: "application/json" },
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      throw new MuKameApiError("http", "A API do servidor respondeu com falha.", response.status);
+    const onExternalAbort = () => controller.abort();
+    if (signal) {
+      if (signal.aborted) controller.abort();
+      else signal.addEventListener("abort", onExternalAbort, { once: true });
     }
 
-    let envelope: MuKameEnvelope<T>;
     try {
-      envelope = (await response.json()) as MuKameEnvelope<T>;
-    } catch {
-      throw new MuKameApiError("payload", "Resposta da API em formato inesperado.");
+      const url = buildUrl(params);
+      const response = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+        credentials: "omit",
+        headers: { Accept: "application/json" },
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new MuKameApiError("http", `A API respondeu com falha (${response.status}).`, response.status);
+      }
+
+      let envelope: MuKameEnvelope<T>;
+      try {
+        envelope = (await response.json()) as MuKameEnvelope<T>;
+      } catch {
+        throw new MuKameApiError("payload", "Resposta da API em formato inesperado.");
+      }
+
+      if (!envelope || envelope.ok !== true || envelope.data === undefined || envelope.data === null) {
+        throw new MuKameApiError("payload", "A API não retornou dados válidos.");
+      }
+
+      return envelope.data;
+    } catch (error) {
+      const isAbort = error instanceof DOMException && error.name === "AbortError";
+      
+      // Se não for abortado externamente e ainda houver tentativas, tenta novamente
+      if (!signal?.aborted && currentAttempt < retries) {
+        console.warn(`[MU Kame API] Tentativa ${currentAttempt + 1} falhou, tentando novamente...`, error);
+        // Pequeno delay exponencial entre retries
+        await new Promise(resolve => setTimeout(resolve, 500 * (currentAttempt + 1)));
+        return attemptFetch(currentAttempt + 1);
+      }
+
+      if (error instanceof MuKameApiError) throw error;
+      if (isAbort) {
+        if (signal?.aborted) throw error;
+        throw new MuKameApiError("timeout", "A API demorou demais para responder.");
+      }
+
+      const message = error instanceof Error ? error.message : "Desconhecido";
+      console.error(`[MU Kame API] Erro de rede em ${JSON.stringify(params)}:`, error);
+
+      const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.endsWith(".lovableproject.com"));
+      
+      let userMessage = `Não foi possível alcançar a API do servidor (${message}).`;
+      if (isLocal && !useDevProxy()) {
+        userMessage += " Tente forçar o uso do proxy de desenvolvimento para contornar restrições de rede locais.";
+      }
+
+      throw new MuKameApiError("network", userMessage);
+    } finally {
+      clearTimeout(timeout);
+      if (signal) signal.removeEventListener("abort", onExternalAbort);
     }
+  };
 
-    if (!envelope || envelope.ok !== true || envelope.data === undefined || envelope.data === null) {
-      throw new MuKameApiError("payload", "A API não retornou dados válidos.");
-    }
-
-    return envelope.data;
-  } catch (error) {
-    if (error instanceof MuKameApiError) throw error;
-    if (error instanceof DOMException && error.name === "AbortError") {
-      if (signal?.aborted) throw error;
-      throw new MuKameApiError("timeout", "A API demorou demais para responder.");
-    }
-
-    // Diagnóstico mais informativo sobre o erro de rede
-    const message = error instanceof Error ? error.message : "Desconhecido";
-    console.error(`[MU Kame API] Erro de rede em ${JSON.stringify(params)}:`, error);
-
-    // No ambiente Lovable, se o fetch falhar e estivermos tentando chamar a API oficial diretamente,
-    // pode ser um bloqueio de rede/DNS do ambiente sandbox em direção ao domínio .online.
-    const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.endsWith(".lovableproject.com"));
-    
-    let userMessage = `Não foi possível alcançar a API do servidor (${message}).`;
-    if (isLocal && !useDevProxy()) {
-      userMessage += " Tente forçar o uso do proxy de desenvolvimento para contornar restrições de rede locais.";
-    }
-
-    throw new MuKameApiError("network", userMessage);
-  } finally {
-    clearTimeout(timeout);
-    if (signal) signal.removeEventListener("abort", onExternalAbort);
-  }
+  return attemptFetch(0);
 }
 
 /* ------------------------------- endpoints ------------------------------- */
