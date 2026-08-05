@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { serverConfig } from "@/config/server";
 import { useEffect } from "react";
 import { SiteLayout, PageHero } from "@/components/layout/SiteLayout";
 import { LoadingState, EmptyState } from "@/components/ui-kit/States";
@@ -167,8 +168,22 @@ function PlayerAreaPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-               <FeatureCard title="Suporte" icon={LifeBuoy} description="Atendimento via WhatsApp." />
-               <FeatureCard title="Moedas" icon={Coins} description="Recarregar saldo." />
+               <a 
+                 href={serverConfig.supportWhatsApp ? `https://wa.me/${serverConfig.supportWhatsApp}` : "#"} 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="group cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold/50 rounded-xs"
+                 aria-label="Suporte no WhatsApp"
+               >
+                 <FeatureCard title="Suporte" icon={LifeBuoy} description="Atendimento via WhatsApp." />
+               </a>
+               <Link 
+                 to="/conta/vip-moedas" 
+                 className="group cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold/50 rounded-xs"
+                 aria-label="Recarregar moedas"
+               >
+                 <FeatureCard title="Moedas" icon={Coins} description="Recarregar saldo." />
+               </Link>
             </div>
           </div>
 
@@ -239,11 +254,27 @@ function PlayerAreaPage() {
             )}
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <FeatureCard title="Downloads" icon={Download} description="Baixe o cliente completo." />
-              <Link to="/esqueci-minha-senha" title="Redefinir senha por e-mail">
+              <Link 
+                to="/downloads" 
+                className="group cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold/50 rounded-xs"
+                aria-label="Página de downloads"
+              >
+                <FeatureCard title="Downloads" icon={Download} description="Baixe o cliente completo." />
+              </Link>
+              <Link 
+                to="/esqueci-minha-senha" 
+                className="group cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold/50 rounded-xs"
+                aria-label="Segurança da conta"
+              >
                 <FeatureCard title="Segurança" icon={ShieldCheck} description="Redefinir senha por e-mail" />
               </Link>
-              <FeatureCard title="Ranking" icon={Trophy} description="Ver classificação global." />
+              <Link 
+                to="/rankings" 
+                className="group cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold/50 rounded-xs"
+                aria-label="Ranking global"
+              >
+                <FeatureCard title="Ranking" icon={Trophy} description="Ver classificação global." />
+              </Link>
             </div>
           </div>
 
