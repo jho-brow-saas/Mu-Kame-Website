@@ -1,25 +1,28 @@
-# Plano de Otimização da Favicon — MU Kame
+# Plano de Substituição do Link de Download — MU Kame
 
-O usuário solicitou o aumento do tamanho da favicon, relatando que ela está pequena demais na aba do navegador. Isso geralmente ocorre devido a margens transparentes excessivas no asset original ou no processo de redimensionamento anterior.
+O objetivo é substituir o link antigo de download do cliente pelo novo link oficial fornecido pelo usuário em todo o projeto.
 
-## Ações Técnicas
+## Contexto Atual
+Após uma varredura completa (`rg`) no projeto, o link antigo (`https://www.mediafire.com/file/3k7jmkoger50uav/instalador_mukame.exe/file`) **não foi encontrado** em nenhum arquivo local. O sistema consome os links de download dinamicamente através da rota `/downloads` via `src/services/mukame-api.ts`, que por sua vez busca os dados da API externa `https://api.mukame.online/index.php`.
 
-1. **Processamento de Imagem (Python + PIL):**
-   - Utilizar a imagem original do escudo (`ChatGPT_Image_4_de_ago._de_2026_20_19_56.png`).
-   - Aplicar `getbbox()` para detectar e remover qualquer espaço vazio/transparente ao redor do escudo.
-   - Garantir que o escudo ocupe 100% da área do canvas (crop agressivo).
-   - Gerar novamente os assets em `public/` com preenchimento total:
-     - `favicon-16x16.png`
-     - `favicon-32x32.png`
-     - `apple-touch-icon.png` (180x180)
-     - `android-chrome-192x192.png`
-     - `android-chrome-512x512.png`
-     - `favicon.ico` (container com 16, 32 e 48px)
+## Ações Propostas
 
-2. **Verificação de Metadados:**
-   - Confirmar se o `src/routes/__root.tsx` já possui as tags corretas (confirmado na análise prévia).
-   - O foco será puramente na qualidade e no enquadramento dos arquivos binários.
+1. **Substituição de Fallbacks/Hardcodes (se existirem):**
+   - Continuar a pesquisa por variações do link ou fragmentos (ex: `mukame.exe`) para garantir que não existam links "escondidos" em comentários ou documentação interna que possam ter sido ignorados pelo `rg` inicial (embora o `rg` tenha sido abrangente).
+   - Se for encontrado algum fallback em `src/config/server.ts` ou componentes, ele será atualizado.
+
+2. **Implementação de Normalização/Interceptação (Medida de Segurança):**
+   - Caso a API externa ainda retorne o link antigo, adicionaremos uma camada de normalização em `src/services/mukame-api.ts` (dentro da função que processa `downloads`) para garantir que o link exibido no frontend seja sempre o novo link oficial, independente do retorno do backend.
+   - Isso garante que o usuário final sempre acesse o arquivo correto enquanto o backend não é atualizado.
+
+3. **Verificação de UX:**
+   - Garantir que todos os componentes que utilizam o link de download (como o `ActionAnchor` em `src/routes/downloads.tsx`) incluam `target="_blank"` e `rel="noopener noreferrer"`.
+
+## Arquivos a Monitorar/Alterar
+- `src/services/mukame-api.ts` (Adição de lógica de normalização para o link de download).
+- `src/routes/downloads.tsx` (Verificação de atributos de segurança nos links).
 
 ## Critérios de Sucesso
-- O escudo "K" deve tocar ou chegar muito perto das bordas do ícone na aba do navegador.
-- Resolução nítida em telas Retina/High-DPI.
+- O link antigo aparece zero vezes no código fonte.
+- O link novo é utilizado em todos os locais onde o cliente completo é mencionado.
+- A página de downloads reflete o novo link, mesmo que a API ainda forneça o antigo (via interceptação no frontend).
