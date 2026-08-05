@@ -201,7 +201,12 @@ export const muKameApi = {
 
     if (data.items) {
       data.items = data.items.map(item => {
-        if (item.type === "client" && (item.url === OLD_CLIENT_LINK || item.url?.includes("3k7jmkoger50uav"))) {
+        // Normalização agressiva: substitui o link do MediaFire ou qualquer link apontando para o site antigo
+        const isOldLink = item.url === OLD_CLIENT_LINK || 
+                         item.url?.includes("3k7jmkoger50uav") || 
+                         item.url?.includes("mukame.online/download");
+
+        if (item.type === "client" && isOldLink) {
           return { ...item, url: NEW_CLIENT_LINK };
         }
         return item;
