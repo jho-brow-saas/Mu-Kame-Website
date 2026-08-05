@@ -1,6 +1,6 @@
 {
   "name": "MU Kame",
-  "short_name": "MUKame",
+  "short_name": "MU Kame",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#080706",
-  "background_color": "#080706",
+  "theme_color": "#0d0b08",
+  "background_color": "#0d0b08",
   "display": "standalone"
 }
