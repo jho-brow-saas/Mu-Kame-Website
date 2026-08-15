@@ -192,28 +192,7 @@ export const muKameApi = {
   news: (limit = 6, signal?: AbortSignal) => fetchMuKameApi<NewsPayload>({ route: "news", limit }, signal),
 
   downloads: async (signal?: AbortSignal) => {
-    const data = await fetchMuKameApi<DownloadsPayload>({ route: "downloads" }, signal);
-    
-    // Normalização forçada do link oficial do cliente (Hotfix Frontend)
-    // Garante que o link novo seja usado mesmo que a API ainda retorne o antigo
-    const OLD_CLIENT_LINK = "https://www.mediafire.com/file/3k7jmkoger50uav/instalador_mukame.exe/file";
-    const NEW_CLIENT_LINK = "https://www.mediafire.com/file/wx5dtub4vup67u7/MU-Kame-Cliente-Completo.exe/file";
-
-    if (data.items) {
-      data.items = data.items.map(item => {
-        // Normalização agressiva: substitui o link do MediaFire ou qualquer link apontando para o site antigo
-        const isOldLink = item.url === OLD_CLIENT_LINK || 
-                         item.url?.includes("3k7jmkoger50uav") || 
-                         item.url?.includes("mukame.online/download");
-
-        if (item.type === "client" && isOldLink) {
-          return { ...item, url: NEW_CLIENT_LINK };
-        }
-        return item;
-      });
-    }
-
-    return data;
+    return fetchMuKameApi<DownloadsPayload>({ route: "downloads" }, signal);
   },
 
   events: (signal?: AbortSignal) => fetchMuKameApi<EventsPayload>({ route: "events" }, signal),
