@@ -30,6 +30,7 @@ function RegrasPage() {
         eyebrow="Comunidade"
         title="Regras do servidor"
         description="Jogue limpo. As regras existem para manter a competição justa e o continente saudável."
+        isH1={true}
       />
       <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
         {isPending ? <LoadingState label="Carregando regras oficiais..." /> : null}

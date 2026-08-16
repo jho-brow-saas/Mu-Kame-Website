@@ -40,6 +40,7 @@ function DownloadsPage() {
         eyebrow="Downloads"
         title="Prepare-se para entrar no continente."
         description="Baixe o Launcher oficial para Windows e comece sua jornada no MU Kame."
+        isH1={true}
       />
       
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">

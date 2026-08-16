@@ -52,6 +52,7 @@ function EventosPage() {
         eyebrow="Eventos"
         title="Eventos e invasões"
         description="Os horários oficiais são publicados pela API do servidor. Nenhum cronograma é inventado aqui."
+        isH1={true}
       />
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {items.length > 0 ? (
