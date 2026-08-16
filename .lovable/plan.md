@@ -1,34 +1,37 @@
-# Plano de Otimização Física de Favicons - MU Kame
+# SEO Audit and Fixes Plan - MU Kame
 
-O objetivo deste plano é realizar uma modificação física agressiva nos arquivos de imagem do favicon para que o escudo dourado ocupe 96% da área disponível, eliminando quase totalmente as margens transparentes.
+Auditing all content routes to ensure high-fidelity SEO metadata following TanStack Start v1 patterns.
 
-## Ações Propostas
+## Audit Checklist (SEO-Critical)
+1. **Unique Titles & Descriptions**: Every leaf route must have its own metadata.
+2. **Open Graph (OG)**: Check for `og:title`, `og:description`, `og:type`, and `og:url`.
+3. **Twitter Cards**: Check for `twitter:card`, `twitter:title`, and `twitter:description`.
+4. **Canonical Tags**: Ensure each route has a canonical link to its primary URL.
+5. **Head Hierarchy**: Verify H1 presence and semantic structure in components.
+6. **JSON-LD**: Ensure basic Organization schema in root and potential additions for other routes.
 
-### 1. Processamento Digital de Imagem (Scripts)
-- Utilizar um script Python com a biblioteca `Pillow` para:
-    - Identificar os limites reais (bounding box) dos pixels visíveis nos arquivos atuais.
-    - Realizar um crop (corte) exato nesses limites.
-    - Redimensionar o escudo resultante para preencher 96% da largura e altura das dimensões alvo (16, 32, 48, 180, 192, 512).
-    - Centralizar o escudo com margem mínima (1px em resoluções baixas).
-- Salvar fisicamente os novos arquivos em `public/`.
+## Implementation Steps
 
-### 2. Validação de Integridade e Tamanho
-- Comparar o tamanho em bytes e dimensões dos novos arquivos com os antigos para garantir que a mudança física ocorreu.
-- Listar as propriedades finais de cada arquivo.
+### 1. Root & Base Meta (`src/routes/__root.tsx`)
+- Ensure base Open Graph tags (`og:site_name`, `og:locale`) are set.
+- Check favicon and generic scripts.
 
-### 3. Atualização de Metadados e Cache-Busting
-- Atualizar `src/routes/__root.tsx` para usar a versão `v=7` em todos os links de favicon.
-- Remover quaisquer referências duplicadas detectadas no `head`.
+### 2. Main Routes Metadata
+- **Index (`/`)**: Strengthen the primary landing page metadata.
+- **Downloads (`/downloads`)**: Ensure precise title and description for high-intent keywords.
+- **Rankings (`/rankings/*`)**: Add specific head() blocks for sub-routes (reset, master-reset, level, etc.) which currently inherit or lack specific titles.
+- **News (`/noticias/*`)**: 
+  - Ensure `/noticias` has its own title.
+  - Fix the `/noticias/$slug` route which has hardcoded "Comunicado" titles; it should ideally use data from the loader (if available) or at least be unique.
+- **Auth/Account (`/entrar`, `/criar-conta`, `/area-do-jogador`)**: Add `robots: "noindex"` where appropriate and ensure canonicals.
+- **CMS/Info (`/regras`, `/suporte`, `/eventos`, `/castle-siege`)**: Verify and fix missing canonicals or OG tags.
 
-### 4. Publicação
-- Acionar o deploy para produção.
+### 3. Dynamic Metadata for News
+- Refactor `src/routes/noticias.$slug.tsx` to use a loader that provides the news title for the `head()` function.
 
-## Arquivos Afetados
-- `public/favicon.ico`
-- `public/favicon-16x16.png`
-- `public/favicon-32x32.png`
-- `public/favicon-48x48.png`
-- `public/apple-touch-icon.png`
-- `public/android-chrome-192x192.png`
-- `public/android-chrome-512x512.png`
-- `src/routes/__root.tsx`
+### 4. Semantic HTML Fixes
+- Audit components (`Hero`, `PageHero`, `SectionHeading`) to ensure `h1` is correctly used once per page.
+
+## Technical Details
+- Using TanStack Start `head()` option in `createFileRoute`.
+- All absolute URLs will point to `https://novo.mukame.online`.
