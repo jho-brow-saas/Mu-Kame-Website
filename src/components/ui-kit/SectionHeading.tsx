@@ -7,13 +7,16 @@ export function SectionHeading({
   description,
   align = "left",
   className,
+  isH1 = false,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   align?: "left" | "center";
   className?: string;
+  isH1?: boolean;
 }) {
+  const TitleTag = isH1 ? "h1" : "h2";
   return (
     <header
       className={cn(
@@ -34,7 +37,7 @@ export function SectionHeading({
           <span aria-hidden="true" className="h-px w-8 bg-bronze" />
         </span>
       ) : null}
-      <h2 className="section-title text-bone">{title}</h2>
+      <TitleTag className="section-title text-bone">{title}</TitleTag>
       <span
         aria-hidden="true"
         className={cn(

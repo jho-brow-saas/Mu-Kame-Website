@@ -4,27 +4,48 @@ import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States
 import { TagBadge } from "@/components/ui-kit/Cards";
 import { useNews } from "@/hooks/use-news";
 import { formatBrDate, parseApiDate, toPlainText } from "@/lib/mukame-format";
+import { muKameApi } from "@/services/mukame-api";
 
 export const Route = createFileRoute("/noticias/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Comunicado — MU Kame" },
-      { name: "description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
-      { property: "og:type", content: "article" },
-      { property: "og:title", content: "Comunicado — MU Kame" },
-      { property: "og:description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  loader: async ({ params }) => {
+    // Carregamos a notícia no loader para ter o título disponível no head()
+    const data = await muKameApi.news(50); // Pegamos um range maior para garantir o slug
+    const item = data?.items.find((entry) => String(entry.id) === params.slug) ?? null;
+    return { item };
+  },
+  head: ({ loaderData }) => {
+    const item = loaderData?.item;
+    const title = item ? `${item.title} — MU Kame` : "Comunicado — MU Kame";
+    const plainContent = item ? toPlainText(item.content) : "";
+    const description = item 
+      ? plainContent.slice(0, 155).trim() + (plainContent.length > 155 ? "..." : "")
+      : "Comunicado oficial publicado pela equipe do MU Kame.";
+      
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: `https://novo.mukame.online/noticias/${item?.id || ""}` },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [
+        { rel: "canonical", href: `https://novo.mukame.online/noticias/${item?.id || ""}` }
+      ]
+    };
+  },
   component: NoticiaDetalhe,
 });
 
 function NoticiaDetalhe() {
-  const { slug } = Route.useParams();
-  const { data, isPending, isError, refetch } = useNews(30);
-  const item = data?.items.find((entry) => String(entry.id) === slug) ?? null;
+  const { item } = Route.useLoaderData();
+  const { isPending, isError, refetch } = useNews(30);
 
-  if (isPending) {
+  if (isPending && !item) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <LoadingState label="Carregando comunicado…" />
@@ -32,7 +53,7 @@ function NoticiaDetalhe() {
     );
   }
 
-  if (isError) {
+  if (isError && !item) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <ErrorState

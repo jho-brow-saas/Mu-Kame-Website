@@ -32,6 +32,7 @@ function NoticiasPage() {
         eyebrow="Comunicados"
         title="Notícias do MU Kame"
         description="Atualizações, manutenções e comunicados oficiais da equipe."
+        isH1={true}
       />
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {isPending ? <LoadingState label="Carregando comunicados…" /> : null}

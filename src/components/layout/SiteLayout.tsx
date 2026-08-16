@@ -19,12 +19,15 @@ export function PageHero({
   title,
   description,
   children,
+  isH1 = true,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   children?: ReactNode;
+  isH1?: boolean;
 }) {
+  const TitleTag = isH1 ? "h1" : "h2";
   return (
     <section className="stone-sheet relative isolate overflow-hidden edge-rule-bottom py-14 sm:py-18">
       <span aria-hidden="true" className="topo-lines pointer-events-none absolute inset-0 opacity-70" />
@@ -36,7 +39,7 @@ export function PageHero({
             {eyebrow}
           </span>
         ) : null}
-        <h1 className="section-title text-bone">{title}</h1>
+        <TitleTag className="section-title text-bone">{title}</TitleTag>
         <span
           aria-hidden="true"
           className="rule-draw h-[2px] w-28 bg-linear-to-r from-gold via-bronze to-transparent"

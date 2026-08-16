@@ -43,6 +43,7 @@ function RankingsLayout() {
         eyebrow="Classificações"
         title="Rankings do MU Kame"
         description="Todos os rankings serão alimentados diretamente pelo servidor após o lançamento em 01 de setembro de 2026."
+        isH1={false}
       />
       <nav aria-label="Categorias de ranking" className="metal-sheet edge-rule-bottom">
         <ul className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-4 sm:px-6 lg:px-8">

@@ -8,6 +8,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/redefinir-senha")({
+  head: () => ({
+    meta: [
+      { title: "Redefinir Senha — MU Kame" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: ResetPasswordPage,
 });
 

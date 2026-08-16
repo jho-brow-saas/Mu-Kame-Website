@@ -73,6 +73,7 @@ function SuportePage() {
         eyebrow="Ajuda"
         title="Suporte MU Kame"
         description={`Atendimento oficial pelo WhatsApp ${socials?.whatsapp.handle ?? serverConfig.supportWhatsAppLabel}.`}
+        isH1={true}
       />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">

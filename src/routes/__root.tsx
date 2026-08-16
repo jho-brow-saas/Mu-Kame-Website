@@ -154,6 +154,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         sizes: "32x32",
         href: "/favicon.png?v=11"
       },
+      { rel: "canonical", href: "https://novo.mukame.online" },
     ],
     scripts: [
 

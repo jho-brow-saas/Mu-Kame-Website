@@ -12,6 +12,7 @@ export function RankingPreviewGrid() {
         title="Escolha uma classificação"
         description="Nenhum jogador foi classificado ainda. A disputa começa em 01 de setembro de 2026."
         className="mb-8"
+        isH1={true}
       />
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (

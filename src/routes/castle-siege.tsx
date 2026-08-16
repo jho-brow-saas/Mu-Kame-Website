@@ -56,6 +56,7 @@ function CastleSiegePage() {
         eyebrow="Guerra de guilds"
         title="Castle Siege"
         description="Estado do castelo lido diretamente do servidor oficial. Nenhuma data é inventada."
+        isH1={true}
       />
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {isPending ? <LoadingState label="Consultando o castelo…" /> : null}
