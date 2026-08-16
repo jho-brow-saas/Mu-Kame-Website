@@ -4,25 +4,40 @@ import { EmptyState, ErrorState, LoadingState } from "@/components/ui-kit/States
 import { TagBadge } from "@/components/ui-kit/Cards";
 import { useNews } from "@/hooks/use-news";
 import { formatBrDate, parseApiDate, toPlainText } from "@/lib/mukame-format";
+import { muKameApi } from "@/services/mukame-api";
 
 export const Route = createFileRoute("/noticias/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Comunicado — MU Kame" },
-      { name: "description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
-      { property: "og:type", content: "article" },
-      { property: "og:title", content: "Comunicado — MU Kame" },
-      { property: "og:description", content: "Comunicado oficial publicado pela equipe do MU Kame." },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  loader: async ({ params }) => {
+    // Carregamos a notícia no loader para ter o título disponível no head()
+    const data = await muKameApi.news(50); // Pegamos um range maior para garantir o slug
+    const item = data?.items.find((entry) => String(entry.id) === params.slug) ?? null;
+    return { item };
+  },
+  head: ({ loaderData }) => {
+    const title = loaderData?.item ? `${loaderData.item.title} — MU Kame` : "Comunicado — MU Kame";
+    const description = loaderData?.item 
+      ? toPlainText(loaderData.item.content).slice(0, 155) + "..."
+      : "Comunicado oficial publicado pela equipe do MU Kame.";
+      
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
   component: NoticiaDetalhe,
 });
 
 function NoticiaDetalhe() {
-  const { slug } = Route.useParams();
-  const { data, isPending, isError, refetch } = useNews(30);
-  const item = data?.items.find((entry) => String(entry.id) === slug) ?? null;
+  const { item } = Route.useLoaderData();
+  const { isPending, isError, refetch } = useNews(30);
+  // O item agora vem do loader para hidratação imediata e SEO
+
 
   if (isPending) {
     return (
