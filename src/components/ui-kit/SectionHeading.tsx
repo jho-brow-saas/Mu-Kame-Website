@@ -7,6 +7,7 @@ export function SectionHeading({
   description,
   align = "left",
   className,
+  isH1 = false,
 }: {
   eyebrow?: string;
   title: string;
