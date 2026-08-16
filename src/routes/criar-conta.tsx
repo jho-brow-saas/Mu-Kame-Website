@@ -46,8 +46,8 @@ const schema = z
 
 type Errors = Partial<Record<keyof z.input<typeof schema>, string>>;
 
-const title = "Criar conta — MU Kame";
-const description = "Crie sua conta no MU Kame e prepare-se para o lançamento da Season 6.15 em 01/09/2026.";
+const title = "Criar Conta — MU Kame";
+const description = "Cadastre-se no MU Kame e comece sua jornada medieval agora mesmo.";
 
 export const Route = createFileRoute("/criar-conta")({
   head: () => ({
@@ -57,6 +57,7 @@ export const Route = createFileRoute("/criar-conta")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:url", content: "https://novo.mukame.online/criar-conta" },
+      { name: "robots", content: "noindex, nofollow" },
     ],
     links: [{ rel: "canonical", href: "https://novo.mukame.online/criar-conta" }],
   }),

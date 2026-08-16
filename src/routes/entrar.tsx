@@ -14,7 +14,7 @@ const schema = z.object({
 });
 
 const title = "Entrar — MU Kame";
-const description = "Acesse sua conta do MU Kame para consultar personagens, VIP e downloads.";
+const description = "Acesse sua conta no MU Kame para gerenciar seus personagens e recursos.";
 
 export const Route = createFileRoute("/entrar")({
   head: () => ({
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/entrar")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:url", content: "https://novo.mukame.online/entrar" },
+      { name: "robots", content: "noindex, nofollow" },
     ],
     links: [{ rel: "canonical", href: "https://novo.mukame.online/entrar" }],
   }),
