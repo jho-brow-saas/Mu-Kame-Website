@@ -14,9 +14,11 @@ export const Route = createFileRoute("/noticias/$slug")({
     return { item };
   },
   head: ({ loaderData }) => {
-    const title = loaderData?.item ? `${loaderData.item.title} — MU Kame` : "Comunicado — MU Kame";
-    const description = loaderData?.item 
-      ? toPlainText(loaderData.item.content).slice(0, 155) + "..."
+    const item = loaderData?.item;
+    const title = item ? `${item.title} — MU Kame` : "Comunicado — MU Kame";
+    const plainContent = item ? toPlainText(item.content) : "";
+    const description = item 
+      ? plainContent.slice(0, 155).trim() + (plainContent.length > 155 ? "..." : "")
       : "Comunicado oficial publicado pela equipe do MU Kame.";
       
     return {
@@ -26,8 +28,14 @@ export const Route = createFileRoute("/noticias/$slug")({
         { property: "og:type", content: "article" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:url", content: `https://novo.mukame.online/noticias/${item?.id || ""}` },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
+      links: [
+        { rel: "canonical", href: `https://novo.mukame.online/noticias/${item?.id || ""}` }
+      ]
     };
   },
   component: NoticiaDetalhe,
@@ -36,10 +44,8 @@ export const Route = createFileRoute("/noticias/$slug")({
 function NoticiaDetalhe() {
   const { item } = Route.useLoaderData();
   const { isPending, isError, refetch } = useNews(30);
-  // O item agora vem do loader para hidratação imediata e SEO
 
-
-  if (isPending) {
+  if (isPending && !item) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <LoadingState label="Carregando comunicado…" />
@@ -47,7 +53,7 @@ function NoticiaDetalhe() {
     );
   }
 
-  if (isError) {
+  if (isError && !item) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <ErrorState

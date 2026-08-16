@@ -7,6 +7,14 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/esqueci-minha-senha")({
+  head: () => ({
+    meta: [
+      { title: "Recuperar Senha — MU Kame" },
+      { name: "description", content: "Solicite a recuperação de senha da sua conta no MU Kame." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "https://novo.mukame.online/esqueci-minha-senha" }],
+  }),
   component: ForgotPasswordPage,
 });
 
